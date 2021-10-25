@@ -1,0 +1,23 @@
+No.     Time           Source                Destination           Protocol Length Info
+      2 5.138710       10.1.121.1            10.1.133.1            ICMP     98     Echo (ping) request  id=0x05c2, seq=1/256, ttl=62 (reply in 3)
+
+Frame 2: 98 bytes on wire (784 bits), 98 bytes captured (784 bits) on interface \Device\NPF_{30C31376-AC38-4B6D-AA7F-2DB1AFB48298}, id 0
+Ethernet II, Src: Cisco_04:5e:69 (00:1f:ca:04:5e:69), Dst: HewlettP_15:56:01 (d4:85:64:15:56:01)
+Internet Protocol Version 4, Src: 10.1.121.1, Dst: 10.1.133.1
+Internet Control Message Protocol
+
+No.     Time           Source                Destination           Protocol Length Info
+      3 5.138868       10.1.133.1            10.1.121.1            ICMP     98     Echo (ping) reply    id=0x05c2, seq=1/256, ttl=128 (request in 2)
+
+Frame 3: 98 bytes on wire (784 bits), 98 bytes captured (784 bits) on interface \Device\NPF_{30C31376-AC38-4B6D-AA7F-2DB1AFB48298}, id 0
+Ethernet II, Src: HewlettP_15:56:01 (d4:85:64:15:56:01), Dst: Cisco_04:5e:69 (00:1f:ca:04:5e:69)
+Internet Protocol Version 4, Src: 10.1.133.1, Dst: 10.1.121.1
+Internet Control Message Protocol
+
+No.     Time           Source                Destination           Protocol Length Info
+      4 5.140037       10.1.133.254          10.1.133.1            ICMP     70     Destination unreachable (Host unreachable)
+
+Frame 4: 70 bytes on wire (560 bits), 70 bytes captured (560 bits) on interface \Device\NPF_{30C31376-AC38-4B6D-AA7F-2DB1AFB48298}, id 0
+Ethernet II, Src: Cisco_04:5e:69 (00:1f:ca:04:5e:69), Dst: HewlettP_15:56:01 (d4:85:64:15:56:01)
+Internet Protocol Version 4, Src: 10.1.133.254, Dst: 10.1.133.1
+Internet Control Message Protocol

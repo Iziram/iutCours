@@ -1,0 +1,15 @@
+No.     Time           Source                Destination           Protocol Length Info
+      1 0.000000000    10.1.121.1            10.1.121.254          ICMP     98     Echo (ping) request  id=0x04f5, seq=1/256, ttl=64 (reply in 2)
+
+Frame 1: 98 bytes on wire (784 bits), 98 bytes captured (784 bits) on interface 0
+Ethernet II, Src: HewlettP_10:e9:ec (d4:85:64:10:e9:ec), Dst: IntelCor_17:44:55 (68:05:ca:17:44:55)
+Internet Protocol Version 4, Src: 10.1.121.1, Dst: 10.1.121.254
+Internet Control Message Protocol
+
+No.     Time           Source                Destination           Protocol Length Info
+      2 0.000048422    10.1.121.254          10.1.121.1            ICMP     98     Echo (ping) reply    id=0x04f5, seq=1/256, ttl=64 (request in 1)
+
+Frame 2: 98 bytes on wire (784 bits), 98 bytes captured (784 bits) on interface 0
+Ethernet II, Src: IntelCor_17:44:55 (68:05:ca:17:44:55), Dst: HewlettP_10:e9:ec (d4:85:64:10:e9:ec)
+Internet Protocol Version 4, Src: 10.1.121.254, Dst: 10.1.121.1
+Internet Control Message Protocol

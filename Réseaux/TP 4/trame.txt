@@ -1,0 +1,93 @@
+No.     Time           Source                Destination           Protocol Length Info
+      2 14.225833886   10.1.1.3              10.254.0.254          DNS      95     Standard query 0x80ac A www.qwant.fr OPT
+
+Frame 2: 95 bytes on wire (760 bits), 95 bytes captured (760 bits) on interface 0
+Ethernet II, Src: HewlettP_10:e9:ec (d4:85:64:10:e9:ec), Dst: IntelCor_17:44:55 (68:05:ca:17:44:55)
+Internet Protocol Version 4, Src: 10.1.1.3, Dst: 10.254.0.254
+User Datagram Protocol, Src Port: 60310, Dst Port: 53
+Domain Name System (query)
+    Transaction ID: 0x80ac
+    Flags: 0x0120 Standard query
+    Questions: 1
+    Answer RRs: 0
+    Authority RRs: 0
+    Additional RRs: 1
+    Queries
+        www.qwant.fr: type A, class IN
+            Name: www.qwant.fr
+            [Name Length: 12]
+            [Label Count: 3]
+            Type: A (Host Address) (1)
+            Class: IN (0x0001)
+    Additional records
+        <Root>: type OPT
+    [Response In: 3]
+
+No.     Time           Source                Destination           Protocol Length Info
+      3 14.226630775   10.254.0.254          10.1.1.3              DNS      924    Standard query response 0x80ac A www.qwant.fr CNAME webredir.gandi.net A 217.70.184.56 NS d.gtld-servers.net NS i.gtld-servers.net NS c.gtld-servers.net NS e.gtld-servers.net NS f.gtld-servers.net NS k.gtld-servers.net NS b.gtld-servers.net NS h.gtld-servers.net NS j.gtld-servers.net NS a.gtld-servers.net NS l.gtld-servers.net NS g.gtld-servers.net NS m.gtld-servers.net A 192.5.6.30 AAAA 2001:503:a83e::2:30 A 192.33.14.30 AAAA 2001:503:231d::2:30 A 192.26.92.30 AAAA 2001:503:83eb::30 A 192.31.80.30 AAAA 2001:500:856e::30 A 192.12.94.30 AAAA 2001:502:1ca1::30 A 192.35.51.30 AAAA 2001:503:d414::30 A 192.42.93.30 AAAA 2001:503:eea3::30 A 192.54.112.30 AAAA 2001:502:8cc::30 A 192.43.172.30 AAAA 2001:503:39c1::30 A 192.48.79.30 AAAA 2001:502:7094::30 A 192.52.178.30 AAAA 2001:503:d2d::30 A 192.41.162.30 AAAA 2001:500:d937::30 A 192.55.83.30 AAAA 2001:501:b1f9::30 OPT
+
+Frame 3: 924 bytes on wire (7392 bits), 924 bytes captured (7392 bits) on interface 0
+Ethernet II, Src: IntelCor_17:44:55 (68:05:ca:17:44:55), Dst: HewlettP_10:e9:ec (d4:85:64:10:e9:ec)
+Internet Protocol Version 4, Src: 10.254.0.254, Dst: 10.1.1.3
+User Datagram Protocol, Src Port: 53, Dst Port: 60310
+Domain Name System (response)
+    Transaction ID: 0x80ac
+    Flags: 0x8180 Standard query response, No error
+    Questions: 1
+    Answer RRs: 2
+    Authority RRs: 13
+    Additional RRs: 27
+    Queries
+        www.qwant.fr: type A, class IN
+            Name: www.qwant.fr
+            [Name Length: 12]
+            [Label Count: 3]
+            Type: A (Host Address) (1)
+            Class: IN (0x0001)
+    Answers
+        www.qwant.fr: type CNAME, class IN, cname webredir.gandi.net
+        webredir.gandi.net: type A, class IN, addr 217.70.184.56
+    Authoritative nameservers
+        net: type NS, class IN, ns d.gtld-servers.net
+        net: type NS, class IN, ns i.gtld-servers.net
+        net: type NS, class IN, ns c.gtld-servers.net
+        net: type NS, class IN, ns e.gtld-servers.net
+        net: type NS, class IN, ns f.gtld-servers.net
+        net: type NS, class IN, ns k.gtld-servers.net
+        net: type NS, class IN, ns b.gtld-servers.net
+        net: type NS, class IN, ns h.gtld-servers.net
+        net: type NS, class IN, ns j.gtld-servers.net
+        net: type NS, class IN, ns a.gtld-servers.net
+        net: type NS, class IN, ns l.gtld-servers.net
+        net: type NS, class IN, ns g.gtld-servers.net
+        net: type NS, class IN, ns m.gtld-servers.net
+    Additional records
+        a.gtld-servers.net: type A, class IN, addr 192.5.6.30
+        a.gtld-servers.net: type AAAA, class IN, addr 2001:503:a83e::2:30
+        b.gtld-servers.net: type A, class IN, addr 192.33.14.30
+        b.gtld-servers.net: type AAAA, class IN, addr 2001:503:231d::2:30
+        c.gtld-servers.net: type A, class IN, addr 192.26.92.30
+        c.gtld-servers.net: type AAAA, class IN, addr 2001:503:83eb::30
+        d.gtld-servers.net: type A, class IN, addr 192.31.80.30
+        d.gtld-servers.net: type AAAA, class IN, addr 2001:500:856e::30
+        e.gtld-servers.net: type A, class IN, addr 192.12.94.30
+        e.gtld-servers.net: type AAAA, class IN, addr 2001:502:1ca1::30
+        f.gtld-servers.net: type A, class IN, addr 192.35.51.30
+        f.gtld-servers.net: type AAAA, class IN, addr 2001:503:d414::30
+        g.gtld-servers.net: type A, class IN, addr 192.42.93.30
+        g.gtld-servers.net: type AAAA, class IN, addr 2001:503:eea3::30
+        h.gtld-servers.net: type A, class IN, addr 192.54.112.30
+        h.gtld-servers.net: type AAAA, class IN, addr 2001:502:8cc::30
+        i.gtld-servers.net: type A, class IN, addr 192.43.172.30
+        i.gtld-servers.net: type AAAA, class IN, addr 2001:503:39c1::30
+        j.gtld-servers.net: type A, class IN, addr 192.48.79.30
+        j.gtld-servers.net: type AAAA, class IN, addr 2001:502:7094::30
+        k.gtld-servers.net: type A, class IN, addr 192.52.178.30
+        k.gtld-servers.net: type AAAA, class IN, addr 2001:503:d2d::30
+        l.gtld-servers.net: type A, class IN, addr 192.41.162.30
+        l.gtld-servers.net: type AAAA, class IN, addr 2001:500:d937::30
+        m.gtld-servers.net: type A, class IN, addr 192.55.83.30
+        m.gtld-servers.net: type AAAA, class IN, addr 2001:501:b1f9::30
+        <Root>: type OPT
+    [Request In: 2]
+    [Time: 0.000796889 seconds]

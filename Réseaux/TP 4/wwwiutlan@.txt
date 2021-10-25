@@ -1,0 +1,48 @@
+No.     Time           Source                Destination           Protocol Length Info
+      1 0.000000000    10.1.1.3              10.254.0.254          DNS      70     Standard query 0x3cdb A www.iutlan
+
+Frame 1: 70 bytes on wire (560 bits), 70 bytes captured (560 bits) on interface 0
+Ethernet II, Src: HewlettP_10:e9:ec (d4:85:64:10:e9:ec), Dst: IntelCor_17:44:55 (68:05:ca:17:44:55)
+Internet Protocol Version 4, Src: 10.1.1.3, Dst: 10.254.0.254
+User Datagram Protocol, Src Port: 51295, Dst Port: 53
+Domain Name System (query)
+    Transaction ID: 0x3cdb
+    Flags: 0x0100 Standard query
+    Questions: 1
+    Answer RRs: 0
+    Authority RRs: 0
+    Additional RRs: 0
+    Queries
+        www.iutlan: type A, class IN
+            Name: www.iutlan
+            [Name Length: 10]
+            [Label Count: 2]
+            Type: A (Host Address) (1)
+            Class: IN (0x0001)
+    [Response In: 3]
+
+No.     Time           Source                Destination           Protocol Length Info
+      3 0.001822927    10.254.0.254          10.1.1.3              DNS      145    Standard query response 0x3cdb No such name A www.iutlan SOA a.root-servers.net
+
+Frame 3: 145 bytes on wire (1160 bits), 145 bytes captured (1160 bits) on interface 0
+Ethernet II, Src: IntelCor_17:44:55 (68:05:ca:17:44:55), Dst: HewlettP_10:e9:ec (d4:85:64:10:e9:ec)
+Internet Protocol Version 4, Src: 10.254.0.254, Dst: 10.1.1.3
+User Datagram Protocol, Src Port: 53, Dst Port: 51295
+Domain Name System (response)
+    Transaction ID: 0x3cdb
+    Flags: 0x8183 Standard query response, No such name
+    Questions: 1
+    Answer RRs: 0
+    Authority RRs: 1
+    Additional RRs: 0
+    Queries
+        www.iutlan: type A, class IN
+            Name: www.iutlan
+            [Name Length: 10]
+            [Label Count: 2]
+            Type: A (Host Address) (1)
+            Class: IN (0x0001)
+    Authoritative nameservers
+        <Root>: type SOA, class IN, mname a.root-servers.net
+    [Request In: 1]
+    [Time: 0.001822927 seconds]
