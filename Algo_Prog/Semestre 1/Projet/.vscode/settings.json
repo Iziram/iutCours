@@ -3,5 +3,6 @@
         "python invaders"
     ],
     "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
+    "python.testing.pytestEnabled": true,
+    "python.pythonPath": "/bin/python3"
 }
