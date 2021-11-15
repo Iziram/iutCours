@@ -5,6 +5,15 @@ from saisiCar import SaisiCar
 
 
 def displayDictLiteral(plateau: dict) -> None:
+    """!
+    @brief Explication de la fonction
+
+    Paramètre(s) : 
+        @param plateau : dict => [description]
+    Retour de la fonction : 
+        @return None [Description]
+
+    """
     print(
         f'largeur: {plateau["L"]} cases, hauteur: {plateau["H"]} lignes' +
         f'score: {plateau["score"]}, vie: {plateau["vie"]}, level: {plateau["level"]} ')
@@ -15,6 +24,18 @@ def displayDictGame(
         vaisseau: dict,
         liste_Aliens: list,
         tir: None or int = None) -> None:
+    """!
+    @brief Explication de la fonction
+
+    Paramètre(s) : 
+        @param plateau : dict => [description]
+        @param vaisseau : dict => [description]
+        @param liste_Aliens : list => [description]
+        @param tir : None or int = None => [description]
+    Retour de la fonction : 
+        @return None [Description]
+
+    """
     # affichage bandeau score
     print("-" * plateau["L"])
     print("SCORE      VIE    NIVEAU   ")
@@ -113,6 +134,16 @@ def getLowestAlien(posx: int, liste_Aliens: list) -> None or int:
 
 
 def gestionTir(vaisseau: dict, liste_aliens: list) -> int:
+    """!
+    @brief Explication de la fonction
+
+    Paramètre(s) : 
+        @param vaisseau : dict => [description]
+        @param liste_aliens : list => [description]
+    Retour de la fonction : 
+        @return int [Description]
+
+    """
     aliens_on_x: list = [
         x for x in liste_aliens if x["posx"] == vaiseau["posx"]]
     lowest_list: list = sorted(
