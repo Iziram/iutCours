@@ -91,7 +91,7 @@ def partie2():
         affichage(vecteur)
         
 def partie2bis():
-    tabData : np.ndarray = np.genfromtxt("data1.csv", delimiter=",")
+    tabData : np.ndarray = np.genfromtxt("../data1.csv", delimiter=",")
     print(tabData.size, tabData.shape, tabData.dtype)
     print("="*40)
     axis_x = np.array([x[0] for x in tabData])

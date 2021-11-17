@@ -8,7 +8,7 @@
   - SaisiCar du module saisiCar
 
  @section authors Author(s)
-  - Créé par [Matthias Hartmann le 15/11/2021 .
+  - Créé par Matthias Hartmann le 15/11/2021 .
 """
 from typing import List, Dict
 from random import randint, sample
