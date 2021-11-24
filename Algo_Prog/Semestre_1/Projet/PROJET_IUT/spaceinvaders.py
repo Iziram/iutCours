@@ -83,7 +83,7 @@ def affichagePlateau(
                 caractere = str(lePlateau["tirS"][2]) 
                 if y == lePlateau["H"] -1:
                     if x == leVaisseau["posx"]:
-                        leVaisseau["tir"] = lePlateau["tirS"][2]
+                        leVaisseau["tir"] = max(leVaisseau["tir"], lePlateau["tirS"][2])
                     lePlateau["tirS"] = None
             for a in lesAliens:
                 if a["posx"] == x and a["posy"] == y:
@@ -318,6 +318,8 @@ if __name__ == "__main__":
                 lePlateau["vie"] -= 1
                 leVaisseau["tir"] = 1
                 lesAliens.clear()
+            else:
+                lePlateau["level"] += 1
             generationAliens(lesAliens, lePlateau)
 
         action = kb.recupCar(["m", "k", "o", "q"])
