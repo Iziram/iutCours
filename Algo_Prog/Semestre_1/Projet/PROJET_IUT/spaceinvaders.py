@@ -28,7 +28,7 @@ def affichageDebugPlateau(lePlateau: Dict[str, int]):
     assert isinstance(
         lePlateau, dict), "la variable `lePlateau` doit être un dictionnaire"
     assert set(lePlateau.keys()) == {
-        "L", "H", "vie", "score", "level"}, "le dictionnaire doit avoir comme clé : `L;H;vie;level;score`"
+        "L", "H", "vie", "score", "level","tirS"}, "le dictionnaire doit avoir comme clé : `L;H;vie;level;score`"
 
     print(f'largeur : {lePlateau["L"]} cases, ',
           f'hauteur : {lePlateau["H"]} lignes,',
@@ -38,14 +38,16 @@ def affichageDebugPlateau(lePlateau: Dict[str, int]):
 
 
 def affichagePlateau(
-        lePlateau: Dict[str, int], lesAliens: List[Dict[str, int]], leVaisseau: Dict[str, int]):
+        lePlateau: Dict[str, int], lesAliens: List[Dict[str, int]], leVaisseau: Dict[str, int], tir_y : int or None = None):
     """!
-    @brief Explication de la fonction
+    @brief Cette fonction gère l'affichage du plateau de jeu, des aliens, du vaisseau et des tirs
 
     Paramètre(s) :
         @param lePlateau : Dict[str, int] => Un dictionnaire qui représente le plateau
         @param lesAliens : List[Dict[str, int]] => Une liste de dictionnaire représentant une liste d'aliens
         @param leVaisseau : Dict[str,int] => Un dictionnaire représentant le vaisseau
+        @param tir_y : int or None = None => La coordonnée y de l'alien à tuer avec le tir
+        
 
     """
     assert isinstance(
@@ -55,7 +57,7 @@ def affichagePlateau(
     assert isinstance(
         lesAliens, list), "la variable `lesAliens` doit être une liste"
     assert set(lePlateau.keys()) == {
-        "L", "H", "vie", "score", "level"}, "`Erreur -> lePlateau :`le dictionnaire doit avoir comme clé : `L;H;vie;level;score`"
+        "L", "H", "vie", "score", "level","tirS"}, "`Erreur -> lePlateau :`le dictionnaire doit avoir comme clé : `L;H;vie;level;score`"
     assert len([i for i in lesAliens if not isinstance(i, dict)]
                ) == 0, "le paramètre `lesAliens` doit être une liste de dictionnaires"
     assert set(leVaisseau.keys()) == {
@@ -77,22 +79,39 @@ def affichagePlateau(
     for y in range(lePlateau["H"]):
         for x in range(lePlateau["L"]):
             caractere: str = " "
+            if lePlateau["tirS"] != None and x == lePlateau["tirS"][0] and y == lePlateau["tirS"][1]:
+                caractere = str(lePlateau["tirS"][2]) 
+                if y == lePlateau["H"] -1:
+                    if x == leVaisseau["posx"]:
+                        leVaisseau["tir"] = lePlateau["tirS"][2]
+                    lePlateau["tirS"] = None
             for a in lesAliens:
                 if a["posx"] == x and a["posy"] == y:
                     caractere = f'{couleur_alien}@'
             if y == lePlateau["H"] - 1 and x == leVaisseau["posx"]:
                 caractere = f'{couleur_vaisseau}#'
+            if tir_y != None :
+                if x == leVaisseau["posx"]:
+                    if tir_y < y < lePlateau["H"]:
+                        if leVaisseau["tir"] == 1:
+                            caractere = ":"
+                        if leVaisseau["tir"] == 2:
+                            caractere = "§"
+                        if leVaisseau["tir"] == 3:
+                            caractere = "|"
             affichage += caractere
         print(affichage)
         affichage = ""
     print(f"\033[0;37;40m")
+    if lePlateau["tirS"] != None:
+        lePlateau["tirS"] = (lePlateau["tirS"][0], lePlateau["tirS"][1]+1, lePlateau["tirS"][2])
     print("-" * 40)
 
 
 def generationAliens(
         lesAliens: List[Dict[str, int]], lePlateau: Dict[str, int]):
     """!
-    @brief Explication de la fonction
+    @brief Cette fonction permet de generer la liste d'aliens
 
     Paramètre(s) :
         @param lePlateau : Dict[str, int] => Un dictionnaire qui représente le plateau
@@ -104,7 +123,7 @@ def generationAliens(
     assert isinstance(
         lesAliens, list), "la variable `lesAliens` doit être une liste"
     assert set(lePlateau.keys()) == {
-        "L", "H", "vie", "score", "level"}, "`Erreur -> lePlateau :`le dictionnaire doit avoir comme clé : `L;H;vie;level;score`"
+        "L", "H", "vie", "score", "level","tirS"}, "`Erreur -> lePlateau :`le dictionnaire doit avoir comme clé : `L;H;vie;level;score`"
     assert len([i for i in lesAliens if not isinstance(i, dict)]
                ) == 0, "le paramètre `lesAliens` doit être une liste de dictionnaires"
 
@@ -229,6 +248,49 @@ def finJeu(lePlateau: Dict[str,
         [x for x in lesAliens if x["posy"] == lePlateau["H"] - 1]) >= 1)
 
 
+def alienAtteint(lesAliens : List[Dict[str,int]], posx) -> int or None:
+    """!
+    @brief Cette fonction retourne la coordonnée y de l'alien le plus bas étant sur la même coordonnée x que posx 
+
+    Paramètre(s) : 
+        @param lesAliens : List[Dict[str,int]] => Une liste de dictionnaire représentant une liste d'aliens
+        @param posx => La coordonnée x du vaisseau
+    Retour de la fonction : 
+        @return int or None La coordonnée y de l'alien le plus bas sur la même colonne que posx ou None si aucun n'a été trouvé
+
+    """
+    ymax : int  = -1 
+    for alien in lesAliens :
+        if alien["posx"] == posx:
+            ymax = max(alien["posy"], ymax)
+    return ymax if ymax != -1 else None
+
+def tuerAliens(leVaisseau : Dict[str, int], lesAliens : List[Dict[str,int]]) -> int :
+    """!
+    @brief Cette fonction permet de supprimer de la liste des Aliens les aliens que le tir du vaisseau touche.
+
+    Paramètre(s) : 
+        @param leVaisseau : Dict[str, int] => Un dictionnaire représentant le vaisseau
+        @param lesAliens : List[Dict[str,int]] => Une liste de dictionnaire représentant une liste d'aliens
+    Retour de la fonction : 
+        @return int Le nombre d'aliens tués
+
+    """
+    nbMort : int = 0
+    alienMort : List[Dict[str,int]] = []
+    i : int = len(lesAliens) -1
+    while i > -1 and nbMort < leVaisseau["tir"]:
+        alien : Dict[str, int] = lesAliens[i];
+        if alien["posx"] == leVaisseau["posx"]:
+            nbMort += 1
+            alienMort.append(alien)
+        i -= 1
+    maxtir : int = 0
+    for a in alienMort:
+        maxtir = max(a["tir"], maxtir)
+        lesAliens.remove(a)
+    return (nbMort, maxtir)
+
 if __name__ == "__main__":
 
     lePlateau: Dict[str, int] = {
@@ -236,7 +298,8 @@ if __name__ == "__main__":
         "H": 20,
         "score": 0,
         "vie": 3,
-        "level": 1
+        "level": 1,
+        "tirS" : None
     }
     leVaisseau: Dict[str, int] = {
         "posx": lePlateau["L"] // 2,
@@ -248,9 +311,34 @@ if __name__ == "__main__":
     action = "x"
     kb = SaisiCar()
 
-    while not finJeu(lePlateau, lesAliens, leVaisseau) and action != "q":
+    while lePlateau["vie"] > 0 and action != "q":
+        finj : bool = finJeu(lePlateau, lesAliens, leVaisseau)
+        if finj:
+            if len(lesAliens) > 0:
+                lePlateau["vie"] -= 1
+                leVaisseau["tir"] = 1
+                lesAliens.clear()
+            generationAliens(lesAliens, lePlateau)
+
         action = kb.recupCar(["m", "k", "o", "q"])
-        aTir = actionVaisseau(action, leVaisseau, lePlateau)
         deplacementAliens(lesAliens, lePlateau)
-        affichagePlateau(lePlateau, lesAliens, leVaisseau)
+        
+        aTir : bool = actionVaisseau(action, leVaisseau, lePlateau)
+        if aTir :
+            alienTue : int or None = alienAtteint(lesAliens, leVaisseau["posx"])
+            
+            aliensMorts : int
+            tirSpecial : int
+            aliensMorts,tirSpecial = tuerAliens(leVaisseau, lesAliens)
+            
+            if tirSpecial in [2,3]:
+                lePlateau["tirS"] = (leVaisseau["posx"], alienTue, tirSpecial)
+            
+            lePlateau["score"] += 5 * aliensMorts
+            affichagePlateau(lePlateau, lesAliens, leVaisseau, alienTue)
+        else:
+            affichagePlateau(lePlateau, lesAliens, leVaisseau)
+            
+        
         sleep(0.05)
+        
