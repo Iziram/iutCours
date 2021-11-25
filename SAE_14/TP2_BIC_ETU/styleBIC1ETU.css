@@ -1,0 +1,43 @@
+﻿/*
+Appliquez la directive CSS qui permet de
+définir la taille occupée par un élément
+uniquement en tenant compte des marges
+externes
+
+*/
+*{
+    box-sizing: border-box;
+}
+
+/*Appliquez une marge interne de 1 % , une
+marge externe de 2 % (et une bordure fine
+de 1px en noire) à toutes les balises
+sémantiques (pour les identifier)
+*/
+
+nav, header, section, aside, article, footer{
+    padding: 1%;
+    margin: 2%;
+    border: 1px solid black;
+}
+
+nav{
+    background-color: chocolate;
+}
+
+section{
+    background-color: darkolivegreen;
+}
+
+header, footer, article{
+    background-color: gold;
+}
+
+aside{
+    background-color: whitesmoke;
+}
+
+video, iframe, img{
+    max-width: 100%;
+    height: auto;
+}
