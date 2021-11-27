@@ -37,7 +37,7 @@ aside{
     background-color: whitesmoke;
 }
 
-video, iframe, img{
+video, iframe, img, audio{
     max-width: 100%;
     height: auto;
 }

@@ -4,6 +4,7 @@ from os import system
 
 def affichagelePlateau(lePlateau: Dict[str, int]) -> None:
 
+
     print(f'largeur : {lePlateau["L"]} cases, ',
           f'hauteur : {lePlateau["H"]} lignes,',
           f'score : {lePlateau["score"]},',

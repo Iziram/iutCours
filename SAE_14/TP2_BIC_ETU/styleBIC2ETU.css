@@ -1,1 +1,37 @@
-﻿
+﻿ul{
+    overflow: hidden;
+}
+nav ul li {
+    float : left;
+    width: 33.3333333333%;
+}
+
+#produits {
+    overflow: hidden;
+}
+#presentation, #nouveautes{
+    float: left;
+    width: 46%;
+}
+
+#memehauteur{
+    overflow: hidden;
+}
+
+#video, #audio, #youtube{
+    float: left;
+    width: 29.3333333%; /*33.3333 - 4%*/
+}
+
+footer{
+    overflow: hidden;
+}
+
+footer p{
+    clear: both;
+}
+
+footer h3:nth-child(2), footer > a{
+    float: left;
+    width: 33.3333333333%;
+}
