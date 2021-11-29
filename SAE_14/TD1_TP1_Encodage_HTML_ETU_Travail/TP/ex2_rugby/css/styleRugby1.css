@@ -1,0 +1,37 @@
+*{
+    box-sizing: border-box;
+}
+
+nav, header, footer, aside, article {
+    margin : 1%;
+    padding : 1%;
+    border : solid 1px;
+}
+
+nav{
+    background-color: darkgreen;
+}
+header{
+    background-color: crimson;
+}
+
+footer{
+    background-color: aqua;
+
+}
+aside{
+    background-color: aquamarine;
+
+}
+
+article{
+    background-color: blueviolet;
+
+}
+
+img, video, iframe{
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0px auto;
+}
