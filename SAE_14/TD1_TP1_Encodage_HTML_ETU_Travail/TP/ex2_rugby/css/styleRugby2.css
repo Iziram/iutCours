@@ -11,6 +11,6 @@ footer{
     clear: both;
 }
 
-header, article, nav, aside{
+header, article, nav, aside, footer{
     border-radius: 10px;
 }
