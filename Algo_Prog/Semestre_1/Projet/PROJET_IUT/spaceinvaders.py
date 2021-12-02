@@ -10,7 +10,7 @@
  @section authors Author(s)
   - Créé par Matthias Hartmann le 15/11/2021 .
 """
-from typing import List, Dict
+from typing import List, Dict, Tuple
 from random import randint, sample
 from os import system
 from time import sleep
@@ -26,7 +26,7 @@ def affichageDebugPlateau(lePlateau: Dict[str, int]):
 
     """
     assert isinstance(
-        lePlateau, dict), "la variable `lePlateau` doit être un dictionnaire"
+        lePlateau, dict), "le paramètre `lePlateau` doit être un dictionnaire"
     assert set(lePlateau.keys()) == {
         "L", "H", "vie", "score", "level","tirS"}, "le dictionnaire doit avoir comme clé : `L;H;vie;level;score`"
 
@@ -51,11 +51,11 @@ def affichagePlateau(
 
     """
     assert isinstance(
-        lePlateau, dict), "la variable `lePlateau` doit être un dictionnaire"
+        lePlateau, dict), "le paramètre `lePlateau` doit être un dictionnaire"
     assert isinstance(
-        leVaisseau, dict), "la variable `leVaisseau` doit être un dictionnaire"
+        leVaisseau, dict), "le paramètre `leVaisseau` doit être un dictionnaire"
     assert isinstance(
-        lesAliens, list), "la variable `lesAliens` doit être une liste"
+        lesAliens, list), "le paramètre `lesAliens` doit être une liste"
     assert set(lePlateau.keys()) == {
         "L", "H", "vie", "score", "level","tirS"}, "`Erreur -> lePlateau :`le dictionnaire doit avoir comme clé : `L;H;vie;level;score`"
     assert len([i for i in lesAliens if not isinstance(i, dict)]
@@ -63,12 +63,16 @@ def affichagePlateau(
     assert set(leVaisseau.keys()) == {
         "posx", "tir"}, "`Erreur -> leVaisseau :`le dictionnaire doit avoir comme clé : `posx;tir`"
 
-    system("clear")
-    print("-" * 40)
-    print(" " * 4 + "SCORE" + " " * 4 + "VIE" + " " * 4 + "NIVEAU")
+    #Remise à zero de l'affichage de la console / du terminal.
+    # system("clear") #linux
+    system("cls") #windows
+
+    #Affichage du bandeau d'informations
+    print("-" * lePlateau["L"])
+    print(" " * 2 + "SCORE" + " " * 4 + "VIE" + " " * 4 + "NIVEAU")
     print(
-        f'    {lePlateau["score"]:5}  {lePlateau["vie"] : 5}     {lePlateau["level"] : 5}')
-    print("-" * 40)
+        f'  {lePlateau["score"]:5}  {lePlateau["vie"] : 5}     {lePlateau["level"] : 5}')
+    print("-" * lePlateau["L"])
 
     # code couleur :
     couleur_alien: str = "\033[0;32;40m"
@@ -78,35 +82,60 @@ def affichagePlateau(
     affichage: str = ""
     for y in range(lePlateau["H"]):
         for x in range(lePlateau["L"]):
+            #initialisation du caractère à afficher (par défaut un espace)
             caractere: str = " "
+
+            #Gestion du tir spécial
             if lePlateau["tirS"] != None and x == lePlateau["tirS"][0] and y == lePlateau["tirS"][1]:
+
+                #Si les coordonnées du tir spécial correspondent avec les coordonnées du caractère courant,
+                #on change le caractère par un '2' si le tir est de niveau 2 et un '3' pour le tir de niveau 3
                 caractere = str(lePlateau["tirS"][2]) 
+
+                #On vérifie si le tir spécial a atteint le bas du plateau
                 if y == lePlateau["H"] -1:
                     if x == leVaisseau["posx"]:
+                        #Si le vaisseau ce trouve au même endroit que le tir spécial on assigne le tir spécial au vaisseau
+                        #/!\ Uniquement si le tir spécial est supérieur au tir du vaisseau 
                         leVaisseau["tir"] = max(leVaisseau["tir"], lePlateau["tirS"][2])
+                    #Puisque le tir a atteint le bas du plateau on le détruit
                     lePlateau["tirS"] = None
+
+            #On vérifie si les coordonnées du caractère courant sont associées aux coordonnées d'un alien
             for a in lesAliens:
                 if a["posx"] == x and a["posy"] == y:
+                    #Si les deux paires de coordonnées sont égales on change le caractère par un '@' (coloré en vert grâce au code couleur)
                     caractere = f'{couleur_alien}@'
+
+            #On vérifie si les coordonnées du caractère courant sont associées aux coordonnées du vaisseau
             if y == lePlateau["H"] - 1 and x == leVaisseau["posx"]:
+                #Si on est bien à la dernière ligne du plateau et que les positions X correspondent
+                #Alors on change le caractère par un '#' (coloré en Rouge grâce au code couleur) 
                 caractere = f'{couleur_vaisseau}#'
+            
+            #On vérifie si un tir a été initié
             if tir_y != None :
                 if x == leVaisseau["posx"]:
+                    #Si c'est le cas on doit afficher une trainée reliant l'alien touché et le vaisseau
                     if tir_y < y < lePlateau["H"]:
+                        #On change le caractère en fonction du niveau du tir.
                         if leVaisseau["tir"] == 1:
                             caractere = ":"
                         if leVaisseau["tir"] == 2:
                             caractere = "§"
                         if leVaisseau["tir"] == 3:
                             caractere = "|"
+            #On ajoute le caractère à la ligne courante
             affichage += caractere
-        print(affichage)
-        affichage = ""
-    print(f"\033[0;37;40m")
-    if lePlateau["tirS"] != None:
-        lePlateau["tirS"] = (lePlateau["tirS"][0], lePlateau["tirS"][1]+1, lePlateau["tirS"][2])
-    print("-" * 40)
 
+        #Lorsque la ligne est finie on l'affiche et remet la variable d'affichage à ""
+        print(affichage, end="")
+        affichage = ""
+
+        #On réinitialise l'affichage des couleurs afin de ne pas avoir de débordement de couleur
+        print(f"\033[0;37;40m")
+        
+    print("-" * lePlateau["L"])
 
 def generationAliens(
         lesAliens: List[Dict[str, int]], lePlateau: Dict[str, int]):
@@ -119,9 +148,9 @@ def generationAliens(
 
     """
     assert isinstance(
-        lePlateau, dict), "la variable `lePlateau` doit être un dictionnaire"
+        lePlateau, dict), "le paramètre `lePlateau` doit être un dictionnaire"
     assert isinstance(
-        lesAliens, list), "la variable `lesAliens` doit être une liste"
+        lesAliens, list), "le paramètre `lesAliens` doit être une liste"
     assert set(lePlateau.keys()) == {
         "L", "H", "vie", "score", "level","tirS"}, "`Erreur -> lePlateau :`le dictionnaire doit avoir comme clé : `L;H;vie;level;score`"
     assert len([i for i in lesAliens if not isinstance(i, dict)]
@@ -133,8 +162,8 @@ def generationAliens(
     nbAliensAvecTirs: int = 5
     i: int
     for i in range(nbAliens):
+        
         alien: Dict[str, int] = {}
-
         if i % nbAliensParLigne == 0:
             ligneCourante += 1
 
@@ -173,14 +202,13 @@ def affichageDebugAlien(lesAliens: List[Dict[str, int]]):
 
 
 def deplacementAliens(
-        lesAliens: List[Dict[str, int]], lePlateau: Dict[str, int]) -> None:
+        lesAliens: List[Dict[str, int]], lePlateau: Dict[str, int]):
     """!
     @brief Cette fonction effectuer le déplacement des aliens d'une case
 
     Paramètre(s) :
         @param lesAliens : List[Dict[str, int]] => La liste des aliens
         @param lePlateau : Dict[str, int] => Un dictionnaire qui représente le plateau
-
     """
     sens = lesAliens[0]["sens"]
     bord: bool = False
@@ -217,6 +245,8 @@ def actionVaisseau(action: str, leVaisseau: dict,
         @return bool True si un tir est actionné, False sinon
 
     """
+    retour : bool = False
+
     if action == "k":
         if(leVaisseau["posx"] > 0):
             leVaisseau["posx"] -= 1
@@ -224,7 +254,9 @@ def actionVaisseau(action: str, leVaisseau: dict,
         if(leVaisseau["posx"] < lePlateau["L"] - 1):
             leVaisseau["posx"] += 1
     elif action == "o":
-        return True
+        retour = True
+        
+    return retour
 
 
 def finJeu(lePlateau: Dict[str,
@@ -265,7 +297,7 @@ def alienAtteint(lesAliens : List[Dict[str,int]], posx) -> int or None:
             ymax = max(alien["posy"], ymax)
     return ymax if ymax != -1 else None
 
-def tuerAliens(leVaisseau : Dict[str, int], lesAliens : List[Dict[str,int]]) -> int :
+def tuerAliens(leVaisseau : Dict[str, int], lesAliens : List[Dict[str,int]]) -> Tuple[int, int] :
     """!
     @brief Cette fonction permet de supprimer de la liste des Aliens les aliens que le tir du vaisseau touche.
 
@@ -273,7 +305,7 @@ def tuerAliens(leVaisseau : Dict[str, int], lesAliens : List[Dict[str,int]]) -> 
         @param leVaisseau : Dict[str, int] => Un dictionnaire représentant le vaisseau
         @param lesAliens : List[Dict[str,int]] => Une liste de dictionnaire représentant une liste d'aliens
     Retour de la fonction : 
-        @return int Le nombre d'aliens tués
+        @return Tuple[int, int] (Le nombre d'aliens tués, tir spécial)
 
     """
     nbMort : int = 0
@@ -292,7 +324,7 @@ def tuerAliens(leVaisseau : Dict[str, int], lesAliens : List[Dict[str,int]]) -> 
     return (nbMort, maxtir)
 
 if __name__ == "__main__":
-
+    #Initialisation du plateau, du vaisseau et des aliens
     lePlateau: Dict[str, int] = {
         "L": 25,
         "H": 20,
@@ -308,39 +340,67 @@ if __name__ == "__main__":
     lesAliens: List[Dict[str, int]] = []
     generationAliens(lesAliens, lePlateau)
 
+    #initialisation de la récupération des actions utilisateur
     action = "x"
     kb = SaisiCar()
 
+    #Boucle principale
     while lePlateau["vie"] > 0 and action != "q":
+
+        #Vérification d'une possible fin de partie 
         finj : bool = finJeu(lePlateau, lesAliens, leVaisseau)
+
         if finj:
+            #Deux cas, 
+            # 1: il n'y a plus d'aliens, il faut donc augmenter le niveau
+            # 2: il reste des aliens, alors le joueur doit perdre une vie et le vaisseau doit perdre son tir spécial
             if len(lesAliens) > 0:
                 lePlateau["vie"] -= 1
                 leVaisseau["tir"] = 1
                 lesAliens.clear()
             else:
                 lePlateau["level"] += 1
+
+            #On génère de nouveau aliens
             generationAliens(lesAliens, lePlateau)
 
-        action = kb.recupCar(["m", "k", "o", "q"])
-        deplacementAliens(lesAliens, lePlateau)
+        #On vérifie s'il existe un tir Spécial sur le plateau, si Oui on le fait tomber progressivement (1 ligne par frame)
+        if lePlateau["tirS"] != None:
+            lePlateau["tirS"] = (lePlateau["tirS"][0], lePlateau["tirS"][1]+1, lePlateau["tirS"][2]) 
         
+        #On déplace les aliens d'un cran
+        deplacementAliens(lesAliens, lePlateau)
+
+        #On récuppère une possible action faite par l'utilisateur (une touche du clavier)
+        action = kb.recupCar(["m", "k", "o", "q"])
+
+        #En fonction de l'action de l'utilisateur, on déplace le vaisseau ou bien on tire
         aTir : bool = actionVaisseau(action, leVaisseau, lePlateau)
+        
+        #Si on tire 
         if aTir :
+            #On récupère l'alien le plus bas étant sur la même colonne que le vaisseau
             alienTue : int or None = alienAtteint(lesAliens, leVaisseau["posx"])
             
             aliensMorts : int
             tirSpecial : int
+            #On tue le ou les aliens en fonction de la position du tir on récupère alors le nombre d'alien tué et le tir spécial laché de plus haut niveau (0,2,3)
             aliensMorts,tirSpecial = tuerAliens(leVaisseau, lesAliens)
             
+            #Si le tir spécial n'est pas 0
             if tirSpecial in [2,3]:
+                #On place le tir spécial sur le plateau grace à un triplet (position X, position Y, Niveau du tir)
                 lePlateau["tirS"] = (leVaisseau["posx"], alienTue, tirSpecial)
-            
+            #On actualise le score en fonction des aliens tués
             lePlateau["score"] += 5 * aliensMorts
+
+            #On affiche le plateau avec un tir
             affichagePlateau(lePlateau, lesAliens, leVaisseau, alienTue)
         else:
+            #On affiche le plateau sans tir
             affichagePlateau(lePlateau, lesAliens, leVaisseau)
-            
+
         
+        #On marque une pose dans l'affichage car sinon le jeu serait injouable
         sleep(0.05)
         
