@@ -255,7 +255,7 @@ def actionVaisseau(action: str, leVaisseau: dict,
             leVaisseau["posx"] += 1
     elif action == "o":
         retour = True
-        
+
     return retour
 
 
@@ -341,13 +341,13 @@ if __name__ == "__main__":
     generationAliens(lesAliens, lePlateau)
 
     #initialisation de la récupération des actions utilisateur
-    action = "x"
-    kb = SaisiCar()
+    action : str or None = "x"
+    kb : SaisiCar = SaisiCar()
 
     #Boucle principale
     while lePlateau["vie"] > 0 and action != "q":
 
-        #Vérification d'une possible fin de partie 
+        #Vérification d'une possible fin de partie
         finj : bool = finJeu(lePlateau, lesAliens, leVaisseau)
 
         if finj:
