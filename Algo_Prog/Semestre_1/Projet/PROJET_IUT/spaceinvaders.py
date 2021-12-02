@@ -1,7 +1,7 @@
 """! @brief Implémentation en python du jeu SpaceInvaders
  @file spaceinvaders.py
  @section libs Librairies/Modules
-  - List et Dict du module typing
+  - List , Tuple et Dict du module typing
   - sample et randint du module Random
   - system du module os
   - sleep du module time
@@ -10,6 +10,7 @@
  @section authors Author(s)
   - Créé par Matthias Hartmann le 15/11/2021 .
 """
+
 from typing import List, Dict, Tuple
 from random import randint, sample
 from os import system
