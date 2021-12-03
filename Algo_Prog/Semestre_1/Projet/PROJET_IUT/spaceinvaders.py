@@ -65,8 +65,8 @@ def affichagePlateau(
         "posx", "tir"}, "`Erreur -> leVaisseau :`le dictionnaire doit avoir comme clé : `posx;tir`"
 
     #Remise à zero de l'affichage de la console / du terminal.
-    # system("clear") #linux
-    system("cls") #windows
+    system("clear") #linux
+    # system("cls") #windows
 
     #Affichage du bandeau d'informations
     print("-" * lePlateau["L"])
@@ -79,7 +79,7 @@ def affichagePlateau(
     couleur_alien: str = "\033[0;32;40m"
     couleur_vaisseau: str = "\033[0;31;40m"
 
-    # affichage des aliens, du vaisseau
+    # affichage des aliens, du vaisseau et des tirs
     affichage: str = ""
     for y in range(lePlateau["H"]):
         for x in range(lePlateau["L"]):
@@ -118,7 +118,7 @@ def affichagePlateau(
             if tir_y != None :
                 if x == leVaisseau["posx"]:
                     #Si c'est le cas on doit afficher une trainée reliant l'alien touché et le vaisseau
-                    if tir_y < y < lePlateau["H"]:
+                    if tir_y < y < lePlateau["H"] - 1:
                         #On change le caractère en fonction du niveau du tir.
                         if leVaisseau["tir"] == 1:
                             caractere = ":"
@@ -129,12 +129,14 @@ def affichagePlateau(
             #On ajoute le caractère à la ligne courante
             affichage += caractere
 
+            #On réinitialise l'affichage des couleurs afin de ne pas avoir de débordement de couleur
+            affichage += f"\033[0;37;40m"
+
         #Lorsque la ligne est finie on l'affiche et remet la variable d'affichage à ""
-        print(affichage, end="")
+        print(affichage)
         affichage = ""
 
-        #On réinitialise l'affichage des couleurs afin de ne pas avoir de débordement de couleur
-        print(f"\033[0;37;40m")
+        
         
     print("-" * lePlateau["L"])
 
@@ -404,4 +406,3 @@ if __name__ == "__main__":
         
         #On marque une pose dans l'affichage car sinon le jeu serait injouable
         sleep(0.05)
-        
