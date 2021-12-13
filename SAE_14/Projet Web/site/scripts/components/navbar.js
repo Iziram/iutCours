@@ -7,9 +7,16 @@ function navbar(active = "index"){
         "liensutiles",
         "projetprofessionnel"
     ]
+    const titres = [
+        "CV Numérique",
+        "Mes Compétences",
+        "Mes Intérêts",
+        "Les Liens utiles",
+        "Mon Projet Professionnel"
+    ]
 
     const nav = document.createElement('nav')
-        nav.className = "navbar navbar-dark bg-dark"
+        nav.className = "navbar navbar-dark bg-dark sticky-top"
         const container = document.createElement('div')
             container.className = "container-fluid"
             const brand = document.createElement('a')
@@ -30,19 +37,24 @@ function navbar(active = "index"){
                 collapse.id="navbar"
                 const ul = document.createElement('ul')
                     ul.className = "navbar-nav me-auto mb-2"
-                    pages.forEach((page)=>{
+                    for(let i = 0; i< pages.length; i++){
+                        const page = pages[i]
+                        const titre = titres[i]
                         const li = document.createElement('li')
                             li.className = "nav-item"
                             const a = document.createElement('a')
-                                a.href = page+".html"
+                                if(page === "index") {a.href = page+".html"}
+                                else{a.href = "pages/"+page+".html"}
                                 a.className = "nav-link"
                                 if(active === page ){
                                     a.classList.add("active")
                                 }
-                                a.innerHTML = page
+                                a.innerHTML = titre
                             li.appendChild(a)
                         ul.appendChild(li)
-                    })
+                    }
+
+                    
                 collapse.appendChild(ul)
             container.appendChild(collapse)
         nav.appendChild(container)

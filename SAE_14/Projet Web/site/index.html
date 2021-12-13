@@ -6,18 +6,63 @@
             CV Numérique
         </title>
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!--Lien de Bootstrap (framework css)-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-
     </head>
     <body>
-        <script src="scripts/navbar.js"></script>
-        <script>
-            navbar("index")
-        </script>
+        <script src="scripts/components/navbar.js"></script>
+        <script>  navbar("index") </script>
         
-        <!-- <iframe src="https://iut.iziram.fr" style="border:0px #ffffff none;" name="english_blog" scrolling="no" frameborder="0" marginheight="0px" marginwidth="0px" height="720px" width="1280px" allowfullscreen></iframe> -->
+        <div id="hero" class="px-4 py-5 my-5 text-center border-top border-bottom">
+            <h1 class="display-5 fw-bold">
+                Curriculum Vitae
+            </h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="lead mb-4">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod dolore ab debitis deleniti libero reprehenderit aspernatur eligendi repellendus, optio, laborum ex, velit maxime iste fugiat? Autem officiis voluptatibus culpa sint!
+                </p>
+            </div>
+        </div>
+
+        <section class="row">
+            <div class="col-6">
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Accordion Item #1
+                        </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="accordion" id="accordionExample2">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne2">
+                        <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">
+                            Accordion Item #1
+                        </button>
+                        </h2>
+                        <div id="collapseOne2" class="accordion-collapse collapse show" aria-labelledby="headingOne2" data-bs-parent="#accordionExample2">
+                        <div class="accordion-body">
+                            <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script src="scripts/components/footer.js"></script>
 
         <!--Bundle JS à mettre afin d'afficher la page plus rapidement-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
