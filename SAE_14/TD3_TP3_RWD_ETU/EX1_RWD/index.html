@@ -1,0 +1,73 @@
+﻿<!DOCTYPE HTML>
+<html lang="fr">
+
+<head>
+    <title>Responsive WEB Design: V0</title>
+    <meta charset="utf-8" />
+    <!-- Styles -->
+	<link href="normalize.css" rel="stylesheet" type="text/css"/>
+    <link href="styleV0.css" type="text/css" rel="stylesheet"  />
+	
+    <script type="text/javascript">
+        function affiche() {
+            var larg = (document.body.clientWidth);
+            var haut = (document.body.clientHeight);
+            document.title = "Largeur " + larg + " Hauteur " + haut;
+        }
+    </script>
+</head>
+
+<body onload="affiche()" onresize="affiche()">
+    <div id="main">
+        <!-- Pour mettre les 3 colonnes à la même hauteur-->
+        <header>
+            <h1> Entête </h1>
+        </header>
+        <nav>
+            <!-- Menu -->
+            <h1>Menu</h1>
+            <ul>
+                <li><a href="#">Lien du menu 1</a>
+                </li>
+                <li><a href="#">Lien du menu 2</a>
+                </li>
+                <li><a href="#">Lien du menu 3</a>
+                </li>
+            </ul>
+        </nav>
+        <section>
+            <!-- Contenu -->
+            <article>
+                <h1>Titre sujet 1</h1>
+                <p class="description">Une petite description</p>
+                <img src="image.png" class="article-image" alt="Titre" />
+                <p>Lorem ipsum dolor sit amet, quo elit movet tincidunt ne, cum in prima vituperatoribus. Ea qui nostro percipit reprimique, eos in augue virtute. Mutat aliquam alienum ne mea, mutat dicat scripta vix et. Regione oblique eum ea, ne usu quod vero mazim. Te mea eros denique, mei te hinc suscipit omittantur, no qui diam inani nominavi.</p>
+            </article>
+            <article>
+                <h1>Titre sujet 2</h1>
+                <p class="description">Une petite description</p>
+                <img src="image.png" class="article-image" alt="title" />
+                <p>Lorem ipsum dolor sit amet, quo elit movet tincidunt ne, cum in prima vituperatoribus. Ea qui nostro percipit reprimique, eos in augue virtute. Mutat aliquam alienum ne mea, mutat dicat scripta vix et. Regione oblique eum ea, ne usu quod vero mazim. Te mea eros denique, mei te hinc suscipit omittantur, no qui diam inani nominavi.</p>
+            </article>
+        </section>
+        <aside>
+            <!-- Publicités -->
+            <div class="pub">
+                <img src="image.png" alt="Pub 1" />
+                <br />
+                <a href="#">Lien pub 1</a>
+            </div>
+            <div class="pub">
+                <img src="image.png" alt="Pub 2" />
+                <br />
+                <a href="#">Lien pub 2</a>
+            </div>
+        </aside>
+
+        <footer>
+            <h2>Pied de page (footer)</h2>
+        </footer>
+    </div>
+</body>
+
+</html>

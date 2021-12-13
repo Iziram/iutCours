@@ -1,0 +1,51 @@
+/* CSS Document */
+
+/* Mise en place du positionnement avec Float / Clear
+
+/*  L'ent�te : header*/
+
+header{
+width:96%;
+
+}
+
+
+/* La navigation nav*/
+
+nav{
+float:left;
+width:16%;
+height:800px;
+
+}
+
+
+
+
+/*Partie centrale : article*/
+article {
+float:left;
+width:56%;
+}
+
+
+
+aside{
+float:left;
+width:16%;
+height:800px;
+
+}
+
+
+
+footer{
+clear:both;
+width:96%;
+
+
+}
+
+
+
+

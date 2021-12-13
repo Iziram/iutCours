@@ -1,0 +1,42 @@
+* {
+    /* la bordure et le padding m'augmentent pas la taille */
+	box-sizing: border-box;
+}
+body{
+	margin:1%;
+}
+nav {
+	border : 1px solid red;
+}
+nav ul.principale {
+    /* Pour <ul> premier niveau */
+	margin:0;
+	padding:0;
+	list-style-type:none;
+	text-align:center;
+	overflow: hidden;
+}
+
+
+nav ul.principale > li {
+	/* Pour les <li> premier niveau 33% car 3 éléments de menu */
+	float:left;
+	width:33.3333%;
+	background-color:black;	
+	border : 1px solid yellow;
+}
+
+/*  En plus pour la décoration */
+ nav ul li a {
+    /* Pour tous les liens du premier et second niveau */
+	padding:5px;
+    display:block; /* pour prendre en compte le padding */
+    color:yellow;
+    text-decoration:none;
+}
+nav ul li a:hover {
+    /*Pour tous les liens de premier et second niveau */
+	color:#FD0;
+}	
+
+

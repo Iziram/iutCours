@@ -1,0 +1,63 @@
+@media screen and (max-width: 1024px){
+    aside{
+        clear: both;
+        width: 96%;
+        height: auto;
+    }
+
+    aside br{
+        display: none;
+    }
+
+    aside img {
+        display: inline;
+        width: 32.8%;
+        height: auto;
+    }
+
+    article{
+        width: 76%;
+    }
+}
+
+@media screen and (max-width: 768px){
+    aside{
+        display: none;
+    }
+
+    nav, article{
+        clear: both;
+        width: 96%;
+    }
+
+    nav{
+        height: auto;
+        clear: both;
+        overflow: hidden;
+    }
+
+    nav ul > li{
+        float: left;
+        width: 33.333333%;
+        text-align: center;
+    }
+
+    nav ul li ul{
+        display: none;
+    }
+
+    nav ul li:hover ul{
+       width: 32.5%;
+       display: block;
+       position: absolute;
+       background-color: grey;
+       overflow: hidden;
+    }
+
+    nav ul li ul li{
+        overflow: hidden;
+        clear: both;
+        width: 100%;
+        border: solid 1px;
+    }
+}

@@ -1,0 +1,19 @@
+@media print {
+    nav, aside, video{
+        display: none;
+    }
+
+    article {
+        width: 96%;
+    }
+
+    h1, h2{
+        color: black;
+    }
+
+
+
+    article > header:last-of-type{
+        display: none;
+    }
+}

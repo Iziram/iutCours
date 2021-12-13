@@ -1,0 +1,83 @@
+/* CSS Document */
+
+
+
+
+header{
+
+text-align:center;
+background-image: url(images/image_titre.png);
+background-repeat: no-repeat;
+background-position: left center;
+}
+
+header h1 {
+color:yellow;
+}
+
+/* La navigation nav*/
+
+nav{
+float:left;
+width:16%;
+height:800px;
+
+}
+
+nav ul{
+list-style:none;
+margin:0;
+padding:0;
+}
+
+nav a:link,a:visited{
+display:block; 
+font-weight:bold;
+color:#FFFFFF;
+background-color:#98bf21;
+text-align:center;
+padding:4px;
+text-decoration:none;
+text-transform:uppercase;
+}
+nav a:hover,a:active{
+background-color:#7A991A;
+}
+
+
+/*Partie centrale : article*/
+
+article header {
+color:orange;
+}
+
+
+
+
+/*Q22-11 */
+aside img{
+display:block;
+border:10px solid #7A991A;
+margin:0px auto;
+}
+
+
+footer{
+
+
+background-image: url(images/image_titre.png);
+background-repeat: no-repeat;
+background-position: left center;
+}
+
+footer p {
+padding-left : 5%;
+}
+
+footer a{
+display:block;
+text-align:center;
+}
+
+
+

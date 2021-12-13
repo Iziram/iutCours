@@ -1,0 +1,179 @@
+﻿/* Styles généraux */
+/*https://www.cleancss.com/css-beautify/*/
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: Sans-serif;
+    font-size: 100%;
+    background: #F1F1F1;
+}
+a {
+    color: #369;
+}
+h1 {
+    padding: 0;
+    color: #ccc;
+    text-shadow: 1px 1px 1px #aaa;
+    margin-bottom: 0;
+    margin: 1em;
+    text-align: center
+}
+h2 {
+    background: #B2D33A;
+    color: #fff;
+    margin: 0;
+    padding: 4px;
+    text-align: center
+}
+nav li,
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+nav a {
+    display: block;
+    background: #444;
+    color: #fff;
+    border-bottom: 1px;
+    text-decoration: none;
+    line-height: 150%;
+    padding-left: 1em;
+}
+nav a:hover {
+    background: #222;
+}
+article p,
+aside p {
+    padding: 2%;
+}
+footer {
+    clear: both;
+}
+nav select {
+    display: none;
+}
+/* 1: téléphone <= 480 px */
+
+@media screen and (max-width: 480px) {
+    nav,
+    article {
+        clear: both;
+        width: 100%;
+    }
+    aside {
+        display: none;
+    }
+    nav li {
+        display: none;
+    }
+    nav select {
+        display: block;
+        width: 100%;
+    }
+    /* Un message personnalisé */
+    
+    body:before {
+        content: "Version téléphone du site";
+        display: block;
+        color: #777;
+        text-align: center;
+        font-style: italic;
+    }
+}
+/* 2: 480 <petite tablette <= 768 px */
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    nav,
+    article,
+    aside {
+        float: none;
+        clear: both;
+        width: 100%;
+    }
+    nav li {
+        float: left;
+        width: 20%;
+        list-style: none;
+        margin: auto;
+        padding: 0;
+    }
+    nav select {
+        display: none;
+    }
+    /* Un message personnalisé */
+    
+    body:before {
+        content: "Version tablette du site";
+        display: block;
+        color: #777;
+        text-align: center;
+        font-style: italic;
+    }
+}
+/* 3: 768px < tablette <= 1024 p */
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    nav {
+        float: left;
+        width: 30%
+    }
+    article {
+        float: left;
+        width: 70%;
+    }
+    aside {
+        clear: both;
+    }
+}
+/* ecran <= 1280 px*/
+
+@media screen and (min-width: 1025px) and (max-width: 1280px) {
+    nav {
+        float: left;
+        width: 20%;
+    }
+    article {
+        width: 50%;
+        background: #BBB;
+        float: left;
+    }
+    aside {
+        float: left;
+        background: #BBB;
+        width: 30%;
+    }
+}
+/* ecran >1280 px*/
+
+@media screen and (min-width: 1281px) {
+    nav {
+        float: left;
+        margin: 2%;
+        width: 16%;
+    }
+    article {
+        float: left;
+        margin: 2%;
+        width: 46%;
+        background: #888;
+    }
+    aside {
+        float: left;
+        margin: 2%;
+        width: 26%;
+        background: #888;
+    }
+}
+@media print {
+    nav,
+    footer {
+        display: none;
+    }
+    body {
+        font-size: 120%;
+        color: black;
+		background-color:white;
+    }
+}

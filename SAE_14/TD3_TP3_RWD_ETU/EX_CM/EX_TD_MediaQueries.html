@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <title>Exercice Media Queries</title>
+    <meta charset="utf-8">
+    <meta name="author" content="R&amp;T">
+    <meta name="viewport" content="initial-scale=1.0">
+
+    <!-- Cette étape a pour principal avantage d’éviter le redimensionnement automatique de la mise en page, qui rend les contenus trop petits, de fixer la largeur du mobile et de pouvoir s’y adapter par la suite. Cette instruction court-circuite le viewport par défaut, souvent bien trop large, et fournit une base commune plus proche de la réalité.
+-->
+
+    <link href="normalize.css" rel="stylesheet" type="text/css" />
+    <link href="style_media.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        function affiche() {
+            var larg = (document.body.clientWidth);
+            var haut = (document.body.clientHeight);
+            document.title = "Largeur " + larg + " Hauteur " + haut;
+        }
+    </script>
+</head>
+
+<body onload="affiche()" onresize="affiche()">
+    <header>
+        <h1>Exercice Media Queries</h1>
+        <p id="titre"> </p>
+    </header>
+    <nav>
+        <h2>Navigation</h2>
+        <ul>
+            <li><a href="#">Lien 1</a>
+            </li>
+            <li><a href="#">Lien 2</a>
+            </li>
+            <li><a href="#">Lien 3</a>
+            </li>
+            <li><a href="#">Lien 4</a>
+            </li>
+            <li><a href="#">Lien 5</a>
+            </li>
+        </ul>
+        <select>
+            <option>Lien 1</option>
+            <option>Lien 2</option>
+            <option>Lien 3</option>
+            <option>Lien 4</option>
+            <option>Lien 5</option>
+        </select>
+    </nav>
+    <article>
+        <h2>Zone principale</h2>
+        <p>"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+        <p>"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+    </article>
+    <aside>
+        <h2>Zone annexe</h2>
+        <p>"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+    </aside>
+    <footer>
+        <h2>Exercice Media Queries</h2>
+    </footer>
+</body>
+
+</html>
