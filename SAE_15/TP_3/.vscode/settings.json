@@ -1,0 +1,9 @@
+{
+    "python.pythonPath": "/bin/python",
+    "autodoxygen.memoire.memoire": [
+        {
+            "name": "d",
+            "description": "les clés sont les noms de fichiers, les valeurs un ndarray de dimension 2"
+        }
+    ]
+}
