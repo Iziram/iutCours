@@ -118,10 +118,12 @@ def repartition(d: Dict[str, np.ndarray], nb: int) -> Dict[str, float]:
     l : List[int] = []
     for clef in d :
         i = 0
-        while i < len(d[clef][1]):
+        print(d[clef].shape[0])
+        while i < d[clef].shape[0]:
+            print(d[clef][i,1])
             if d[clef][i,1] == nb :
-                l.append(d[clef][0][i])
-                i = len(d[clef][1])
+                l.append(d[clef][i,0])
+                i = d[clef].shape[0]
             i += 1
     
     for i in range(len(l)):
@@ -147,7 +149,7 @@ def affichageCamembert(d : Dict[str, np.ndarray]) :
     
     #Second camembert
     labels : List[str] = list(d.keys())
-    sizes : List[float] = repartition(d, d[labels[0]][d[labels[0]].shape[1]-1,1]).values()
+    sizes : List[float] = repartition(d, d[labels[0]][d[labels[0]].shape[0]-1,1]).values()
     colors : List[str] = sample(mcolors.CSS4_COLORS.keys(), len(sizes))
     plt.subplot(1,2,2)
     plt.pie(sizes, labels=labels, colors=colors)
@@ -164,7 +166,6 @@ if __name__ == "__main__":
     #     print(f"\t-Augmentation maximale : {plusGrandeAugmentation(res[fs])}")
     #     print(f"\t-Limite atteinte 2000 : {limiteAtteinte(res[fs], 2000)}")
     
-    # print(repartition(res, 1636974960))
     affichageCamembert(res)
     
 
