@@ -147,7 +147,6 @@ def affichageCamembert(d : Dict[str, np.ndarray]) :
     
     #Second camembert
     labels : List[str] = list(d.keys())
-    print("debug",d[labels[0]].shape[1]-1)
     sizes : List[float] = repartition(d, d[labels[0]][d[labels[0]].shape[1]-1,1]).values()
     colors : List[str] = sample(mcolors.CSS4_COLORS.keys(), len(sizes))
     plt.subplot(1,2,2)
