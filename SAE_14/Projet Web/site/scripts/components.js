@@ -28,8 +28,8 @@ function navbar(active = "index"){
             container.appendChild(brand)
 
             const button = new DOMParser().parseFromString(`
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <button class="btn btn-md btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-stack"></i>
             </button>
             `,"text/xml")
             container.appendChild(button.firstChild)
@@ -93,4 +93,15 @@ function footer(){
                 </footer>
             </div>
         `, "text/html").firstChild)
+}
+
+
+function navMenu(){
+    const menu = document.getElementById("navCollapse")
+    if(menu.classList.contains("show")){
+        menu.classList.remove("show")
+    }else{
+        menu.classList.add("show")
+        pushTest()
+    }
 }
