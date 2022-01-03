@@ -86,13 +86,13 @@ function footer(){
     body.appendChild(
         new DOMParser()
         .parseFromString(`
-            <div class="container">
+            <div class="container d-flex justify-content-center align-items-center">
                 <footer class="py-3 my-4 border-top text-center">
                     <span class="border-end px-2">Hartmann Matthias</span>
                     <span class="px-2">2021</span>
                 </footer>
             </div>
-        `, "text/html").firstChild)
+        `, "text/xml").firstChild)
 }
 
 
