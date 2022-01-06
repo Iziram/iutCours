@@ -28,8 +28,8 @@ function navbar(active = "index"){
             container.appendChild(brand)
 
             const button = new DOMParser().parseFromString(`
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <button class="btn btn-md btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-stack"></i>
             </button>
             `,"text/xml")
             container.appendChild(button.firstChild)
@@ -86,11 +86,22 @@ function footer(){
     body.appendChild(
         new DOMParser()
         .parseFromString(`
-            <div class="container">
+            <div class="container d-flex justify-content-center align-items-center">
                 <footer class="py-3 my-4 border-top text-center">
                     <span class="border-end px-2">Hartmann Matthias</span>
                     <span class="px-2">2021</span>
                 </footer>
             </div>
-        `, "text/html").firstChild)
+        `, "text/xml").firstChild)
+}
+
+
+function navMenu(){
+    const menu = document.getElementById("navCollapse")
+    if(menu.classList.contains("show")){
+        menu.classList.remove("show")
+    }else{
+        menu.classList.add("show")
+        pushTest()
+    }
 }
