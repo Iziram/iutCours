@@ -74,7 +74,7 @@ function placeOnDocument(objets){
 
                 col.forEach((o)=>{
                     column = document.createElement('div')
-                    column.classList.add("col-6")
+                    column.classList.add("col-12","col-md-6")
                     column.appendChild(accordeon(o.id, o.titre, o.contenu))
                     section.appendChild(column)
                 })
@@ -88,7 +88,7 @@ infos = [
     {
         titre: "Informations",
         contenu: `<section class="row">
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
             <p><i class="bi bi-calendar px-2"></i>`+age()+`</p>
             <hr>
             <p><i class="bi bi-flag px-2"></i>Français</p>
@@ -101,7 +101,7 @@ infos = [
             
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
             <p><i class="bi bi-envelope px-2"></i><a href="mailto: hartmann.matthias@iziram.fr">hartmann.matthias@iziram.fr</a></p>
             <hr>
             <p><span class="material-icons-outlined px-2">location_on</span>Kerbrézant, 22300 Ploubezre</p>
