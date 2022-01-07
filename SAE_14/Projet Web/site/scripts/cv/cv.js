@@ -8,7 +8,7 @@ function accordeon(id, titre, contenu){
                 h2.classList.add("accordion-header")
                 h2.id = "head"+id
                 button = HTMLParser(`
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="`+"#coll"+id+`" aria-expanded="true" aria-controls="`+"coll"+id+`" style=""> 
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="`+"#coll"+id+`" aria-expanded="true" aria-controls="`+"coll"+id+`" style=""> 
                     `+titre+`
                 </button>
                 `)
@@ -16,7 +16,7 @@ function accordeon(id, titre, contenu){
             item.appendChild(h2)
 
             collapse = HTMLParser(`
-            <div id="`+"coll"+id+`" class="accordion-collapse collapse" aria-labelledby="`+"head"+id+`" data-bs-parent="#`+"acc"+id+`" style=""></div>
+            <div id="`+"coll"+id+`" class="accordion-collapse collapse show" aria-labelledby="`+"head"+id+`" data-bs-parent="#`+"acc"+id+`" style=""></div>
             `)
                 accBody = document.createElement("div")
                     accBody.classList.add("accordion-body")
@@ -63,10 +63,10 @@ function multiAccordeons(objets){
 }
 
 
-function placeOnDocument(objets){
+function placeOnDocument(objets, id="body"){
     row = multiAccordeons(objets)
 
-    body = document.getElementById("body")
+    body = document.getElementById(id)
 
         row.forEach((col)=>{
             section = document.createElement('div')
@@ -152,4 +152,4 @@ function formations(){
 
 }
 
-placeOnDocument(infos)
+placeOnDocument(infos, "jumbo")
