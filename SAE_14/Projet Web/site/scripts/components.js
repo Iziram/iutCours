@@ -106,24 +106,3 @@ function navMenu(){
     }
 }
 
-anchorsId = -1
-nextScroll()
-
-function nextScroll(event){
-    anchors = [
-        "title",
-        "informations"
-    ]
-
-    anchorsId++
-
-    if (anchorsId >= anchors.length){
-        anchorsId = 0;
-    }
-
-    document.location.href = "#"+anchors[anchorsId]
-    if(event){event.preventDefault();}
-    return false;
-}
-
-window.addEventListener('wheel', nextScroll);

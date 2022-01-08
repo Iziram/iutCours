@@ -19,15 +19,19 @@ html {
 }
 
 .boxed{
-    width: 75%;
+    width: 80%;
     height: auto;
     margin-bottom: 10vh;
     position: relative;
     top: 8vh;
-    left:8vw;
     padding: 2vh;
 
 }
+
+.pointer{
+    cursor: pointer;
+}
+
 .rounded{
     border-radius: 5px;
 }
@@ -41,8 +45,21 @@ html {
     background-color: var(--cyberGrape) !important;
 }
 
+.bg-blueMunsell{
+    background-color: var(--blueMunsell) !important;
+}
+.bg-jazzberry{
+    background-color: var(--jazzberry) !important;
+}
+.bg-bdazzledBlue{
+    background-color: var(--bdazzledBlue) !important;
+}
+
 .bg-sapphire{
     background-color: var(--sapphireBlue) !important;
+}
+.bg-amaranthMP{
+    background-color: var(--amaranthMP) !important;
 }
 
 .cl-amaranth{
