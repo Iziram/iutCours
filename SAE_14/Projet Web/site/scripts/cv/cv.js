@@ -152,4 +152,4 @@ function formations(){
 
 }
 
-placeOnDocument(infos, "jumbo")
+placeOnDocument(infos)

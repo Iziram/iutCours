@@ -1,25 +1,66 @@
+:root{
+    --amaranth : #B7094C;
+    --jazzberry : #A01A58;
+    --amaranthMP : #892B64;
+    --palatinate : #723C70;
+    --cyberGrape : #5C4D7D;
+    --bdazzledBlue : #455E89;
+    --sapphireBlue : #2E6F95;
+    --CGBlue : #1780A1;
+    --blueMunsell : #0091AD;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 .box{
-    border : 0px solid #bbadff;
+    border : 0px solid;
     border-radius: 10px;
     width: 98%;
     height: 20vh;
     margin-left: 1% !important;
     display: flex;
-    box-shadow: 12px 11px 3px -1px rgba(117,123,200,0.75);
+    box-shadow: 8px 7px 3px -1px rgba(117,123,200,0.75);
+    justify-content: space-evenly;
+    align-items: center;
 }
 
-.izi-img{
-    width: 100%;
-    height: auto;
+.responsive{
+    width: 35vw;
+    height: 25vh;
 }
 
-.bg-violet{
-    background-color: #757BC8 !important;
+.bg-grape{
+    background-color: var(--cyberGrape) !important;
 }
-.bg-gradient-violet{
-    background: rgb(117,123,200);
-    background: linear-gradient(90deg, rgba(117,123,200,1) 33%, rgba(173,167,255,1) 79%, rgba(224,195,252,1) 100%);
+
+.bg-sapphire{
+    background-color: var(--sapphireBlue) !important;
 }
-.cl-violet{
-    color: #757BC8 !important;
+
+.cl-amaranth{
+    color: var(--amaranth) !important;
+}
+.cl-CGBlue{
+    color: var(--CGBlue) !important;
+}
+
+.panel{
+    overflow: hidden;
+    width: 99.1vw;
+    height: 100vh;
+}
+
+.f-title{
+    font-size: 6em !important;
+    text-align: center;
+}
+.f-subtitle{
+    font-size: 2em !important;
+    text-align: center;
+}
+
+body{
+    overflow-x: hidden;
 }
