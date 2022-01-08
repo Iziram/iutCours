@@ -14,21 +14,27 @@ html {
     scroll-behavior: smooth;
 }
 
-.box{
-    border : 0px solid;
-    border-radius: 10px;
-    width: 98%;
-    height: 20vh;
-    margin-left: 1% !important;
-    display: flex;
-    box-shadow: 8px 7px 3px -1px rgba(117,123,200,0.75);
-    justify-content: space-evenly;
-    align-items: center;
+.floating{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25), 0 6px 20px 0 rgba(0, 0, 0, 0.25);
+}
+
+.boxed{
+    width: 75%;
+    height: auto;
+    margin-bottom: 10vh;
+    position: relative;
+    top: 8vh;
+    left:8vw;
+    padding: 2vh;
+
+}
+.rounded{
+    border-radius: 5px;
 }
 
 .responsive{
-    width: 35vw;
-    height: 25vh;
+    width: 90%;
+    height: auto;
 }
 
 .bg-grape{
@@ -48,17 +54,34 @@ html {
 
 .panel{
     overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
     width: 99.1vw;
     height: 100vh;
 }
 
 .f-title{
-    font-size: 6em !important;
+    font-size: 8.5vh !important;
     text-align: center;
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 700;
 }
 .f-subtitle{
-    font-size: 2em !important;
+    font-size: 4.5vh !important;
     text-align: center;
+    font-family: 'Inconsolata', monospace;
+    font-weight: 400;
+
+}
+
+.f-text{
+    font-size: 2.5vh !important;
+    font-family: 'Inconsolata', monospace;
+    font-weight: 400;
+}
+
+.img-rounded{
+    border-radius: 10px;
 }
 
 body{

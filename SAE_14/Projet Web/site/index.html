@@ -11,9 +11,12 @@
         <!--Google Font and Icons-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
         rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;400;900&family=Oxygen:wght@300;700&display=swap" rel="stylesheet"> 
 
         <link href="styles/CSS_HARTMANN-Matthias.css" rel="stylesheet"/>
-
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         <!--Lien de Bootstrap (framework css)-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
@@ -26,34 +29,61 @@
         navbar("index") 
         </script>
         
-        <section id="title" class="panel bg-sapphire  d-flex justify-content-around align-items-center align-self-center">
-            <div class="jumbotron">
-                <section class="row px-6">
-                    <div class="col-12 col-md-4">
-                        <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_jlkuj7a2.json"  background="transparent"  speed="1"  style="width: 90%; height: 80%;"  loop  autoplay></lottie-player>
+        <section id="title" class="panel bg-sapphire  d-flex justify-content-center align-items-center align-self-center">
+            <section class="row px-6">
+                <div class="col-12 col-lg-4 d-none d-lg-block">
+                    <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_jlkuj7a2.json"  background="transparent"  speed="1"  style="width: 90%; height: 80%;"  loop  autoplay></lottie-player>
+                </div>
+                <div class="col-12 col-lg-4 d-flex justify-content-around align-items-center align-self-center">
+                    <div>
+                        <h1 class="f-title">
+                            Matthias Hartmann
+                        </h1>
+                        <br>
+                        <h2 class="f-subtitle">
+                            Scroller pour me découvrir
+                        </h2>
                     </div>
-                    <div class="col-12 col-md-4 d-flex justify-content-around align-items-center align-self-center">
-                        <div>
-                            <h1 class="fw-bold f-title">
-                                Matthias Hartmann
-                            </h1>
-                            <br>
-                            <h2 class="fw-light f-subtitle">
-                                Scroller pour me découvrir
-                            </h2>
+                </div>
+                <div class="col-12 col-lg-4 d-none d-lg-block">
+                    <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_hafk1s55.json"  background="transparent"  speed="1"  style="width: 90%; height: 80%;"  loop  autoplay></lottie-player>
+                </div>
+            </section>
+        </section>
+        <section id="informations" class="panel bg-grape  d-flex justify-content-center align-items-center align-self-center">
+            <section class="row px-6">
+                <div class="col-12 col-lg-6" data-aos="fade-up-right">
+                    <div class="mx-4">
+                        <h1 class="f-title">
+                            Qui suis-je ?
+                        </h1>
+                        <div class="floating bg-white rounded boxed">
+                            <p class="text-wrap">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas fugit et, mollitia qui dignissimos, molestias dolorum sunt enim veritatis repellendus, velit nisi at delectus! Quas nemo assumenda eum quasi fugiat.
+                            </p>
+                        </div>
+                        <div class="floating bg-white rounded boxed">
+                            <p class="text-wrap">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas fugit et, mollitia qui dignissimos, molestias dolorum sunt enim veritatis repellendus, velit nisi at delectus! Quas nemo assumenda eum quasi fugiat.
+                            </p>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4">
-                        <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_hafk1s55.json"  background="transparent"  speed="1"  style="width: 90%; height: 80%;"  loop  autoplay></lottie-player>
+                </div>
+                <div class="col-12 col-lg-6 d-flex justify-content-center" data-aos="fade-up-left">
+                    <div class="" style="width:50%;height:100%">
+                        <img src="https://iziram.fr/images/IMG20210123080339.jpg" alt="Photo de moi" class="responsive img-rounded floating"/>
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
         </section>
 
         <script> footer() </script>
 
-        <!--Lotti script for animated features-->
+
+        <!--Scripts for animated features-->
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script>AOS.init()</script>
 
         <!--Bundle JS à mettre afin d'afficher la page plus rapidement-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
