@@ -83,6 +83,7 @@ html {
     font-family: 'Oxygen', sans-serif;
     font-weight: 700;
 }
+
 .f-subtitle{
     font-size: 4.5vh !important;
     text-align: center;
@@ -93,6 +94,19 @@ html {
 
 .f-text{
     font-size: 2.5vh !important;
+    font-family: 'Inconsolata', monospace;
+    font-weight: 400;
+}
+
+.i-title{
+    font-size: 5vh !important;
+    text-align: center;
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 700;
+}
+
+.i-text{
+    font-size: 2vh !important;
     font-family: 'Inconsolata', monospace;
     font-weight: 400;
 }
@@ -108,3 +122,72 @@ html {
 body{
     overflow-x: hidden;
 }
+
+
+img.exp, .img-exp{
+    height:150px;
+    width: 100%;
+  }
+
+  .card-block.exp{
+      width: 100%;
+      height: 140%
+  }
+  
+  div.exp [class^="col-"]{
+    padding-left:5px;
+    padding-right:5px;
+  }
+  .card.exp{
+    transition:0.5s;
+    cursor:pointer;
+  }
+  .card-title.exp{  
+    font-size:15px;
+    transition:1s;
+    cursor:pointer;
+  }
+  .card-title.exp i{  
+    font-size:15px;
+    transition:1s;
+    cursor:pointer;
+    color:#ffa710
+  }
+  .card-title.exp i:hover{
+    transform: scale(1.25) rotate(100deg); 
+    color:#18d4ca;
+    
+  }
+  .card.exp:hover{
+    transform: scale(1.05);
+    box-shadow: 10px 10px 15px rgba(0,0,0,0.3);
+  }
+  .card-text.exp{
+    height:80px;  
+    font-size: 1.1vh;
+    font-family: 'Inconsolata', monospace;
+    font-weight: 400;
+    padding: 0% 10% 0% 5%;
+  }
+  
+  .card.exp::before, .card.exp::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: scale3d(0, 0, 1);
+    transition: transform .3s ease-out 0s;
+    background: rgba(255, 255, 255, 0.1);
+    content: '';
+    pointer-events: none;
+  }
+  .card.exp::before {
+    transform-origin: left top;
+  }
+  .card.exp::after {
+    transform-origin: right bottom;
+  }
+  .card.exp:hover::before, .card.exp:hover::after, .card.exp:focus::before, .card.exp:focus::after {
+    transform: scale3d(1, 1, 1);
+  }
