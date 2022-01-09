@@ -24,55 +24,55 @@ pointers  = document.getElementsByClassName("responsive py-2 px-1 pointer")
 function assignCanva(){
     const icons = [
         {
-            title: "info",
-            informations: "bite"
+            title: "HTML 5",
+            informations: "loremipsum"
         },
         {
-            title: "",
+            title: "JavaScript",
             informations: ""
         },
         {
-            title: "",
+            title: "Typescript",
             informations: ""
         },
         {
-            title: "",
+            title: "Java",
             informations: ""
         },
         {
-            title: "",
+            title: "PHP",
             informations: ""
         },
         {
-            title: "",
+            title: "Python",
             informations: ""
         },
         {
-            title: "",
+            title: "Github",
             informations: ""
         },
         {
-            title: "",
+            title: "Trello",
             informations: ""
         },
         {
-            title: "",
+            title: "Linkedin",
             informations: ""
         },
         {
-            title: "",
+            title: "Linux",
             informations: ""
         },
         {
-            title: "",
+            title: "Windows",
             informations: ""
         },
         {
-            title: "",
+            title: "Routeurs",
             informations: ""
         },
         {
-            title: "bite",
+            title: "Switchs",
             informations: "info"
         }
     ]
@@ -94,10 +94,10 @@ function assignCanva(){
 
 assignCanva()
 
-anchorsId = -1
-nextScroll()
+anchorsId = 0
+// nextScroll()
 
-function nextScroll(){
+function nextScroll(event){
     anchors = [
         "title",
         "informations",
@@ -107,10 +107,15 @@ function nextScroll(){
         "interets"
     ]
 
-    anchorsId++
-
+    if (event.deltaY > 0 ){
+        anchorsId++
+    }else{
+        anchorsId--
+    }
     if (anchorsId >= anchors.length){
         anchorsId = 0;
+    }else if (anchorsId < 0){
+        anchorsId = anchors.length - 1
     }
 
     document.location.href = "#"+anchors[anchorsId]

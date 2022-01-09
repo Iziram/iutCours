@@ -18,7 +18,7 @@ function navbar(active = "index"){
     ]
 
     const nav = document.createElement('nav')
-        nav.className = "navbar navbar-dark bg-dark sticky-top"
+        nav.className = "navbar navbar-dark sticky-top shadow-lg p-3 mb-5 bg-dark"
         const container = document.createElement('div')
             container.className = "container-fluid"
             const brand = document.createElement('a')
