@@ -28,6 +28,10 @@ html {
 
 }
 
+.boxed.floating{
+    border-radius: 5px;
+}
+
 .pointer{
     cursor: pointer;
 }
@@ -82,6 +86,11 @@ html {
     text-align: center;
     font-family: 'Oxygen', sans-serif;
     font-weight: 700;
+}
+
+#offcanvasRightLabel.f-title{
+    font-size: 7vh !important;
+    text-decoration: underline;
 }
 
 .f-subtitle{
@@ -191,3 +200,10 @@ img.exp, .img-exp{
   .card.exp:hover::before, .card.exp:hover::after, .card.exp:focus::before, .card.exp:focus::after {
     transform: scale3d(1, 1, 1);
   }
+
+
+@media screen and (max-width: 992px) {
+    .i-space{
+        margin-top: -5.0vh;
+    }
+}

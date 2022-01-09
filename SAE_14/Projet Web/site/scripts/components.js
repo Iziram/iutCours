@@ -46,6 +46,9 @@ function navbar(active = "index"){
                             li.className = "nav-item"
                             const a = document.createElement('a')
                                 a.href = page+".html"
+                                if(page === "index"){
+                                    a.href = a.href +"#title";
+                                }
                                 a.className = "nav-link"
                                 if(active === page ){
                                     a.classList.add("active")
