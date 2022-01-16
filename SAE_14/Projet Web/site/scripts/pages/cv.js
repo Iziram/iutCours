@@ -110,7 +110,8 @@ function nextScroll(event){
         "competences",
         "formations",
         "experiences",
-        "interets"
+        "loisirs",
+        "footer"
     ]
 
     anchorsId = anchors.indexOf(document.location.href.split("#")[1])

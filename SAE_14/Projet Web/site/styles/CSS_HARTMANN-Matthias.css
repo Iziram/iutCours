@@ -21,11 +21,10 @@ html {
 .boxed{
     width: 80%;
     height: auto;
-    margin-bottom: 10vh;
     position: relative;
     top: 8vh;
-    padding: 2vh;
-
+    padding: 5%;
+    margin: 3%;
 }
 
 .boxed.floating{
@@ -81,11 +80,29 @@ html {
     height: 105vh;
 }
 
+.flex-centering{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+}
+.flex-v-centering{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    align-self: center;
+}
 .f-title{
-    font-size: 8vh !important;
+    font-size: 8vh;
     text-align: center;
     font-family: 'Oxygen', sans-serif;
     font-weight: 700;
+    
+}
+
+#experiences > div > .f-title{
+    margin-bottom: 10%;
 }
 
 #offcanvasRightLabel.f-title{
@@ -115,7 +132,7 @@ html {
 }
 
 .i-text{
-    font-size: 2vh !important;
+    font-size: clamp(0.8rem, 0.2655rem + 0.8621vw, 1.3rem) !important;
     font-family: 'Inconsolata', monospace;
     font-weight: 400;
 }
@@ -124,14 +141,28 @@ html {
     border-radius: 10px;
 }
 
+.img-holder{
+    width: 50%;
+    height: 75% !important;
+}
+
+.img-element{
+    width: 100% !important;
+    height: 100% !important;
+}
+
 .logo{
     height: 18vh !important;
 }
 
 body{
     overflow-x: hidden;
+    color:whitesmoke;
 }
 
+#hero{
+    color: whitesmoke;
+}
 
 img.exp, .img-exp{
     height:150px;
@@ -140,7 +171,7 @@ img.exp, .img-exp{
 
   .card-block.exp{
       width: 100%;
-      height: 140%
+      height: 100%;
   }
   
   div.exp [class^="col-"]{
@@ -149,17 +180,14 @@ img.exp, .img-exp{
   }
   .card.exp{
     transition:0.5s;
-    cursor:pointer;
   }
   .card-title.exp{  
     font-size:15px;
     transition:1s;
-    cursor:pointer;
   }
   .card-title.exp i{  
     font-size:15px;
     transition:1s;
-    cursor:pointer;
     color:#ffa710
   }
   .card-title.exp i:hover{
@@ -172,8 +200,6 @@ img.exp, .img-exp{
     box-shadow: 10px 10px 15px rgba(0,0,0,0.3);
   }
   .card-text.exp{
-    height:80px;  
-    font-size: 1.1vh;
     font-family: 'Inconsolata', monospace;
     font-weight: 400;
     padding: 0% 10% 0% 5%;
@@ -189,7 +215,6 @@ img.exp, .img-exp{
     transition: transform .3s ease-out 0s;
     background: rgba(255, 255, 255, 0.1);
     content: '';
-    pointer-events: none;
   }
   .card.exp::before {
     transform-origin: left top;
@@ -202,8 +227,144 @@ img.exp, .img-exp{
   }
 
 
-@media screen and (max-width: 992px) {
-    .i-space{
-        margin-top: -5.0vh;
+.f-centering{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: center;
+}
+
+.scrollable-y{
+    overflow-y: scroll;
+}
+
+.i-lottie{
+    width: clamp(15rem, -1.0345rem + 25.8621vw, 23em) !important;
+    margin-top: 2%;
+}
+
+/* #loisirs div > .f-title{
+    margin-top: 3% !important;
+} */
+
+#footer{
+    color: whitesmoke;
+}
+
+@media screen and (max-width: 991px) {
+    .f-title{
+        font-size: clamp(1.5rem, -1.7692rem + 7.6923vw, 3rem) !important;
     }
+    #experiences > div > .f-title{
+        margin-bottom: 0%
+    }
+    .f-subtitle{
+        font-size: clamp(1rem, -1.0769rem + 5.7692vw, 2.5rem) !important;
+    }
+    .i-title{
+        font-size: clamp(0.5rem, -0.8846rem + 3.8462vw, 1.5rem) !important;
+    }
+    .i-text{
+        font-size: clamp(0.5rem, -0.0538rem + 1.5385vw, 0.9rem) !important;
+    }
+    .c-text, .card-text{
+        font-size: clamp(0.7rem, -0.1308rem + 2.3077vw, 1.3rem) !important;
+    }
+
+    .exp.card-text{
+        font-size: clamp(0.5rem, -0.1308rem + 2.3077vw, 1rem) !important;
+    }
+
+    .img-holder{
+        margin-top: 17%;
+        width: 35% !important;
+    }
+
+    .logo{
+        height: clamp(4rem, -4.3077rem + 23.0769vw, 10rem) !important;
+        width: clamp(4rem, -4.3077rem + 23.0769vw, 10rem) !important;
+    }
+    .card-block.exp{
+        height: 75% !important;
+        margin-top: 16%;
+    }
+
+    .img-exp, .exp.responsive{
+        display: none;
+    }
+    .f-centering{
+        display: block;
+    }
+
+    .i-lottie{
+        display: none;
+    }
+}
+
+
+
+
+/* 
+CSS pour la page Liens Utiles
+*/
+
+.pcard{
+    border-radius: 15px;
+    height: clamp(25rem, 18.319rem + 10.7759vw, 31.25rem) !important;
+    width: clamp(12.5rem, 5.819rem + 10.7759vw, 18.75rem) !important;
+    color: var(--blueMunsell);
+    background-color: whitesmoke;
+    position: relative;
+    display: flex;
+    justify-content: center;
+
+    animation-name: hideCard;
+    animation-duration: 0.5s;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+}
+
+figure .pcard-img{
+    border-radius: 15px;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+figure:hover{
+    animation-name: showCard;
+    animation-duration: 0.5s;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+}
+
+@keyframes showCard {
+    from{
+        filter: brightness(50%);
+        transform: translate(0%,0%);
+    }
+    to{
+        filter: brightness(100%);
+        transform: translate(-0.5%, -2%);
+    }
+}
+@keyframes hideCard {
+    to{
+        filter: brightness(50%);
+        transform: translate(0%,0%);
+    }
+    from{
+        filter: brightness(100%);
+        transform: translate(-0.5%, -2%);
+    }
+}
+
+figure .pcard-title{
+    position: absolute;
+    text-align: center;
+    bottom: 10%;
+}
+figure .pcard-text{
+    position: absolute;
+    text-align: center;
+    bottom: 0.5%;
 }

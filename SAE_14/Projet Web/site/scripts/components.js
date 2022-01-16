@@ -20,7 +20,7 @@ function navbar(active = "index"){
               <li><a class="dropdown-item" href="index.html#competences">Mes Compétences</a></li>
               <li><a class="dropdown-item" href="index.html#formations">Mes diplômes et mes formations</a></li>
               <li><a class="dropdown-item" href="index.html#experiences">Mes Expériences</a></li>
-              <li><a class="dropdown-item" href="index.html#interets">Mes centres d'intérêts</a></li>
+              <li><a class="dropdown-item" href="index.html#loisirs">Mes centres d'intérêts</a></li>
             </ul>
           </li>
           <li class="nav-item">
@@ -73,7 +73,7 @@ function footer(){
     body.appendChild(
         new DOMParser()
         .parseFromString(`
-            <div class="container d-flex justify-content-center align-items-center">
+            <div id="footer" class="container bg-dark d-flex justify-content-center align-items-center">
                 <footer class="py-3 my-4 border-top text-center">
                     <span class="border-end px-2">Hartmann Matthias</span>
                     <span class="px-2">2021</span>
