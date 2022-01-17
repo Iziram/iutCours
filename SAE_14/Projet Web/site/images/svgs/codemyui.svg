@@ -29,12 +29,12 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="1.4823793"
-     inkscape:cx="121.08911"
-     inkscape:cy="93.430875"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:cx="121.08912"
+     inkscape:cy="93.768174"
+     inkscape:window-width="1872"
+     inkscape:window-height="1045"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1" />
   <defs
@@ -54,14 +54,15 @@
        ry="3.0472443e-06" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:16.9333px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="56.936897"
-       y="153.14061"
-       id="text4120"><tspan
+       style="font-style:normal;font-weight:normal;font-size:15.8948px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.248356"
+       x="57.74519"
+       y="144.39958"
+       id="text4120"
+       transform="scale(0.93866879,1.0653385)"><tspan
          sodipodi:role="line"
          id="tspan4118"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.9333px;font-family:'Reem Kufi';-inkscape-font-specification:'Reem Kufi';fill:#ffffff;fill-opacity:1;stroke-width:0.264583"
-         x="56.936897"
-         y="153.14061">Code my UI</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.8948px;font-family:'Reem Kufi';-inkscape-font-specification:'Reem Kufi';fill:#ffffff;fill-opacity:1;stroke-width:0.248356"
+         x="57.74519"
+         y="144.39958">Code my UI</tspan></text>
   </g>
 </svg>

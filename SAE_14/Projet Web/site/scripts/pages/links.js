@@ -1,5 +1,33 @@
 const liens = [
     {
+        titre: "ENT Rennes",
+        texte: "L'ensembles des outils pédagogiques",
+        img: "images/svgs/menu.svg",
+        alt: "logo ENT Rennes",
+        link:"https://ent.univ-rennes1.fr/"
+    },
+    {
+        titre: "Emploi du temps",
+        texte: "L'ensembles des outils pédagogiques",
+        img: "images/svgs/calendar.svg",
+        alt: "logo Calendrier",
+        link:"https://planning.univ-rennes1.fr/"
+    },
+    {
+        titre: "Cours en Lignes",
+        texte: "L'endroit où retrouver tous ses cours",
+        img: "images/svgs/book.svg",
+        alt: "logo Livre",
+        link:"https://foad.univ-rennes1.fr/"
+    },
+    {
+        titre: "Mail étudiant",
+        texte: "Le webmail des étutiants",
+        img: "images/svgs/mail.svg",
+        alt: "logo mail",
+        link:"https://partage.univ-rennes1.fr/mail#1"
+    },
+    {
         titre: "Github",
         texte: "Mon github",
         img: "images/svgs/github.svg",
@@ -50,11 +78,41 @@ const liens = [
     },
     {
         titre: "Code My UI",
-        texte: "Pour trouver des beaux design web",
+        texte: "Idées de web design",
         img: "images/svgs/codemyui.svg",
         alt: "logo codemyui",
         link:"https://codemyui.com"
     },
+    {
+        titre: "Twitter",
+        texte: "Mon twitter",
+        img: "images/svgs/twitter.svg",
+        alt: "logo twitter",
+        link:"https://twitter.com/iziram_"
+    },
+    {
+        titre: "Youtube",
+        texte: "Ma chaine youtube",
+        img: "images/svgs/youtube.svg",
+        alt: "logo youtube",
+        link:"https://www.youtube.com/channel/UCyCn19a5xr8SDdX-qPur1GQ"
+    },
+    {
+        titre: "Twitch",
+        texte: "Mon Twitch",
+        img: "images/svgs/twitch.svg",
+        alt: "logo twitch",
+        link:"https://www.twitch.tv/iziram"
+    },
+    {
+        titre: "Discord",
+        texte: "Mon discord",
+        img: "images/svgs/discord.svg",
+        alt: "logo discord",
+        link:"https://discord.com/users/277501626871447552"
+    },
+    
+    
 ]
 
 function createCard(infos){

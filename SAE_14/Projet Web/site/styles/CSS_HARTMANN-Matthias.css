@@ -299,6 +299,7 @@ img.exp, .img-exp{
     .i-lottie{
         display: none;
     }
+
 }
 
 
@@ -328,6 +329,7 @@ figure .pcard-img{
     border-radius: 15px;
     width: 100% !important;
     height: 100% !important;
+    padding: 5%;
 }
 
 figure:hover{
@@ -362,9 +364,12 @@ figure .pcard-title{
     position: absolute;
     text-align: center;
     bottom: 10%;
+    font-size: clamp(0.8rem, 0.4634rem + 1.9512vw, 1.4rem);
+    margin-bottom: 10%;
 }
 figure .pcard-text{
     position: absolute;
     text-align: center;
     bottom: 0.5%;
+    font-size: clamp(0.5rem, 0.2195rem + 1.626vw, 1rem);
 }
