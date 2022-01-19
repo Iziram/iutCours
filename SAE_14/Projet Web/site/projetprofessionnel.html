@@ -5,45 +5,50 @@
         <title>
             Mon Projet Professionnel
         </title>
-        <meta charset="utf-8" />
+        <!-- On spécifie l'encodage du fichier en UTF-8 -->
+        <meta charset="UTF-8" />
+
+        <!-- On utilise le Viewport pour obtenir des unitées liée à la taille de l'écran (1 vw = 1/100 de la largeur et 1 vh  = 1/100 de la hauteur) -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!--Liens vers Google Font and Icons-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+        rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;400;900&family=Oxygen:wght@300;700&display=swap" rel="stylesheet"> 
+
+        <!-- Lien vers le CSS personnel -->
         <link href="styles/CSS_HARTMANN-Matthias.css" rel="stylesheet"/>
-        <!--Lien de Bootstrap (framework css)-->
+        <!-- Lien du CSS de la bibliothèque d'animations AOS (https://michalsnik.github.io/aos/) -->
+        <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <!--Lien de Bootstrap (framework css + Icons)-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     </head>
     <body class="bg-dark">
+        <!-- On import mes scripts personnels (fonctions et utilisation détaillés dans les fichiers respectifs) -->
         <script src="scripts/components.js"></script>
         <script src="scripts/tools.js"></script>
 
+        <!-- On place la navbar sur la page html. Cette navbar est générée par la fonction "navbar"
+            et sera la même partout à l'exception du lien actif qui sera le nom de la page courante
+            On place aussi un Hero qui contient un titre (le nom complet de la page) et un paragraphe de présentation de la page
+         -->
         <script>  
             navbar("projetprofessionnel");
             presentation("Mon projet Professionnel")
         </script>
         
-        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-        <div class="container">
-            <div class="row">
-                <article class="col-6 border">
-                    <h1 class="px-4 py-3 my-5 text-center">
-                        RandomBullshit
-                    </h1>
-                    <p>
-                        Crucifix de torvisse de saint-ciarge de bout d'viarge de mosus de sainte-viarge de mautadit de tabarouette de doux Jésus de saint-ciboire de cibole de tabarslaque.
-Doux Jésus de ciboire de charrue de cul de mosus de sacrament de bout d'viarge de bout d'ciarge d'étole de crime de géritole de verrat.
-Étole de cossin de sainte-viarge de sacristi de boswell de saint-ciboire de crucifix de viande à chien de sapristi d'esprit de patente à gosse de calvaire.
-Cimonaque de Jésus de plâtre d'étole de baptême de cibole de câlisse de saint-sacrament de charogne de patente à gosse de boswell de saint-cimonaque de bout d'ciarge.
-Bâtard de batince d'étole de mosus de baptême de boswell de colon de cimonaque de saint-sacrament de torrieux de charogne de batèche.
-                    </p>
-                </article>
-                <div class="col-6">
-                    <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_w51pcehl.json" mode="bounce" background="transparent"  speed="1"  style="width: 100%; height: auto;"  loop  autoplay></lottie-player>
-                </div>
-                
-            </div>
-        </div>
-
+        <!-- On place le footer à la fin de la page grâce à la fonction footer du script components -->
         <script> footer() </script>
+
+        <!-- On import les scripts permettant d'afficher les Images animées (Lottie) grace à un composant custom : lottie-player -->
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+        <!-- On import les scripts de la bibliothèque d'animations AOS et on initialise la class AOS-->
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script>AOS.init()</script>
 
         <!--Bundle JS à mettre afin d'afficher la page plus rapidement-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>

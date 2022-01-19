@@ -1,27 +1,4 @@
-function age(){
-    var dob = new Date("01/20/2003"); // ma date de naissance mm/jj/yyyy
-    var month_diff = Date.now() - dob.getTime(); // On fait la différence entre maintenant et le jour de naissance
-    
-    var age_dt = new Date(month_diff);  // On en créer une nouvelle date
-    
-    //extract year from date    
-    var year = age_dt.getUTCFullYear(); // et récuppère l'année
-    
-    //now calculate the age of the user
-    var age_i = Math.abs(year - 1970); // on fait l'année - 1970 pour avoir l'age
-
-    return age_i
-}
-
-
-pointers  = document.getElementsByClassName("responsive py-2 px-1 pointer")
-
-
-
-
-
-
-function assignCanva(){
+function assignCanva(pointers){
     const icons = [
         {
             title: "HTML 5 / CSS",
@@ -101,8 +78,6 @@ function assignCanva(){
     }
 }
 
-assignCanva()
-
 function nextScroll(event){
     anchors = [
         "title",
@@ -115,7 +90,7 @@ function nextScroll(event){
     ]
 
     anchorsId = anchors.indexOf(document.location.href.split("#")[1])
-    if (event.deltaY > 0 ){
+    if (event.deltaY > 0){
         anchorsId++
     }else{
         anchorsId--
@@ -131,3 +106,5 @@ function nextScroll(event){
 }
 
 window.addEventListener('wheel', nextScroll);
+pointers  = document.getElementsByClassName("responsive py-2 px-1 pointer")
+assignCanva(pointers)
