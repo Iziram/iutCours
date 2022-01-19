@@ -101,6 +101,10 @@ html {
     
 }
 
+.competences{
+    margin-top: 2vh;
+}
+
 #experiences > div > .f-title{
     margin-bottom: 10%;
 }

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
-
         <title>
             CV Numérique
         </title>
@@ -39,38 +38,50 @@
          -->
         <script> navbar("index") </script>
         <main>
+            <!-- On crée un premier panel (élément prenant tout l'écran) qui nous servira de titre et d'accueil -->
             <section id="title" class="panel bg-sapphire flex-centering">
-                <section class="row px-6">
+                <!-- On utilise la grille bootstrap pour avoir le titre et 2 images animées sur la même ligne -->
+                <div class="row px-6">
+                    <!-- Les images sont générées grâce au lottie player, informations supplémentaires ici : https://lottiefiles.com/web-player -->
                     <div class="col-12 col-lg-4 d-none d-lg-block">
                         <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_jlkuj7a2.json"  background="transparent"  speed="1"  style="width: 90%; height: 80%;"  loop  autoplay></lottie-player>
                     </div>
+
+                    <!-- On place le titre et sous-titre au milieu et centré -->
                     <div class="col-12 col-lg-4 flex-centering">
                         <div class="container">
-                            <h1 class="f-title col-12">
+                            <h2 class="f-title col-12">
                                 Matthias Hartmann
-                            </h1>
-                            <br>
-                            <h2 class="f-subtitle col-12">
-                                Scroller pour me découvrir
                             </h2>
+                            <br>
+                            <h3 class="f-subtitle col-12">
+                                Scroller pour me découvrir
+                            </h3>
                         </div>
                     </div>
+
                     <div class="col-12 col-lg-4 d-none d-lg-block">
                         <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_hafk1s55.json"  background="transparent"  speed="1"  style="width: 90%; height: 80%;"  loop  autoplay></lottie-player>
                     </div>
-                </section>
+                </div>
             </section>
+            <!-- On crée un deuxième panel qui contiendra une petite présentation-->
             <section id="informations" class="panel bg-grape flex-centering">
-                <section class="row px-6">
+                <!-- Le panel est décomposée en 2 partie, la première c'est les informations (titre + contenu) et la seconde c'est une photo -->
+                <div class="row px-6">
+                    <!-- On utilise "data-aos" pour faire une animation d'entrée lorsque qu'on scroll jusqu'à l'élément. -->
                     <div class="col-12 col-sm-6 flex-centering" data-aos="fade-up-right">
+                        <!-- Première partie -->
                         <div class="mx-4">
-                            <h1 class="f-title">
+                            <!-- Titre -->
+                            <h2 class="f-title">
                                 Qui suis-je ?
-                            </h1>
+                            </h2>
+                            <!-- Les boites avec le contenu -->
                             <div class="flex-v-centering">
                                 <div class="floating bg-white rounded boxed">
                                     <p class="c-text">
-                                        Je m'appelle Matthias Hartmann et j'ai 18 ans. Je suis un développeur (principalement Back-End). Je fais actuellement un BUT Réseaux et Télécommunications à Lannion. J'aime l'informatique et plus particulièrement la programmation.
+                                        Je m'appelle Matthias Hartmann et j'ai 19 ans. Je suis un développeur (principalement Back-End). Je fais actuellement un BUT Réseaux et Télécommunications à Lannion. J'aime l'informatique et plus particulièrement la programmation.
                                     </p>
                                 </div>
                                 <div class="floating bg-white rounded boxed">
@@ -81,23 +92,27 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Seconde partie -->
                     <div class="col-12 col-sm-6 flex-centering" data-aos="fade-up-left">
                         <div class="img-holder">
                             <img id="photoMoi" src="images/png/moi.jpg" alt="Photo de moi" class="img-element img-rounded floating"/>
                         </div>
                     </div>
-                </section>
+                </div>
             </section>
+            <!-- On crée un troisième panel qui contiendra les compétences affichées dans la forme de lignes de logo -->
             <section id="competences" class="panel bg-amaranthMP  flex-centering">
                 <div>
-                    <h1 class="f-title">
+                    <h2 class="f-title">
                         Mes Compétences
-                    </h1>
+                    </h2>
+                    <!-- Première ligne : La programmation  -->
                     <div class="floating">
-                        <h1 class="f-subtitle">
+                        <h2 class="f-subtitle">
                             Programmation
-                        </h1>
-                        <section class="row">
+                        </h2>
+                        <div class="row">
+                            <!-- Chaque logo est cliquable et permettra d'ouvrir un OffCanvas qui donnera plus d'explications -->
                             <div data-aos="flip-up" class="col-4 col-sm-2">
                                 <img src="images/svgs/html.svg" alt="HTML logo" class="logo responsive py-2 px-1 pointer" data-toggle="tooltip" data-placement="bottom" title="Programmation en HTML 5">
                             </div>
@@ -117,14 +132,14 @@
                             <div data-aos="flip-up" class="col-4 col-sm-2">
                                 <img src="images/svgs/python.svg" alt="python logo" class="logo responsive py-2 px-1 pointer" data-toggle="tooltip" data-placement="bottom" title="Programmation en Python">
                             </div>
-                        </section>
+                        </div>
                     </div>
-    
-                    <div class="floating" style="margin-top: 2vh;">
-                        <h1 class="f-subtitle">
+                    <!-- Deuxième ligne : La Gestion de projet  -->
+                    <div class="floating competences">
+                        <h2 class="f-subtitle">
                             Gestion de projet
-                        </h1>
-                        <section class="row">
+                        </h2>
+                        <div class="row">
                             <div data-aos="flip-up" class="col-4 flex-centering">
                                 <img src="images/svgs/github.svg" alt="github logo" class="logo responsive py-2 px-1 pointer" data-toggle="tooltip" data-placement="bottom" title="Utilisation de Github">
                             </div>
@@ -134,14 +149,14 @@
                             <div data-aos="flip-up" class="col-4 flex-centering">
                                 <img src="images/svgs/linkedin.svg" alt="linkedin logo" class="logo responsive py-2 px-1 pointer" data-toggle="tooltip" data-placement="bottom" title="Actif sur linkedin">
                             </div>
-                        </section>
+                        </div>
                     </div>
-    
-                    <div class="floating" style="margin-top: 2vh;">
-                        <h1 class="f-subtitle">
+                    <!-- Troisème ligne : La gestion de systèmes ou d'équipement  -->
+                    <div class="floating competences">
+                        <h2 class="f-subtitle">
                             Systèmes
-                        </h1>
-                        <section class="row">
+                        </h2>
+                        <div class="row">
                             <div class="col-3 flex-centering">
                                 <img src="images/svgs/linux.svg" alt="Linux logo" class="logo responsive py-2 px-1 pointer" data-toggle="tooltip" data-placement="bottom" title="Administration Linux">
                             </div>
@@ -154,16 +169,19 @@
                             <div class="col-3 flex-centering">
                                 <img src="images/svgs/switch.svg" alt="switch logo" class="logo responsive py-2 px-1 pointer" data-toggle="tooltip" data-placement="bottom" title="Configuration des Switchs">
                             </div>
-                        </section>
+                        </div>
                     </div>
                 </div>
             </section>
+            <!-- On crée un quatrième panel qui contiendra les formations -->
             <section id="formations" class="panel bg-bdazzledBlue flex-centering">
                 <div>
-                    <h1 class="f-title">
+                    <h2 class="f-title">
                         Mes diplômes et mes Formations
-                    </h1>
+                    </h2>
+                    <!-- Place 2 cartes symbolisant les formations dans un encadré -->
                     <div class="boxed floating responsive f-centering">
+                        <!-- La première formation : le bac -->
                         <div class="card col-12 col-lg-5" aria-hidden="true" data-aos="zoom-in">
                             <div class="card-body">
                               <h5 class="card-title text-decoration-underline text-center">
@@ -191,6 +209,7 @@
                               </div>
                             </div>
                           </div>
+                          <!-- La seconde formation : le BUT -->
                         <div class="card col-12 col-lg-5" aria-hidden="true" data-aos="zoom-in">
                             <div class="card-body">
                               <h5 class="card-title text-decoration-underline text-center">
@@ -218,11 +237,13 @@
                 </div>
                     
             </section>
+            <!-- On crée un cinquième panel qui contiendra les expériences personnelles ou professionnelles -->
             <section id="experiences" class="panel bg-jazzberry flex-centering">
                 <div>
-                    <h1 class="f-title">
+                    <h2 class="f-title">
                         Mes Expériences
-                    </h1>
+                    </h2>
+                    <!-- Chaque expérience est symbolisé par une petite carte ayant le nom de l'expérience, la date, un petit paragraphe explicatif et une image (animée ou non) -->
                     <div class="container" style="margin-top: -5vh;">
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-3">
@@ -272,17 +293,19 @@
                         
                 </div>
             </section>
+            <!-- On crée un dernier panel qui contiendra les loisirs -->
             <section id="loisirs" class="panel bg-blueMunsell flex-centering">
                 <div>
-                    <h1 class="f-title mt-4">
+                    <h2 class="f-title mt-4">
                         Mes centres d'intérets
-                    </h1>
+                    </h2>
+                    <!-- On affiche ici 2 lignes contenant chacune un titre avec un paragraphe d'explication ainsi qu'une image animée représentant le loisir -->
                     <div class="row d-flex justify-content-between" style="margin-top: -8.6vh;">
                         <div class="col-12 col-lg-6 flex-centering">
                             <header class="boxed floating">
-                                <h1 class="i-title text-center">
+                                <h2 class="i-title text-center">
                                     Escrime
-                                </h1>
+                                </h2>
                                 <h4 class="i-text">
                                     Je pratique l'escrime comme sport depuis maintenant 8 ans, l'escrime comporte 3 armes, je fais principalement de l'épée même si je maitrise aussi le sabre et le fleuret. Je fais beaucoup de comptétions au niveau régionnal mais il m'est aussi arrivé d'aller à deux compétitions
                                      nationnales en 2018. Je suis aussi arbitre régionnal et Animateur (1ère formation qui permet d'enseigner l'escrime)
@@ -299,9 +322,9 @@
                         </div>
                         <div class="col-12 col-lg-6 flex-centering">
                             <header class="boxed floating">
-                                <h1 class="i-title text-center">
+                                <h2 class="i-title text-center">
                                     Programmation
-                                </h1>
+                                </h2>
                                 <h4 class="i-text">
                                     J'adore la programmation, je suis toujours à la recherche de nouveaux projets qui pourraient me faire découvrir de nouveaux outils, de nouveaux langages et de nouvelles façons d'aborder la programmation.
                                     J'ai commencé en 2015 et je n'ai pas arrêté depuis. Je programme dans beaucoup de langages mais principalement en Java, Python et Javascript. 
@@ -311,7 +334,8 @@
                     </div>
                 </div>
             </section>
-    
+            
+            <!-- On crée un OffCanvas principal qui sera modifié dynamiquement lorsque l'utilisateur cliquera sur un logo dans le panel compétence -->
             <div id="myCanvas" class="offcanvas offcanvas-end" tabindex="-1" aria-labelledby="offcanvasRightLabel">
                 <div class="offcanvas-header">
                   <h5 id="offcanvasRightLabel" class="f-title">Offcanvas right</h5>
