@@ -1,3 +1,4 @@
+//Liste des objets représentant chaque lien à afficher avec un Titre, un petit Texte, une IMaGe, un texte ALTernatif et le lien (LINK)
 const liens = [
     {
         titre: "ENT Rennes",
@@ -110,37 +111,57 @@ const liens = [
         img: "images/svgs/discord.svg",
         alt: "logo discord",
         link:"https://discord.com/users/277501626871447552"
-    },
-    
-    
+    }
 ]
-
+/**
+ * Cette fonction permet de créer un élément DOM représentant un lien utile à partir de son Object
+ * et de directement l'ajouter dans la section "links" de la page liensutiles.html
+ * @param {Object} infos Un objet représentant un lien
+ */
 function createCard(infos){
+    //On crée un élément div nomé col 
     const col = document.createElement("div")
+        //On lui donne les classes bootstrap pour le Style 
         col.className="col-12 col-sm-6 col-md-4 col-lg-3 flex-centering"
+        //On crée un élément figure
         const figure = document.createElement("figure")
+            //On lui donne les classes pointer et pcard
             figure.className="pointer pcard"
+            //On crée un élément img
             const img = document.createElement("img")
+                //On lui donne la classe pcard-img
                 img.className="pcard-img"
+                //On lui donne comme source la source dans infos.img
                 img.src = infos.img
+                //Et comme alt infos.alt
                 img.alt = infos.alt
+            //On crée un élément h2 qui sert de titre à la carte
             const title = document.createElement("h2")
+                //On lui donne la classe pcard-title
                 title.className = "pcard-title"
+                //Et on change le texte de l'élément par le texte dans infos.titre
                 title.innerText = infos.titre
+            //On crée un dernier élement : p 
             const text = document.createElement("p")
+                //De la même façon que le titre on lui donne la classe "pcard-text" et on change son texte en fonction de infos.texte
                 text.className = "pcard-text"
                 text.innerText = infos.texte
-            figure.appendChild(img)
-            figure.appendChild(title)
-            figure.appendChild(text)
+            //On finit par ajouter tous les nouveaux éléments (img, title, text) dans l'élément figure en tant qu'enfants
+            figure.appendChild(img, title, text)
+            //On crée un event listener de click pour l'élément figure
             figure.addEventListener('click', ()=>{
+                //lorsque l'élément sera cliquer cela ouvrira un nouveau onglet menant vers le lien donné dans infos.link
                 window.open(infos.link, '_blank').focus();
             })
+        //On ajoute l'élément figure dans l'élément col
         col.appendChild(figure)
+    //On récuppère le section links qui contiendra toutes les cartes de liens
     const links = document.getElementById("links")
-            links.appendChild(col)
+        //On ajoute l'élément col à la fin de la liste d'enfant de l'élément links
+        links.appendChild(col)
 }
 
+//On execute la fonction createCard pour chaque objet de la liste d'objets de liens (liens)
 liens.forEach((obj)=>{
     createCard(obj)
 })
