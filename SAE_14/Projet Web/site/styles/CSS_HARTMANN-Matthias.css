@@ -1,24 +1,64 @@
-:root{
-    --amaranth : #B7094C;
-    --jazzberry : #A01A58;
-    --amaranthMP : #892B64;
-    --palatinate : #723C70;
-    --cyberGrape : #5C4D7D;
-    --bdazzledBlue : #455E89;
-    --sapphireBlue : #2E6F95;
-    --CGBlue : #1780A1;
-    --blueMunsell : #0091AD;
-}
+/* 
+=== CSS utilisé par toutes les pages ===
+*/
 
+/* Fait en sorte que lorsque qu'on se rend à une ancre de page (#title par exemple)
+une animation de scroll soit effectuée au lieu d'une "téléportation" */
 html {
     scroll-behavior: smooth;
 }
 
-.floating{
+/* Met la couleur du texte directement écrit dans le body en blanc légèrement modifié
+et cache l'overflow en x */
+body {
+    overflow-x: hidden;
+    color: whitesmoke;
+}
+
+/* Met la couleur du texte dans les hero à un blanc légèrement modifié */
+#hero {
+    color: whitesmoke;
+}
+
+/* Crée une ombre ressemblant à un flottement */
+.floating {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25), 0 6px 20px 0 rgba(0, 0, 0, 0.25);
 }
 
-.boxed{
+/* Change le curseur lorsqu'il passe au dessus de l'élément en "pointeur" */
+.pointer {
+    cursor: pointer;
+}
+
+/* Permet de centrer horizontalement l'élément enfant */
+.flex-centering {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+}
+
+/* Met la couleur du texte dans le footer à un blanc légèrement modifié */
+#footer {
+    color: whitesmoke;
+}
+
+/* Création d'une palette de couleurs*/
+:root {
+    --jazzberry: #A01A58;
+    --amaranthMP: #892B64;
+    --cyberGrape: #5C4D7D;
+    --bdazzledBlue: #455E89;
+    --sapphireBlue: #2E6F95;
+    --blueMunsell: #0091AD;
+}
+
+/*
+=== CSS utilisé dans index.html === 
+*/
+/* Modifie le style d'un élément (div ou section de préférence) pour en faire une 'boite'
+*/
+.boxed {
     width: 80%;
     height: auto;
     position: relative;
@@ -27,52 +67,49 @@ html {
     margin: 3%;
 }
 
-.boxed.floating{
+/* Lorsqu'une boite 'flotte' aussi arrondit ses cotés */
+.boxed.floating {
     border-radius: 5px;
 }
 
-.pointer{
-    cursor: pointer;
-}
-
-.rounded{
+/* On arrondit les cotés de tous les éléments ayant cette classe */
+.rounded {
     border-radius: 5px;
 }
 
-.responsive{
+/* Cela permet de mettre en responsive l'élément possèdant cette classe */
+.responsive {
     width: 90%;
     height: auto;
 }
 
-.bg-grape{
+/* On crée quelques couleurs de background (qui seront utilisés par les panels) */
+.bg-grape {
     background-color: var(--cyberGrape) !important;
 }
 
-.bg-blueMunsell{
+.bg-blueMunsell {
     background-color: var(--blueMunsell) !important;
 }
-.bg-jazzberry{
+
+.bg-jazzberry {
     background-color: var(--jazzberry) !important;
 }
-.bg-bdazzledBlue{
+
+.bg-bdazzledBlue {
     background-color: var(--bdazzledBlue) !important;
 }
 
-.bg-sapphire{
+.bg-sapphire {
     background-color: var(--sapphireBlue) !important;
 }
-.bg-amaranthMP{
+
+.bg-amaranthMP {
     background-color: var(--amaranthMP) !important;
 }
 
-.cl-amaranth{
-    color: var(--amaranth) !important;
-}
-.cl-CGBlue{
-    color: var(--CGBlue) !important;
-}
-
-.panel{
+/* Transforme un élément (généralement une section ou un div) en panel, c-a-d un élément prenant tout l'écran (environ) */
+.panel {
     overflow: hidden;
     overflow-x: hidden;
     overflow-y: hidden;
@@ -80,41 +117,42 @@ html {
     height: 105vh;
 }
 
-.flex-centering{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: center;
-}
-.flex-v-centering{
+/* Quasiement la même chose que flex-centering mais en vertical*/
+.flex-v-centering {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     align-self: center;
 }
-.f-title{
+
+/* Style pour les titres de chaque panels */
+.f-title {
     font-size: 8vh;
     text-align: center;
     font-family: 'Oxygen', sans-serif;
     font-weight: 700;
-    
+
 }
 
-.competences{
+/* crée une marge pour les lignes de logo du panel compétences*/
+.competences {
     margin-top: 2vh;
 }
 
-#experiences > div > .f-title{
+/* Ajuste la marge externe du titre s'il se trouve dans le panel expérience */
+#experiences>div>.f-title {
     margin-bottom: 10%;
 }
 
-#offcanvasRightLabel.f-title{
+/* Réduit la taille du titre et le souligne s'il se trouve dans le offCanvas */
+#offcanvasRightLabel.f-title {
     font-size: 7vh !important;
     text-decoration: underline;
 }
 
-.f-subtitle{
+/* Style pour les sous-titres */
+.f-subtitle {
     font-size: 4.5vh !important;
     text-align: center;
     font-family: 'Inconsolata', monospace;
@@ -122,185 +160,161 @@ html {
 
 }
 
-.f-text{
+/* Style pour les textes */
+.f-text {
     font-size: 2.5vh !important;
     font-family: 'Inconsolata', monospace;
     font-weight: 400;
 }
 
-.i-title{
+/* Style pour les titres dans le panel Intérêts */
+.i-title {
     font-size: 5vh !important;
     text-align: center;
     font-family: 'Oxygen', sans-serif;
     font-weight: 700;
 }
 
-.i-text{
+/* Style pour les textes dans le panel Intérêts */
+.i-text {
     font-size: clamp(0.8rem, 0.2655rem + 0.8621vw, 1.3rem) !important;
     font-family: 'Inconsolata', monospace;
     font-weight: 400;
 }
 
-.img-rounded{
+/* Arrondit pour les images */
+.img-rounded {
     border-radius: 10px;
 }
 
-.img-holder{
+/* Style pour la taille du conteneur de l'image dans le panel informations */
+.img-holder {
     width: 50%;
     height: 75% !important;
 }
 
-.img-element{
+/* Style de l'image à l'intérieur du conteneur à image*/
+.img-holder>img {
     width: 100% !important;
     height: 100% !important;
 }
 
-.logo{
+/* Style pour les logos dans le panel compétences */
+.logo {
     height: 18vh !important;
 }
 
-body{
-    overflow-x: hidden;
-    color:whitesmoke;
-}
 
-#hero{
-    color: whitesmoke;
-}
+/* = Styles pour le panel expérience = */
 
-img.exp, .img-exp{
-    height:150px;
+/* Style pour les images à l'intérieur des cartes */
+img.exp, .img-exp {
+    height: 150px;
     width: 100%;
-  }
+}
+/* Style pour les blocs (ce qui représente la carte) */
+.card-block.exp {
+    width: 100%;
+    height: 100%;
+}
+/* Met un padding sur bloc (ce qui représente une carte)  */
+div.exp [class^="col-"] {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+/* Une petite transition pour rendre plus attrayant le coté responsive */
+.card.exp {
+    transition: 0.5s;
+}
+/* Pareil qu'au dessus mais on change la taille de la police */
+.card-title.exp {
+    font-size: 1rem;
+    transition: 1s;
+}
 
-  .card-block.exp{
-      width: 100%;
-      height: 100%;
-  }
-  
-  div.exp [class^="col-"]{
-    padding-left:5px;
-    padding-right:5px;
-  }
-  .card.exp{
-    transition:0.5s;
-  }
-  .card-title.exp{  
-    font-size:15px;
-    transition:1s;
-  }
-  .card-title.exp i{  
-    font-size:15px;
-    transition:1s;
-    color:#ffa710
-  }
-  .card-title.exp i:hover{
-    transform: scale(1.25) rotate(100deg); 
-    color:#18d4ca;
-    
-  }
-  .card.exp:hover{
+/* Lorsqu'on place sa souris sur une carte elle s'agrandit et on ajoute une ombre pour faire comme si elle se soulevait */
+.card.exp:hover {
     transform: scale(1.05);
-    box-shadow: 10px 10px 15px rgba(0,0,0,0.3);
-  }
-  .card-text.exp{
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+}
+/* On change la police d'écriture et on ajoute un peut de marge interne pour que le texte rende mieux */
+.card-text.exp {
     font-family: 'Inconsolata', monospace;
     font-weight: 400;
     padding: 0% 10% 0% 5%;
-  }
-  
-  .card.exp::before, .card.exp::after {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    transform: scale3d(0, 0, 1);
-    transition: transform .3s ease-out 0s;
-    background: rgba(255, 255, 255, 0.1);
-    content: '';
-  }
-  .card.exp::before {
-    transform-origin: left top;
-  }
-  .card.exp::after {
-    transform-origin: right bottom;
-  }
-  .card.exp:hover::before, .card.exp:hover::after, .card.exp:focus::before, .card.exp:focus::after {
-    transform: scale3d(1, 1, 1);
-  }
+}
 
-
-.f-centering{
+/* = Fin du style pour le panel expérience */
+/* Meme fonctionnement que flex-centering mais cette fois au lieu de centrer les enfants au milieu
+on les places de façons à ce que l'espace entre les enfants soit le même entre chaque enfant */
+.f-centering {
     display: flex;
     justify-content: space-between;
     align-items: center;
     align-self: center;
 }
-
-.scrollable-y{
-    overflow-y: scroll;
-}
-
-.i-lottie{
+/* Style pour les images animées */
+.i-lottie {
     width: clamp(15rem, -1.0345rem + 25.8621vw, 23em) !important;
     margin-top: 2%;
 }
 
-/* #loisirs div > .f-title{
-    margin-top: 3% !important;
-} */
 
-#footer{
-    color: whitesmoke;
-}
-
+/* Modifications du style en fonction de la taille de l'écran (en dessous de 992 px de large | lg bootstrap) */
 @media screen and (max-width: 991px) {
-    .f-title{
+    /* On affiche la taille de la police des titres en fonction de la taille de l'écran grâce à la fonction clamp */
+    .f-title {
         font-size: clamp(1.5rem, -1.7692rem + 7.6923vw, 3rem) !important;
     }
-    #experiences > div > .f-title{
+    /* On retire la marge externe (en bas) du titre du panel expérience */
+    #experiences>div>.f-title {
         margin-bottom: 0%
     }
-    .f-subtitle{
+    /* On affiche la taille de la police des sous-titres en fonction de la taille de l'écran grâce à la fonction clamp */
+    .f-subtitle {
         font-size: clamp(1rem, -1.0769rem + 5.7692vw, 2.5rem) !important;
     }
-    .i-title{
+    /* On affiche la taille de la police des titres du panel intérêts en fonction de la taille de l'écran grâce à la fonction clamp */
+    .i-title {
         font-size: clamp(0.5rem, -0.8846rem + 3.8462vw, 1.5rem) !important;
     }
-    .i-text{
+    /* On affiche la taille de la police des textes du panel intérêts en fonction de la taille de l'écran grâce à la fonction clamp */
+    .i-text {
         font-size: clamp(0.5rem, -0.0538rem + 1.5385vw, 0.9rem) !important;
     }
-    .c-text, .card-text{
+    /* On affiche la taille de la police des textes des cartes en fonction de la taille de l'écran grâce à la fonction clamp */
+    .c-text, .card-text {
         font-size: clamp(0.7rem, -0.1308rem + 2.3077vw, 1.3rem) !important;
     }
-
-    .exp.card-text{
+    /* On affiche la taille de la police des textes des cartes du panel expérience en fonction de la taille de l'écran grâce à la fonction clamp */
+    .exp.card-text {
         font-size: clamp(0.5rem, -0.1308rem + 2.3077vw, 1rem) !important;
     }
-
-    .img-holder{
-        margin-top: 17%;
-        width: 35% !important;
-    }
-
-    .logo{
-        height: clamp(4rem, -4.3077rem + 23.0769vw, 10rem) !important;
-        width: clamp(4rem, -4.3077rem + 23.0769vw, 10rem) !important;
-    }
-    .card-block.exp{
+    /* On réduit la hauteur des cartes du panel expériences et on leur donne une marge externe (vers le haut) */
+    .card-block.exp {
         height: 75% !important;
         margin-top: 16%;
     }
-
-    .img-exp, .exp.responsive{
+    /* On réduit la taille du conteneur de l'image dans le panel information */
+    .img-holder {
+        margin-top: 17%;
+        width: 35% !important;
+    }
+    /* On réduit la taille des logo proportionellement à la taille de l'écran */
+    .logo {
+        height: clamp(4rem, -4.3077rem + 23.0769vw, 10rem) !important;
+        width: clamp(4rem, -4.3077rem + 23.0769vw, 10rem) !important;
+    }
+    /* On retire de l'affichage les images des cartes du panel expériences */
+    .img-exp, .exp.responsive {
         display: none;
     }
-    .f-centering{
+    /* On change la façon d'afficher les éléments, passant d'un flex à un block classique */
+    .f-centering {
         display: block;
     }
-
-    .i-lottie{
+    /* On retire les images animées du panel intérêts */
+    .i-lottie {
         display: none;
     }
 
@@ -310,10 +324,10 @@ img.exp, .img-exp{
 
 
 /* 
-CSS pour la page Liens Utiles
+=== CSS pour la page Liens Utiles===
 */
-
-.pcard{
+/* On met on forme la carte en lui donnant aussi une animation (hideCard) qui sera lancée lorsque la sortie ne sera plus au dessus de la carte */
+.pcard {
     border-radius: 15px;
     height: clamp(25rem, 18.319rem + 10.7759vw, 31.25rem) !important;
     width: clamp(12.5rem, 5.819rem + 10.7759vw, 18.75rem) !important;
@@ -329,49 +343,63 @@ CSS pour la page Liens Utiles
     animation-fill-mode: forwards;
 }
 
-figure .pcard-img{
+/*  On configure l'affichage des images des cartes */
+figure .pcard-img {
     border-radius: 15px;
     width: 100% !important;
     height: 100% !important;
     padding: 5%;
 }
 
-figure:hover{
+/* Lorsque la souris est sur une carte, on utilise l'animation showCard et on laisse l'état final à l'état de fin d'animation */
+figure:hover {
     animation-name: showCard;
     animation-duration: 0.5s;
     animation-timing-function: ease;
     animation-fill-mode: forwards;
 }
 
+/* Définition des animations des cartes 
+    showCard :  On remet la luminosité de la carte à 100% et
+                On la fait monté en diagonal légèrement pour simuler un soulevement
+    hideCard :  On fait l'inverse (luminosité à 50% et déplacement diagonal en 0 0 
+*/
 @keyframes showCard {
-    from{
+    from {
         filter: brightness(50%);
-        transform: translate(0%,0%);
+        transform: translate(0%, 0%);
     }
-    to{
-        filter: brightness(100%);
-        transform: translate(-0.5%, -2%);
-    }
-}
-@keyframes hideCard {
-    to{
-        filter: brightness(50%);
-        transform: translate(0%,0%);
-    }
-    from{
+
+    to {
         filter: brightness(100%);
         transform: translate(-0.5%, -2%);
     }
 }
 
-figure .pcard-title{
+@keyframes hideCard {
+    to {
+        filter: brightness(50%);
+        transform: translate(0%, 0%);
+    }
+
+    from {
+        filter: brightness(100%);
+        transform: translate(-0.5%, -2%);
+    }
+}
+
+/* Place le titre de la carte en bas au centre mais assez haut
+ pour laisser la place au sous-titre */
+figure .pcard-title {
     position: absolute;
     text-align: center;
     bottom: 10%;
     font-size: clamp(0.8rem, 0.4634rem + 1.9512vw, 1.4rem);
     margin-bottom: 10%;
 }
-figure .pcard-text{
+
+/* Place le sous-titre  en bas au centre de la carte */
+figure .pcard-text {
     position: absolute;
     text-align: center;
     bottom: 0.5%;
