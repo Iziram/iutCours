@@ -147,7 +147,9 @@ function createCard(infos){
                 text.className = "pcard-text"
                 text.innerText = infos.texte
             //On finit par ajouter tous les nouveaux éléments (img, title, text) dans l'élément figure en tant qu'enfants
-            figure.appendChild(img, title, text)
+            figure.appendChild(img)
+            figure.appendChild(title)
+            figure.appendChild(text)
             //On crée un event listener de click pour l'élément figure
             figure.addEventListener('click', ()=>{
                 //lorsque l'élément sera cliquer cela ouvrira un nouveau onglet menant vers le lien donné dans infos.link
