@@ -5,13 +5,15 @@ const liens = [
         texte: "L'ensembles des outils pédagogiques",
         img: "images/svgs/menu.svg",
         alt: "logo ENT Rennes",
+        trad: "ent-",
         link:"https://ent.univ-rennes1.fr/"
     },
     {
         titre: "Emploi du temps",
-        texte: "L'ensembles des outils pédagogiques",
+        texte: "Meilleur moyen d'être à l'heure",
         img: "images/svgs/calendar.svg",
         alt: "logo Calendrier",
+        trad: "schedule-",
         link:"https://planning.univ-rennes1.fr/"
     },
     {
@@ -19,13 +21,15 @@ const liens = [
         texte: "L'endroit où retrouver tous ses cours",
         img: "images/svgs/book.svg",
         alt: "logo Livre",
+        trad: "class-",
         link:"https://foad.univ-rennes1.fr/"
     },
     {
         titre: "Mail étudiant",
-        texte: "Le webmail des étutiants",
+        texte: "Le webmail des étudiants",
         img: "images/svgs/mail.svg",
         alt: "logo mail",
+        trad: "mail-",
         link:"https://partage.univ-rennes1.fr/mail#1"
     },
     {
@@ -33,6 +37,7 @@ const liens = [
         texte: "Mon github",
         img: "images/svgs/github.svg",
         alt: "logo github",
+        trad: "git-",
         link:"https://github.com/Iziram"
     },
     {
@@ -40,6 +45,7 @@ const liens = [
         texte: "Mon Linkedin",
         img: "images/svgs/linkedin.svg",
         alt: "logo linkedin",
+        trad: "linke-",
         link:"https://www.linkedin.com/in/matthias-hartmann-iziram/"
     },
     {
@@ -47,6 +53,7 @@ const liens = [
         texte: "Mon bureau Trello",
         img: "images/svgs/trello.svg",
         alt: "logo trello",
+        trad: "trello-",
         link:"https://trello.com/espacedetravaildehartmannmatthias/"
     },
     {
@@ -54,6 +61,7 @@ const liens = [
         texte: "Le meilleur site",
         img: "images/svgs/stackoverflow.svg",
         alt: "logo stackoverflow",
+        trad: "stack-",
         link:"https://stackoverflow.com/"
     },
     {
@@ -61,6 +69,7 @@ const liens = [
         texte: "La docu Du web",
         img: "images/svgs/mozilla.svg",
         alt: "logo mozilla",
+        trad: "mdn-",
         link:"https://developer.mozilla.org"
     },
     {
@@ -68,6 +77,7 @@ const liens = [
         texte: "Pour valider son CSS",
         img: "images/svgs/w3c.svg",
         alt: "logo w3",
+        trad: "css-",
         link:"https://jigsaw.w3.org/css-validator"
     },
     {
@@ -75,6 +85,7 @@ const liens = [
         texte: "Pour valider son HTML",
         img: "images/svgs/w3c.svg",
         alt: "logo w3",
+        trad: "html-",
         link:"https://validator.w3.org/"
     },
     {
@@ -82,6 +93,7 @@ const liens = [
         texte: "Idées de web design",
         img: "images/svgs/codemyui.svg",
         alt: "logo codemyui",
+        trad: "cmui-",
         link:"https://codemyui.com"
     },
     {
@@ -89,6 +101,7 @@ const liens = [
         texte: "Mon twitter",
         img: "images/svgs/twitter.svg",
         alt: "logo twitter",
+        trad: "twit-",
         link:"https://twitter.com/iziram_"
     },
     {
@@ -96,6 +109,7 @@ const liens = [
         texte: "Ma chaine youtube",
         img: "images/svgs/youtube.svg",
         alt: "logo youtube",
+        trad: "yt-",
         link:"https://www.youtube.com/channel/UCyCn19a5xr8SDdX-qPur1GQ"
     },
     {
@@ -103,6 +117,7 @@ const liens = [
         texte: "Mon Twitch",
         img: "images/svgs/twitch.svg",
         alt: "logo twitch",
+        trad: "tw-",
         link:"https://www.twitch.tv/iziram"
     },
     {
@@ -110,6 +125,7 @@ const liens = [
         texte: "Mon discord",
         img: "images/svgs/discord.svg",
         alt: "logo discord",
+        trad: "disc-",
         link:"https://discord.com/users/277501626871447552"
     }
 ]
@@ -141,11 +157,14 @@ function createCard(infos){
                 title.className = "pcard-title"
                 //Et on change le texte de l'élément par le texte dans infos.titre
                 title.innerText = infos.titre
+                title.setAttribute('trad',infos.trad+"title")
             //On crée un dernier élement : p 
             const text = document.createElement("p")
                 //De la même façon que le titre on lui donne la classe "pcard-text" et on change son texte en fonction de infos.texte
                 text.className = "pcard-text"
                 text.innerText = infos.texte
+                text.setAttribute('trad',infos.trad+"text")
+
             //On finit par ajouter tous les nouveaux éléments (img, title, text) dans l'élément figure en tant qu'enfants
             figure.appendChild(img)
             figure.appendChild(title)

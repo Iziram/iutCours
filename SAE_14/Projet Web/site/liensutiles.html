@@ -70,6 +70,12 @@
         <!-- On import le script dédié à la page CV du site. Son utilisation est détaillé dans son code -->
         <script src="scripts/pages/links.js"></script>
         
+        <!-- On récuppère les traductions pour la page depuis le script approprié puis on update le traducteur (voir tools.js pour plus d'informations) -->
+        <script src="./scripts/traductions/links.js"></script>
+        <script>
+            traductor.updateTrad(tradData)
+        </script>
+
         <!-- On place le footer à la fin de la page grâce à la fonction footer du script components -->
         <script> footer() </script>
 
