@@ -7,7 +7,7 @@
         </title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="styles/CSS_HARTMANN-Matthias.css" rel="stylesheet"/>
+        <link href="styles/CSS_HARTMANN.css" rel="stylesheet"/>
         <!--Lien de Bootstrap (framework css)-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
@@ -21,7 +21,6 @@
             et sera la même partout à l'exception du lien actif qui sera le nom de la page courante
             On place aussi un Hero qui contient un titre (le nom complet de la page) et un paragraphe de présentation de la page
          -->
-
         <script>  
             navbar("interets");
             presentation("Mes Centres d'intérêt")
@@ -33,6 +32,23 @@
                 La vidéo ne peut pas être chargée par votre navigateur.
             </video> 
         </div>
+        <script>
+            const obj = {
+                "fr": {
+                    "test":"blablabla"
+                },
+                "en":{
+                    "test":"BlawBlawBlaw"
+                }
+            }
+            const trad = new Traductor(obj)
+            trad.changeLanguage("en")
+        </script>
+        <p id="test" style="color:antiquewhite;">
+            <script>trad.traduct("test")</script>
+        </p>
+
+        
 
         <!-- On place le footer à la fin de la page grâce à la fonction footer du script components -->
         <script> footer() </script>

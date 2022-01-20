@@ -18,3 +18,19 @@ function HTMLParser(html, mode = "text/html"){
         return new DOMParser().parseFromString(html, mode).firstChild
     }
 }
+
+
+class Traductor{
+    constructor(traductionObject){
+        this.version = 'fr';
+        this.trad = traductionObject;
+    }
+
+    traduct(key){
+        this.trad[this.version][key]
+    }
+
+    changeLanguage(lang){
+        this.version = lang
+    }
+}
