@@ -23,31 +23,18 @@
          -->
         <script>  
             navbar("interets");
-            presentation("Mes Centres d'intérêt")
+            presentation("Mes Centres d'intérêt","Sur cette page vous retrouverez les informations relatives à mes centres d'intérêts et mes loisirs.")
         </script>
         
-        <div class="d-flex justify-content-center">
-            <video width="80%" height="auto" controls>
-                <source src="https://iziram.fr/video1.mp4" type="video/mp4">
-                La vidéo ne peut pas être chargée par votre navigateur.
-            </video> 
-        </div>
-        <script>
-            const obj = {
-                "fr": {
-                    "test":"blablabla"
-                },
-                "en":{
-                    "test":"BlawBlawBlaw"
-                }
-            }
-            const trad = new Traductor(obj)
-            trad.changeLanguage("en")
-        </script>
-        <p id="test" style="color:antiquewhite;">
-            <script>trad.traduct("test")</script>
-        </p>
-
+        <main>
+            <div class="d-flex justify-content-center">
+                <video width="80%" height="auto" controls>
+                    <source src="https://iziram.fr/video1.mp4" type="video/mp4">
+                    La vidéo ne peut pas être chargée par votre navigateur.
+                </video> 
+            </div>
+        </main>
+        
         
 
         <!-- On place le footer à la fin de la page grâce à la fonction footer du script components -->
