@@ -45,9 +45,9 @@ def p4():
     d: dict = dict()
     try:
         d[(3,4)] = 'v1'
-        d[{5,6}] = 'v2'
+        d[[2,4]] = 'v2'
     except TypeError:
         print("La clé doit être immuable")
         
         
-p3()
+p4()
