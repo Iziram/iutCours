@@ -35,8 +35,13 @@
             </div>
         </main>
         
-        
 
+        <!-- On récuppère les traductions pour la page depuis le script approprié puis on update le traducteur (voir tools.js pour plus d'informations) -->
+        <script src="./scripts/traductions/interets.js"></script>
+        <script>
+            traductor.updateTrad(tradData)
+        </script>
+        
         <!-- On place le footer à la fin de la page grâce à la fonction footer du script components -->
         <script> footer() </script>
 

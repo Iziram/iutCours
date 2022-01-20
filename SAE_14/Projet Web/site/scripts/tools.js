@@ -18,19 +18,74 @@ function HTMLParser(html, mode = "text/html"){
         return new DOMParser().parseFromString(html, mode).firstChild
     }
 }
-
-
-class Traductor{
-    constructor(traductionObject){
+/**
+ * 
+ */
+class Traductor {
+    constructor() {
         this.version = 'fr';
-        this.trad = traductionObject;
+        this.constentTrad = {
+            "fr":{
+                //Navbar
+                "nav-index":"CV Numérique",
+                    "nav-i-title": "Titre",
+                    "nav-i-infos":"Qui suis-je ?",
+                    "nav-i-compt":"Mes Compétences",
+                    "nav-i-forma":"Mes diplômes et mes formations",
+                    "nav-i-exp":"Mes Expériences",
+                    "nav-i-inter":"Mes centres d'intérêts",
+                "nav-compt":"Mes Compétences",
+                "nav-inter":"Mes Intérêts",
+                "nav-links":"Les Liens Utiles",
+                "nav-prof":"Mon Projet Professionnel",
+                "nav-button": "Traduire en Anglais"
+            },
+            "en":{
+                //Navbar
+                "nav-index":"Digital Resume",
+                    "nav-i-title": "Title",
+                    "nav-i-infos":"Who am I?",
+                    "nav-i-compt":"My Skills",
+                    "nav-i-forma":"My diplomas",
+                    "nav-i-exp":"My Experiences",
+                    "nav-i-inter":"My interests",
+                "nav-compt":"My Skills",
+                "nav-inter":"My interests",
+                "nav-links":"Useful links",
+                "nav-prof":"My Career Plan",
+                "nav-button": "Translate to French"
+            }
+        }
     }
 
-    traduct(key){
-        this.trad[this.version][key]
+    changeLanguage() {
+        if(this.version === "fr"){
+            this.version = 'en'
+        }else{
+            this.version = 'fr'
+        }
+        this.translate();
     }
 
-    changeLanguage(lang){
-        this.version = lang
+    updateTrad(tradObject){
+        this.trad =tradObject
+    }
+
+    translate() {
+        const toTranslate = document.body.getElementsByTagName("*");
+        for (let i = 0; i < toTranslate.length; i++) {
+            const tr = toTranslate[i];
+            if (tr.hasAttribute('trad')) {
+                const key = tr.getAttribute('trad')
+                if (this.constentTrad[this.version] && this.constentTrad[this.version][key]) {
+                    tr.innerHTML = this.constentTrad[this.version][key]
+                }else if (this.trad && this.trad[this.version] && this.trad[this.version][key]) {
+                    tr.innerHTML = this.trad[this.version][key]
+                }
+            }
+        }
     }
 }
+
+
+const traductor = new Traductor()

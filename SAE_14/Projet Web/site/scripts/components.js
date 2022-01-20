@@ -17,33 +17,34 @@ function navbar(active = "index"){
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           
           <li class="nav-item dropdown">
-            <a id="index" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a id="index" trad="nav-index" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               CV Numérique
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="index.html#title">Titre</a></li>
-              <li><a class="dropdown-item" href="index.html#informations">Qui suis-je ?</a></li>
-              <li><a class="dropdown-item" href="index.html#competences">Mes Compétences</a></li>
-              <li><a class="dropdown-item" href="index.html#formations">Mes diplômes et mes formations</a></li>
-              <li><a class="dropdown-item" href="index.html#experiences">Mes Expériences</a></li>
-              <li><a class="dropdown-item" href="index.html#loisirs">Mes centres d'intérêts</a></li>
+              <li><a trad="nav-i-title" class="dropdown-item" href="index.html#title">Titre</a></li>
+              <li><a trad="nav-i-infos" class="dropdown-item" href="index.html#informations">Qui suis-je ?</a></li>
+              <li><a trad="nav-i-compt" class="dropdown-item" href="index.html#competences">Mes Compétences</a></li>
+              <li><a trad="nav-i-forma" class="dropdown-item" href="index.html#formations">Mes diplômes et mes formations</a></li>
+              <li><a trad="nav-i-exp" class="dropdown-item" href="index.html#experiences">Mes Expériences</a></li>
+              <li><a trad="nav-i-inter" class="dropdown-item" href="index.html#loisirs">Mes centres d'intérêts</a></li>
             </ul>
           </li>
           <li class="nav-item">
-            <a id="compt" class="nav-link" href="competences.html">Mes Compétences</a>
+            <a trad="nav-compt" id="compt" class="nav-link" href="competences.html">Mes Compétences</a>
           </li>
           <li class="nav-item">
-            <a id="interets" class="nav-link" href="interets.html">Mes Intérêts</a>
+            <a trad="nav-inter" id="interets" class="nav-link" href="interets.html">Mes Intérêts</a>
           </li>
           <li class="nav-item">
-            <a id="liensutiles" class="nav-link" href="liensutiles.html">Les Liens Utiles</a>
+            <a trad="nav-links" id="liensutiles" class="nav-link" href="liensutiles.html">Les Liens Utiles</a>
           </li>
           <li class="nav-item">
-            <a id="projetprofessionnel" class="nav-link" href="projetprofessionnel.html">Mon Projet Professionnel</a>
+            <a trad="nav-prof" id="projetprofessionnel" class="nav-link" href="projetprofessionnel.html">Mon Projet Professionnel</a>
           </li>
           <li class="nav-item">
-            <a id="english" class="nav-link" href="english.html">My English Presentation</a>
+            <button id="navbutton" type="button" class="btn btn-outline-light" trad="nav-button">Traduire en Anglais</button>
           </li>
+          
         </ul>
         
       </div>
@@ -53,6 +54,9 @@ function navbar(active = "index"){
   body.appendChild(nav)
   //On ajoute la classe "active" au lien actif pour qu'il soit visible dans la navbar par rapport aux autres liens
   document.getElementById(active).classList.add("active")
+  document.getElementById("navbutton").addEventListener('click',()=>{
+    traductor.changeLanguage();
+  })
 }
 
 /**
@@ -75,6 +79,8 @@ function presentation(titre, soustitre = "Lorem ipsum dolor sit amet consectetur
         h1.className="display-5 fw-bold"
         //On lui donne comme contenu le paramètre titre
         h1.textContent = titre
+        //On lui donne l'attribut "trad" et la valeur heroTitle pour pouvoir gérer la traduction automatique
+        h1.setAttribute('trad',"heroTitle")
       //On l'ajoute comme enfant de l'élément hero
       hero.appendChild(h1)
       //On fait quasiment la même chose pour le sous-titre
@@ -82,6 +88,7 @@ function presentation(titre, soustitre = "Lorem ipsum dolor sit amet consectetur
           sub.className = "col-lg-6 mx-auto"
           const p = document.createElement('p')
               p.className = "lead mb-4"
+              p.setAttribute('trad',"heroText")
               p.textContent = soustitre
           sub.appendChild(p)
       hero.appendChild(sub)
