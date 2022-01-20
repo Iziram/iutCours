@@ -1,3 +1,11 @@
+"""! @brief TD 1 du module Prog 2
+ @file td1.py
+ @section libs Librairies/Modules
+  - [typing
+
+ @section authors Auteur(s)
+  - Créé par Hartmann Matthias le 20/01/2022 .
+"""
 from typing import Dict, Tuple
 
 def p1():
