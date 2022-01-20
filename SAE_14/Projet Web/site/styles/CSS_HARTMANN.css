@@ -405,3 +405,38 @@ figure .pcard-text {
     bottom: 0.5%;
     font-size: clamp(0.5rem, 0.2195rem + 1.626vw, 1rem);
 }
+
+
+/* 
+=== CSS pour la page Projet Professionnel===
+*/
+
+/* Affichage du texte en blanc */
+#ppf *{
+    color: whitesmoke;
+
+}
+
+
+#ppf .i-text {
+    -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+
+}
+#ppf .i-title{
+    height: 18% !important;
+    font-size: clamp(0.6rem, 0.4634rem + 1.9512vw, 1.3rem) !important;
+}
+
+#ppf {
+    margin-bottom: 10%;
+}
+
+@media screen and (max-width: 768px) {
+    #ppf .boxed{
+        margin: 5% 0% !important;
+        padding: 0% 5% !important;
+    }
+}
