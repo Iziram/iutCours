@@ -35,11 +35,10 @@ def p3():
         entierUn : int = int(input("Entrez le premier entier: "))
         entierDeux : int = int(input("Entrez le second entier: "))
         div : int = 0
-        try:
-            div = entierUn / entierDeux
-            print(f"le résultat de {entierUn}/{entierDeux} est : {div}")
-        except ZeroDivisionError:
-            print(f"L'entier deux ({entierDeux}) ne peut pas être égal à 0 !")
+        div = entierUn / entierDeux
+        print(f"le résultat de {entierUn}/{entierDeux} est : {div}")
+    except ZeroDivisionError:
+        print(f"L'entier deux ({entierDeux}) ne peut pas être égal à 0 !")
     except ValueError:
         print("La saisie ne permet pas d'obtenir un entier")
 
@@ -50,3 +49,6 @@ def p4():
         d[{5,6}] = 'v2'
     except TypeError:
         print("La clé doit être immuable")
+        
+        
+p3()
