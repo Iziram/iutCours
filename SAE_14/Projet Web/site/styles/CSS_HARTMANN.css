@@ -412,9 +412,8 @@ figure .pcard-text {
 */
 
 /* Affichage du texte en blanc */
-main *{
+#intere > *, #compet > *, #ppf *{
     color: whitesmoke;
-
 }
 
 
