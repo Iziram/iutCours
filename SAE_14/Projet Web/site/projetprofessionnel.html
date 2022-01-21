@@ -43,11 +43,11 @@
         <main id="ppf">
             <div class="row flex-centering">
                 <div class="col-12 col-md-5 col-lg-3 boxed floating">
-                    <h2 class="i-title">
+                    <h2 class="i-title" trad="t-1">
                         La Deuxième année de BUT Réseaux et Télécommunications
                     </h2>
                     <hr/>
-                    <p class="i-text">
+                    <p class="i-text" trad="t-a">
                         Avant de rentrer en deuxième année il faut choisir un parcours entre Cybersécurité et DevOps. 
                         Pour moi le choix a été rapide. En effet j'affectionne particulièrement le sujet de la Cybersécurité 
                         depuis assez longtemps. J'ai pu, par exemple, faire une présentation en Terminal sur ce sujet et participer 
@@ -56,15 +56,15 @@
                         mes connaissances en Cybersécurité et plus généralement en informatique.
                     </p>
                     <div class="flex-centering my-2">
-                        <a class="btn btn-outline-primary" href="https://iut-lannion.univ-rennes1.fr/reseaux-telecoms" target="_blank">Plus d'informations sur le BUT</a>
+                        <a  trad="t-l" class="btn btn-outline-primary" href="https://iut-lannion.univ-rennes1.fr/reseaux-telecoms" target="_blank">Plus d'informations sur le BUT</a>
                     </div>
                 </div>
                 <div class="col-12 col-md-5 col-lg-3 boxed floating flex">
-                    <h2 class="i-title">
+                    <h2 class="i-title" trad="t-2">
                         Entre Stages et Alternaces
                     </h2>
                     <hr/>
-                    <p class="i-text">
+                    <p class="i-text" trad="t-b">
                         la deuxième et troisième année sont rythmées par des expériences professionnelles 
                         que ce soit sous la forme de stages ou bien d’études en alternance. J'ai décidé de vouloir concentré mes années de BUT sur un apprentisage en formation initiale. 
                         C'est à dire que je ne ferai pas d'alternance mais des <strong>stages</strong> aux semestres 4 et 6. De cette façon j'accumulerai les connaissances générales de la formation 
@@ -72,11 +72,11 @@
                     </p>
                 </div>
                 <div class="col-12 col-md-5 col-lg-3 boxed floating">
-                    <h2 class="i-title">
+                    <h2 class="i-title" trad="t-3">
                         Direction l'International
                     </h2>
                     <hr/>
-                    <p class="i-text">
+                    <p class="i-text" trad="t-c">
                         Concernant les stages, je souhaiterai les faire à l’international si possible car c’est pour moi 
                         c’est une très bonne méthode de sortir de sa zone de confort, approfondir mes compétences 
                         linguistiques, et former un réseau professionnel à l’international. De plus, j’aimerai 
@@ -87,11 +87,11 @@
                     </p>
                 </div>
                 <div class="col-12 col-md-5 col-lg-3 boxed floating">
-                    <h2 class="i-title">
+                    <h2 class="i-title" trad="t-4">
                         Poursuites d'études
                     </h2>
                     <hr/>
-                    <p class="i-text">
+                    <p class="i-text" trad="t-d">
                         A la fin de ma troisième année de BUT, si tout se passe bien, j’aurai obtenu mon diplôme. Je ne
                         compte pas pour autant arrêter mes études. Je vise au minimum un niveau Bac+5 avec 
                         l’obtention d’un Master en Informatique ou bien un diplôme d’ingénieur en informatique. 
@@ -105,6 +105,12 @@
                 </div>
             </div>
         </main>
+
+        <!-- On récuppère les traductions pour la page depuis le script approprié puis on update le traducteur (voir tools.js pour plus d'informations) -->
+        <script src="./scripts/traductions/ppf.js"></script>
+        <script>
+            traductor.updateTrad(tradData)
+        </script>
 
         <!-- On place le footer à la fin de la page grâce à la fonction footer du script components -->
         <script> footer() </script>
