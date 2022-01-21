@@ -38,7 +38,7 @@ class Traductor {
                 "nav-inter":"Mes Intérêts",
                 "nav-links":"Les Liens Utiles",
                 "nav-prof":"Mon Projet Professionnel",
-                "nav-button": "Traduire en Anglais"
+                "nav-button": '<i class="bi bi-translate mx-2"></i>Traduire en Anglais'
             },
             "en":{
                 //Navbar
@@ -53,7 +53,7 @@ class Traductor {
                 "nav-inter":"My interests",
                 "nav-links":"Useful links",
                 "nav-prof":"My Career Plan",
-                "nav-button": "Translate to French"
+                "nav-button": '<i class="bi bi-translate mx-2"></i>Translate to French'
             }
         }
     }

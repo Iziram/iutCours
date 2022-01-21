@@ -11,7 +11,7 @@ function navbar(active = "index"){
     <div class="container-fluid">
       <a class="navbar-brand" href="index.html#title">Hartmann Matthias</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        <span class="bi bi-three-dots-vertical"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -42,7 +42,8 @@ function navbar(active = "index"){
             <a data-trad="nav-prof" id="projetprofessionnel" class="nav-link" href="projetprofessionnel.html">Mon Projet Professionnel</a>
           </li>
           <li class="nav-item">
-            <button id="navbutton" type="button" class="btn btn-outline-light" data-trad="nav-button">Traduire en Anglais</button>
+            
+            <button id="navbutton" type="button" class="btn btn-outline-light" data-trad="nav-button"><i class="bi bi-translate mx-2"></i>Traduire en Anglais</button>
           </li>
           
         </ul>
