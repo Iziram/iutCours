@@ -453,3 +453,11 @@ video{
     width: 80%;
     height: auto;
 }
+
+/* 
+=== CSS pour la page Compétences===
+*/
+
+.modal * {
+    color: black;
+}

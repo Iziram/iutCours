@@ -29,6 +29,7 @@
     </head>
 
     <body class="bg-dark">
+        
         <!-- On import mes scripts personnels (fonctions et utilisation détaillés dans les fichiers respectifs) -->
         <script src="scripts/components.js"></script>
         <script src="scripts/tools.js"></script>
@@ -41,14 +42,78 @@
             navbar("compt");
             presentation("Mes Compétences","Sur cette page vous retrouverez des informations supplémentaires sur mes compétences")
         </script>
-        
         <main>
-            <div class="flex-centering">
-                <video width="80%" height="auto" controls>
-                    <source src="https://iziram.fr/video2.mp4" type="video/mp4">
-                    La vidéo ne peut pas être chargée par votre navigateur.
-                </video> 
-            </div>
+            <section>
+                <h2 data-trad="t-t" class="i-title my-2 text-decoration-underline">
+                    Mes compétences à travers mes Projets
+                </h2>
+                <div class="vstack gap-3 px-5">
+                    <button data-trad="ma-b" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ma">
+                        Mon premier projet
+                    </button>
+                    <button data-trad="mb-b" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#mb">
+                        Le projet qui m'a le plus apporté 
+                    </button>
+                    <button data-trad="mc-b" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#mc">
+                        Mon projet le plus récent
+                    </button>
+                </div>
+
+                <div id="ma" class="modal" tabindex="-1">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 data-trad="ma-b" class="modal-title">Mon premier projet</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div data-trad="ma-s" class="modal-body">
+                            J'ai commencé la programmation en 2015 mais le premier vrai projet que j'ai fait en 2017.
+                            Je devais faire une présentation original en cours d'Histoire en Anglais. C'est alors que j'ai eu l'idée de faire un jeu vidéo éducatif. La tache était complexe et je n'avais pas beaucoup de temps pour le faire mais j'ai quand même relevé le défi. La première compétence que j'ai du apprendre était la gestion de mon temps. Identifier les taches qui seraient les plus longues à faire et dans quel ordre les faire.
+                            Ensuite il m'a fallu faire des recherches sur quel sorte de jeu je voulais faire, avec quelle technologie etc. J'ai du prendre en compte les contraintes techniques des ordinateurs de mon collège et le fait que mes professeurs allaient jouer au jeu. Après avoir établi mon cahier des charges il ne me restait plus qu'a programmer. Bien que j'utilisais un langage simple dit en Blocky, c'est à dire des blocs d'instructions au lieu de lignes de code, il me fallait quand même réfléchir à des algorithmes. Que ce soit pour faire l'intelligence des ennemis ou les déplacements des personnages, j'ai appris à réfléchir à mes programmes et surtout à diviser mes problèmes en sous-problèmes plus simple à réaliser. Au final, j'ai rendu mon projet à temps, avec un minimum de bugs et mes professeurs étaient très surpris et se sont bien amusés. Ce projet m'a permis de connaitre la base de la programmation et de la gestion de projet.
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div id="mb" class="modal" tabindex="-1">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 data-trad="mb-b" class="modal-title">Le projet qui m'a le plus apporté</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div data-trad="mb-s" class="modal-body">
+                            C'est en 2020 que j'ai décidé d'entreprendre un énorme projet, la mise en place de A à Z d'un serveur minecraft. De la mise en place d'une machine linux, à la configuration d'un serveur minecraft et enfin à la programmation de plugins (modifications du jeu). J'ai touché à tous les aspects de l'informatique. Premièrement j'ai du faire un peu de récuppération en cherchant sur internet des composants d'ordinateurs pour pouvoir monter une machine. Ensuite j'ai mis en place un système d'exploitation : Linux. Je n'avais jamais utilisé ce système d'exploitation auparavant j'ai du coup fait beaucoup de recherches afin d'apprendre à l'administrer. Lorsque la machine était configurée il me fallait encore mettre en place de le serveur Minecraft. Pour cela j'ai du lire la documentation officielle de Minecraft. Finalement il ne me restait plus qu'a programmer les plugins qui me permettrait de faire des mini jeu non prévu par le jeu de base. Lors de la programmation de ces plugins j'ai appris à utiliser des API (Des services proposer par des serveurs sur internet, par exemple pour recevoir des informations météo), mais j'ai surtout appris à écire du code optimisé car ma machine n'était pas très performante. Si je devais résumer les compétences que m'a apporté ce projet ce serait : 
+            L'administration Linux, La mise en place de configuration sur un serveur, optimiser ses codes et comment construire un ordinateur.
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div id="mc" class="modal" tabindex="-1">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 data-trad="mc-b" class="modal-title">Mon projet le plus récent</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div data-trad="mc-s" class="modal-body">
+                            Depuis la fin du projet Serveur Minecraft, je n'ai cessé de cherche de nouvelles choses à faire, j'ai pu apprendre de nouveaux langages de programmations comme le PHP ou le Javascript car pour l'instant je codais uniquement en Python et en Java. Dernièrement j'ai commencé le projet AutoDoxyGen, Ce projet à pour but de simplifier la création de Documentation pour des programmes python. En effet lors des cours de programmations pendant le BUT, nous devons documenter nos codes pythons mais le faire à la main est long est fastidieu. J'ai alors voulu créer un programme qui le ferai à ma place. Pour cela je suis aller voir la documentation de l'éditeur de code que j'utilise (VSCode) et j'ai commencé à créer une extension. J'ai donc du apprendre un nouveau langage : le TypeScript, une version modifiée du Javascript, et j'ai du apprendre à utiliser les fonctionnalitée de VSCode. Pour remplir correctement l'objectif de mon projet j'ai du apprendre de nouveaux algorithmes qui permettent d'identifer des bouts de texte dans un code. En soit ce projet bien qu'il ne me fasse pas sortir de ma zone de comfort, il reste néanmoins un bon moyen d'apprendre de nouveaux algorithmes d'optimisation.
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+            </section>
+            <section>
+                <h2 data-trad="v-t" class="i-title my-2 text-decoration-underline">
+                    Vidéo : Mes compétences et mes Projets 
+                </h2>
+                <div class="d-flex justify-content-center">
+                    <video controls>
+                        <source src="https://iziram.fr/video2.mp4" type="video/mp4"/>
+                        La vidéo ne peut pas être chargée par votre navigateur.
+                    </video> 
+                </div>
+            </section>
         </main>
 
         <!-- On récuppère les traductions pour la page depuis le script approprié puis on update le traducteur (voir tools.js pour plus d'informations) -->
@@ -57,7 +122,6 @@
             traductor.updateTrad(tradData)
         </script>
         
-
         <!-- On place le footer à la fin de la page grâce à la fonction footer du script components -->
         <script> footer() </script>
 
