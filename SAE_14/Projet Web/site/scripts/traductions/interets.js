@@ -16,7 +16,7 @@ const tradData = {
             "s-a-ld-s":`Japanese animation or "Anime" is a form of entertainment that I enjoy a lot. There are all kinds of them and even if you finish a whole series, you can always find 
             a whole series, you can always find another one because the industry is so vast.`,
         
-        "s-b-t" : "Video presentation of my skills around different projects",
+        "s-b-t" : "Video: My strengths through a hobby or an experience",
     },
     "fr":{
         "heroTitle": "Mes Centres d'intérêt",
@@ -36,7 +36,7 @@ const tradData = {
             "s-a-ld-s":`L'animation Japonaise ou "Animés" sont une forme de divertissement que j'apprécie énormément. Il en existe de tous types et même si on finit 
             une série entière, on pourra toujours trouver une autre tellement l'industrie est vaste.`,
         
-        "s-b-t" : "Vidéo de présentation de mes compétences autour de différents projets",
+        "s-b-t" : "Vidéo : Mes points forts à travers un hobby ou une expériences",
     },
     
 }
