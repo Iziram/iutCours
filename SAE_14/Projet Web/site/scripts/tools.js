@@ -75,8 +75,8 @@ class Traductor {
         const toTranslate = document.body.getElementsByTagName("*");
         for (let i = 0; i < toTranslate.length; i++) {
             const tr = toTranslate[i];
-            if (tr.hasAttribute('trad')) {
-                const key = tr.getAttribute('trad')
+            if (tr.hasAttribute('data-trad')) {
+                const key = tr.getAttribute('data-trad')
                 if (this.constentTrad[this.version] && this.constentTrad[this.version][key]) {
                     tr.innerHTML = this.constentTrad[this.version][key]
                 }else if (this.trad && this.trad[this.version] && this.trad[this.version][key]) {

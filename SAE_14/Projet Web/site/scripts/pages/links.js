@@ -157,13 +157,13 @@ function createCard(infos){
                 title.className = "pcard-title"
                 //Et on change le texte de l'élément par le texte dans infos.titre
                 title.innerText = infos.titre
-                title.setAttribute('trad',infos.trad+"title")
+                title.setAttribute('data-trad',infos.trad+"title")
             //On crée un dernier élement : p 
             const text = document.createElement("p")
                 //De la même façon que le titre on lui donne la classe "pcard-text" et on change son texte en fonction de infos.texte
                 text.className = "pcard-text"
                 text.innerText = infos.texte
-                text.setAttribute('trad',infos.trad+"text")
+                text.setAttribute('data-trad',infos.trad+"text")
 
             //On finit par ajouter tous les nouveaux éléments (img, title, text) dans l'élément figure en tant qu'enfants
             figure.appendChild(img)
