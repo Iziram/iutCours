@@ -35,10 +35,10 @@ const tradData = {
 
 
         "int-t":"Mes centres d'intérets",
-            "int-a-t":"Programmation",
+            "int-a-t":"Escrime",
                 "int-a-s":`Je pratique l'escrime comme sport depuis maintenant 8 ans, l'escrime comporte 3 armes, je fais principalement de l'épée même si je maitrise aussi le sabre et le fleuret. Je fais beaucoup de comptétions au niveau régionnal mais il m'est aussi arrivé d'aller à deux compétitions
                 nationnales en 2018. Je suis aussi arbitre régionnal et Animateur (1ère formation qui permet d'enseigner l'escrime)`,
-            "int-b-t":"Escrime",
+            "int-b-t":"Programmation",
                 "int-b-s":`J'adore la programmation, je suis toujours à la recherche de nouveaux projets qui pourraient me faire découvrir de nouveaux outils, de nouveaux langages et de nouvelles façons d'aborder la programmation.
                 J'ai commencé en 2015 et je n'ai pas arrêté depuis. Je programme dans beaucoup de langages mais principalement en Java, Python et Javascript. `,
     },

@@ -80,7 +80,7 @@ function presentation(titre, soustitre = "Lorem ipsum dolor sit amet consectetur
         //On lui donne comme contenu le paramètre titre
         h1.textContent = titre
         //On lui donne l'attribut "trad" et la valeur heroTitle pour pouvoir gérer la traduction automatique
-        h1.setAttribute('trad',"heroTitle")
+        h1.setAttribute('data-trad',"heroTitle")
       //On l'ajoute comme enfant de l'élément hero
       hero.appendChild(h1)
       //On fait quasiment la même chose pour le sous-titre
@@ -88,7 +88,7 @@ function presentation(titre, soustitre = "Lorem ipsum dolor sit amet consectetur
           sub.className = "col-lg-6 mx-auto"
           const p = document.createElement('p')
               p.className = "lead mb-4"
-              p.setAttribute('trad',"heroText")
+              p.setAttribute('data-trad',"heroText")
               p.textContent = soustitre
           sub.appendChild(p)
       hero.appendChild(sub)

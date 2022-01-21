@@ -39,15 +39,24 @@
          -->
         <script>  
             navbar("compt");
-            presentation("Mes Compétences")
+            presentation("Mes Compétences","Sur cette page vous retrouverez des informations supplémentaires sur mes compétences")
         </script>
         
-        <div class="flex-centering">
-            <video width="80%" height="auto" controls>
-                <source src="https://iziram.fr/video2.mp4" type="video/mp4">
-                La vidéo ne peut pas être chargée par votre navigateur.
-            </video> 
-        </div>
+        <main>
+            <div class="flex-centering">
+                <video width="80%" height="auto" controls>
+                    <source src="https://iziram.fr/video2.mp4" type="video/mp4">
+                    La vidéo ne peut pas être chargée par votre navigateur.
+                </video> 
+            </div>
+        </main>
+
+        <!-- On récuppère les traductions pour la page depuis le script approprié puis on update le traducteur (voir tools.js pour plus d'informations) -->
+        <script src="./scripts/traductions/comptences.js"></script>
+        <script>
+            traductor.updateTrad(tradData)
+        </script>
+        
 
         <!-- On place le footer à la fin de la page grâce à la fonction footer du script components -->
         <script> footer() </script>
