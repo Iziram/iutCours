@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict, Tuple
 class Plateau:
     largeur: int = 30
     hauteur: int = 20
@@ -28,13 +28,13 @@ class Vaisseau:
     
 
 class Alien:
-    aliens : List[object] = []
+    aliens : Dict[Tuple[int,int], object] = {}
     alienC : str = "\033[1;32;47m"
     def __init__(self, x:int, y:int, nivTir : int = None):
         self.posX = x
         self.posY = y
         self.nivTir = nivTir
-        Alien.aliens.append(self)
+        Alien.aliens[(x,y)] = self
     def __repr__(self):
         return f'Alien : position = ({self.posX}, {self.posY}) tir spécial = {self.nivTir}'
     def __str__(self):
@@ -43,3 +43,25 @@ class Alien:
     def deplacer(x:int, y:int):
         self.posX = x
         self.posY = y
+
+    @staticmethod
+    def genererAliens(nbAliens:int, nbLignes:int = 10):
+        y = -1 
+        for i in range(nbAliens):
+            x = i % nbLignes
+            if(x == 0) : y += 1
+            Alien(x,y)
+    
+    @staticmethod
+    def alienEnPos(x,y):
+        return Alien.aliens.get((x,y), " ")
+
+
+v = Vaisseau()
+Alien.genererAliens(10)
+for ligne in range(Plateau.hauteur):
+    for col in range(Plateau.largeur):
+        print(Alien.alienEnPos(col, ligne),end=f"\033[0;37;40m")
+        if(ligne == Plateau.hauteur - 1 and v.posX == col):
+            print(v, end=f"\033[0;37;40m")
+    print("\n")
