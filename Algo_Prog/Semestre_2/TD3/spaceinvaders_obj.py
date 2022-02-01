@@ -18,7 +18,7 @@ class Vaisseau:
             if(self.posX > 0):
                 self.posX -= 1
         elif keyPressed == "m":
-            if(self.posX < Plateau.largeur):
+            if(self.posX < Plateau.largeur - 1):
                 self.posX += 1
     def __repr__(self):
         return f'Vaisseau : position = {self.posX} tir spécial = {self.nivTir}'
