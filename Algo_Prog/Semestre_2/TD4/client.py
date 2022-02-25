@@ -38,7 +38,7 @@ try :
     print(f"Reception du message client : {reception.decode('utf-8')}")
     
     
-    clientSocket.close()
+    # clientSocket.close()
     print(f"Deconnexion  {hote}:{portServeur}.")
 
 except Exception as err :
