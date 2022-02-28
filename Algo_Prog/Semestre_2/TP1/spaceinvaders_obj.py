@@ -1,9 +1,16 @@
 from typing import List, Dict, Tuple
-from os import system
+from os import system, name
 from time import sleep
 from saisiCar import SaisiCar
 from random import sample, randint
 from json import load, dump
+
+def clear():
+    if name == "nt":
+        system("cls")
+    else:
+        system("clear")
+
 class Plateau:
     largeur: int = 30
     hauteur: int = 20
@@ -89,11 +96,11 @@ class PowerUp:
                         partie.vaisseau.nivTir -= 1
                     else:
                         partie.vie -= 1
-                del(self)
+                PartieJeu.PowersUp.remove(self)
             else:
                 self.posY += 1
         else:
-            del(self)
+            PartieJeu.PowersUp.remove(self)
     def position(self):
         return (self.posX, self.posY)
     def __str__(self):
@@ -126,6 +133,7 @@ class Alien:
 class PartieJeu:
     modeEmploi : str = """Bienvenue Dans SpaceInvaders:
         Utilisez els touches o,k,m pour tirer, se déplacer à gauche ou à droite"""
+    PowersUp : List[PowerUp] = []
     def __init__(self, vaisseau: Vaisseau, nombreAlien : int = 30,
                 vie : int = 3, score : int = 0, niveau : int = 1):
         self.vie : int = vie
@@ -133,7 +141,7 @@ class PartieJeu:
         self.niveau : int = niveau
         self.vaisseau : Vaisseau = vaisseau
         self.aliens : List[Alien] = []
-        self.PowersUp : List[PowerUp] = []
+        self.nombreAlien = nombreAlien
         self.initialiserAliens(nombreAlien)
     
     def initialiserAliens(self, nbAliens:int, nbLignes:int = 10, powerUp : int = 5):
@@ -189,7 +197,7 @@ class PartieJeu:
                 if len(aliens) > 0:
                     mort : Alien = aliens.pop()
                     if mort.mort():
-                        self.PowersUp.append(PowerUp(mort.posX, mort.posY, mort.nivTir))
+                        PartieJeu.PowersUp.append(PowerUp(mort.posX, mort.posY, mort.nivTir))
                     self.aliens.remove(mort)
             return nombre
         return 0
@@ -198,13 +206,12 @@ class PartieJeu:
         action : str = ""
         kb = SaisiCar()
         while self.vie > 0 and action !="q":
-            system("clear")
-            #system("cls") #Windows
+            clear()
             action = kb.recupCar(["m", "k", "o", "q"])
             if(action != None and action != ""):
                 self.vaisseau.action(action)
             
-            plateau.afficherBandeau(partie)
+            plateau.afficherBandeau(self)
             if (self.vaisseau.tir == True):
                 aliens : List[Alien] = self.aliensSurColonne(self.vaisseau.posX)
                 self.score += 5 * self.tuerAliens(aliens, self.vaisseau.nivTir)  
@@ -216,15 +223,15 @@ class PartieJeu:
             else:
                 plateau.afficherPlateau(self)
             if(self.finJeu(self.alienPlusBas())):
-                self.PowersUp = []
+                PartieJeu.PowersUp = []
                 self.initialiserAliens(20 + 10 * self.niveau)
 
             else:
                 self.deplacementAliens()
                 for a in self.aliens :
                     if(a.larguerBombe()):
-                        self.PowersUp.append(PowerUp(a.posX, a.posY, type_="bombe"))
-                for p in self.PowersUp : p.update(self)
+                        PartieJeu.PowersUp.append(PowerUp(a.posX, a.posY, type_="bombe"))
+                for p in PartieJeu.PowersUp : p.update(self)
                 
             self.vaisseau.update()
             sleep(.1)
@@ -240,48 +247,54 @@ class PartieJeu:
             return True
         else:
             return False
-    def affichageFinDuJeu(self):
-        infos : str = ""
 
     def affichageModeEmploi(self):
         print(PartieJeu.modeEmploi)
 
+    def copy(self):
+        return PartieJeu(Vaisseau(Plateau.largeur//2), self.nombreAlien, self.vie, self.score, self.niveau)
+
 
 class Sauvegarde:
-    def __init__(self, partie: PartieJeu = None):
-        self.sauvegarde : Dict[any] = {}
+    def __init__(self):
+        self.sauvegarde : Dict[any] = {"scores":{}}
     
     def chargerPartie(self, chemin : str = "./partie.space"):
         try:
-            self.sauvegarde = load(chemin)
+            with open(chemin, "r") as fichier:
+                self.sauvegarde = load(fichier)
         except Exception:
             print("Le jeu n'a pas pu charger la sauvegarde")
     
     def sauvegarderPartie(self, chemin : str = "./partie.space"):
         with open(chemin, 'w') as fichier:
-            fichier.write(dump(self.sauvegarde))
+            dump(self.sauvegarde, fichier)
     
     def ajouterScore(self, pseudo:str, score: int):
         self.sauvegarde["scores"][pseudo] = score
         
     def recupererScore(self, pseudo:str) -> int:
-        return self.sauvegarde["score"].get(pseudo, 0)
+        return self.sauvegarde["scores"].get(pseudo, 0)
     
 
 class Menu:
-    def __init__(self):
+    def __init__(self, partie: PartieJeu, sauvegarde : Sauvegarde):
         self.selection = 0
         self.selections = []
         self.menu = "Titre"
         self.click = False
         self.stop = False
+        self.partie = partie.copy()
+        self.partieOri = partie
+        self.sauvegarde = sauvegarde
+        self.sauvegarde.chargerPartie()
     
     def affichage(self):
         if self.menu == "Titre":
             titre : str = "PYTHON INVADERS"
             self.selections : List[str] = ["Jouer", "Classement","Credit","Quitter"]
             print("*"*Plateau.largeur)
-            print(" "*(Plateau.largeur//2 - len(titre)//2) + titre + " "*(Plateau.largeur//2 - len(titre)//2 - 1))
+            Menu.affichageCentre(titre)
             print("\n")
             for i in range(len(self.selections)):
                 pointeur : str = "-"
@@ -290,38 +303,145 @@ class Menu:
                 print(f" {pointeur} {self.selections[i]}")
             print("\n")
             print("*"*Plateau.largeur)
-        if self.menu == "Quitter":
+        elif self.menu == "GameOver":
+            titre : str = "GAME OVER"
+            self.selections : List[str] = ["Rejouer", "Sauvegarder Le Score","Quitter"]
+            
+            print("*"*Plateau.largeur)
+            Menu.affichageCentre(titre)
+            texte : str = f"Score : {self.partie.score}"
+            print("\n")
+            Menu.affichageCentre(texte)
+            print("\n")
+            for i in range(len(self.selections)):
+                pointeur : str = "-"
+                if self.selection == i :
+                    pointeur = ">"
+                print(f" {pointeur} {self.selections[i]}")
+            print("\n")
+            print("*"*Plateau.largeur)
+        
+        elif self.menu == "Sauvegarder Le Score":
+            titre : str = "Sauvegarder Le Score"
+            self.selections : List[str] = ["Sauver","Titre"]
+            
+            print("*"*Plateau.largeur)
+            Menu.affichageCentre(titre)
+            texte : str = f"Score : {self.partie.score}"
+            print("\n")
+            Menu.affichageCentre(texte)
+            print("\n")
+            for i in range(len(self.selections)):
+                pointeur : str = "-"
+                if self.selection == i :
+                    pointeur = ">"
+                print(f" {pointeur} {self.selections[i]}")
+            print("\n")
+            print("*"*Plateau.largeur)
+        
+        elif self.menu == "Sauver":
+            titre : str = "Entrez votre pseudo"
+            self.selections : List[str] = []
+            print("*"*Plateau.largeur)
+            Menu.affichageCentre(titre)
+            texte : str = f"Score : {self.partie.score}"
+            print("\n")
+            Menu.affichageCentre(texte)
+            print("\n")
+            pseudo : str = input("Pseudo: ")
+            Menu.affichageCentre(pseudo)
+            print("\n")
+            print("*"*Plateau.largeur)
+            sleep(.5)
+            self.sauvegarde.ajouterScore(pseudo, self.partie.score)
+            self.menu = "Titre"
+
+        elif self.menu == "Quitter":
             self.stop = True
         
+        elif self.menu == "Jouer" or self.menu == "Rejouer":
+            PartieJeu.PowersUp = []
+            self.partie = self.partieOri.copy()
+            self.partie.boucleDeJeu(Plateau())
+            self.menu = "GameOver"
+        
+        elif self.menu == "Classement":
+            self.selection = 0
+            titre : str = "Classement"
+            self.selections : List[str] = ["Titre"]
+            print("*"*Plateau.largeur)
+            Menu.affichageCentre(titre)
+            print("\n")
+            classement = self.sauvegarde.sauvegarde["scores"]
+            classement = list(classement.items())
+            classement.sort(key= lambda x: x[1], reverse=True)
+            for i in range(10):
+                if i < len(classement):
+                    print(f" - {classement[i][0]} : {classement[i][1]}")
+            print("\n")
+            for i in range(len(self.selections)):
+                pointeur : str = "-"
+                if self.selection == i :
+                    pointeur = ">"
+                print(f" {pointeur} {self.selections[i]}")
+            print("\n")
+            print("*"*Plateau.largeur)
+
+
+
+    @staticmethod
+    def affichageCentre(texte:str) :
+        print(" "*(Plateau.largeur//2 - len(texte)//2) + texte + " "*(Plateau.largeur//2 - len(texte)//2 - 1))
+
         
     def selectionner(self, action:str):
-        if self.menu == "Titre":
-            if action == "o":
+        if action == "o":
+            if self.menu == "Titre":
                 if self.selection > 0 : self.selection -= 1
                 else : self.selection = 3
-            elif action == "l":
+            elif self.menu == "GameOver":
+                if self.selection > 0 : self.selection -= 1
+                else : self.selection = 2
+            elif self.menu == "Sauvegarder Le Score":
+                if self.selection > 0 : self.selection += 1
+                else : self.selection = 1
+        elif action == "l":
+            if self.menu == "Titre":
                 if self.selection < 3 : self.selection += 1
                 else : self.selection = 0
-            elif action == "k":
-                self.click = True
+            elif self.menu == "GameOver":
+                if self.selection < 2 : self.selection += 1
+                else : self.selection = 0
+            elif self.menu == "Sauvegarder Le Score":
+                if self.selection < 1 : self.selection += 1
+                else : self.selection = 0
+        
+        elif action == "k":
+            self.click = True
+        
     def boucle(self):
         kb = SaisiCar()
         action : str = ""
         while not self.stop:
-            system("clear")
-            #system("cls") #Windows
+            clear()
             self.affichage()
             action = kb.recupCar(["k","o","l"])
-            self.selectionner(action)
-            self.selectionClick()
+            if action != None:
+                self.selectionner(action)
+                self.selectionClick()
             sleep(.05)
     
     def selectionClick(self):
         if self.click == True:
             self.menu = self.selections[self.selection]
+            self.selection = 0
+            self.click = False
             
-menu = Menu()
-plateau : Plateau = Plateau()
-partie : PartieJeu = PartieJeu(Vaisseau(Plateau.largeur // 2))
+
+partie : PartieJeu = PartieJeu(Vaisseau(Plateau.largeur // 2), vie=1)
+sauvegarde : Sauvegarde = Sauvegarde()
+menu = Menu(partie, sauvegarde)
+menu.menu = "Titre"
 
 menu.boucle()
+menu.sauvegarde.sauvegarderPartie()
