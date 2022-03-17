@@ -1,3 +1,11 @@
+"""! @brief [description du fichier]
+ @file guitarHero.py
+ @section libs Librairies/Modules
+  - [Nom du module] (lien)
+
+ @section authors Auteur(s)
+  - Créé par Hartmann Matthias le 08/03/2022 .
+"""
 from random import randint
 from time import sleep
 from os import system
@@ -7,6 +15,15 @@ class Note:
     lettres = ["a","b","c","d"]
     
     def __init__(self, posX: int, posY:int = 0):
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres : 
+            @param self => [description]
+            @param posX : int => [description]
+            @param posY : int = 0 => [description]
+
+        """
         self.posX = posX
         self.posY = posY
         self.couleur= posX
@@ -19,6 +36,13 @@ class Note:
             Jeu.vie -= 1
             
     def __str__(self):
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres : 
+            @param self => [description]
+
+        """
         return Note.couleurs[self.couleur] + Note.lettres[self.posX] + "\033[0;37;40m"
     
 
@@ -28,6 +52,13 @@ class Jeu:
     notes = []
     vie = 5
     def __init__(self):
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres : 
+            @param self => [description]
+
+        """
         self.vitesse : float = 1.0
         self.noteCoolDown : float = 0
         Jeu.notes = []
@@ -36,6 +67,13 @@ class Jeu:
         self.elapsed = 0
     
     def genererNote(self):
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres : 
+            @param self => [description]
+
+        """
         if self.noteCoolDown < 0:
             Jeu.notes.append(Note(randint(0,3)))
             self.noteCoolDown = self.vitesse
@@ -43,6 +81,13 @@ class Jeu:
             self.noteCoolDown -= Jeu.frames
     
     def bandeau(self):
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres : 
+            @param self => [description]
+
+        """
         print("----")
         print(f"Score : {self.score} Vie : {self.vie}")
         txt : str = ""
@@ -52,6 +97,13 @@ class Jeu:
         print("----")
     
     def affichage(self):
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres : 
+            @param self => [description]
+
+        """
         self.bandeau()
         for ligne in range(Jeu.hauteur):
             for col in range(4):
@@ -68,11 +120,26 @@ class Jeu:
         print(txt, end="\033[0;37;40m\n")
     
     def acceleration(self, acc:float = 0.01):
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres : 
+            @param self => [description]
+            @param acc : float = 0.01 => [description]
+
+        """
         if self.elapsed > 2:
             self.vitesse -= acc
             self.elapsed = 0
     
     def notesBasses(self):
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres : 
+            @param self => [description]
+
+        """
         notes = []
         for n in Jeu.notes :
             if n.posY >= Jeu.hauteur-3:
@@ -82,12 +149,30 @@ class Jeu:
         return notes
     
     def verification(self, col:int, notes):
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres : 
+            @param self => [description]
+            @param col : int => [description]
+            @param notes => [description]
+
+        """
         for n in reversed(notes):
                 if n.posX == col:
                     self.score += 1
                     Jeu.notes.remove(n)
                     break
     def actionUtilisateur(self, action: str, notes):
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres : 
+            @param self => [description]
+            @param action : str => [description]
+            @param notes => [description]
+
+        """
         if action == "j":
             self.verification(0,notes)
         elif action == "k":
@@ -98,6 +183,13 @@ class Jeu:
             self.verification(3,notes)
     
     def boucle(self):
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres : 
+            @param self => [description]
+
+        """
         kb = SaisiCar()
         action = ""
         while Jeu.vie > 0 and action != "q":
