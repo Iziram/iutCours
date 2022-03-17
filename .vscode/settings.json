@@ -1,0 +1,8 @@
+{
+    "autodoxygen.memoire.memoire": [
+        {
+            "name": "M",
+            "description": "Une matrice carrée M"
+        }
+    ]
+}
