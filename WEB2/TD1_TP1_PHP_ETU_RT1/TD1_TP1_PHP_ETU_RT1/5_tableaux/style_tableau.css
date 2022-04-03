@@ -1,0 +1,22 @@
+
+table /* Le tableau en lui-même */
+{
+   margin: auto; /* Centre le tableau */
+   border: 4px outset green; /* Bordure du tableau avec effet 3D (outset) */
+   border-collapse: collapse; /* Colle les bordures entre elles */
+}
+
+th /* Les cellules d'en-tête */
+{
+   background-color: #006600;
+   color: white;
+   font-size: 1.1em;
+
+}
+
+td /* Les cellules normales */
+{
+   border: 1px solid black;
+   text-align: center; /* Tous les textes des cellules seront centrés*/
+   padding: 5px; /* Petite marge intérieure aux cellules pour éviter que le texte touche les bordures */
+}
