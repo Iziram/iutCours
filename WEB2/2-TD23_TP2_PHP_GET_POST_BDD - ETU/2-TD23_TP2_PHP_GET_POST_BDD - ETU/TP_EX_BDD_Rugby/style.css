@@ -1,0 +1,41 @@
+body
+{
+font-family : comic sans ms;
+margin:5%;
+}
+
+h1{
+color: orange;
+font-size:120%;
+}
+
+
+
+table /* Le tableau en lui-même */
+{
+   
+   border: 4px outset orange; /* Bordure du tableau avec effet 3D (outset) */
+   border-collapse: collapse; /* Colle les bordures entre elles */
+
+}
+
+th /* Les cellules d'en-tête */
+{
+   background-color: orange;
+   color: white;
+   font-size: 1.1em;
+   font-family: Arial, "Arial Black", Times, "Times New Roman", serif;
+}
+
+td /* Les cellules normales */
+{
+   border: 1px solid orange;
+   font-family: "Comic Sans MS", "Trebuchet MS", Times, "Times New Roman", serif;
+   text-align: center; /* Tous les textes des cellules seront centrés*/
+   padding: 5px; /* Petite marge intérieure aux cellules pour éviter que le texte touche les bordures */
+}
+tr
+{
+border: 1px solid black;
+
+}
