@@ -25,12 +25,37 @@
 <?php
 	//****EX1*************************************************************************************************************
 	function listerjoueurs() {
-		
+		try{
+			$db = new PDO("sqlite:bdd/joueurs.sqlite");
+			$res = $db->query("select nomJoueur, nomEquipe from joueurs INNER JOIN equipes on equipes.numEquipe = joueurs.numEquipe");
+			if($res){
+				return $res->fetchAll(PDO::FETCH_ASSOC);
+			}
+		}catch(Exception){
+		}
+		return array();
+
 	}
 ?>
 
 <?php
 	//****EX2*************************************************************************************************************
+	function listeEquipeSelect(){
+		try{
+			$db = new PDO("sqlite:bdd/joueurs.sqlite");
+			$res = $db->query("select nomEquipe, numEquipe from equipes");
+			if($res){
+				$tab = $res->fetchAll(PDO::FETCH_ASSOC);
+				if($tab){
+					foreach($tab as $line){
+						echo '<option value="'.$line["numEquipe"].'">'.$line["nomEquipe"].'</option>';
+					}
+				}
+			}
+		}catch(Exception){
+		}
+	}
+
 	function afficheFormEquipe() {
 	?>
 	<h1> Sélectionner une Equipe pour afficher la liste des joueurs</h1>
@@ -42,12 +67,7 @@
 					// à faire : compléter la liste déroulante
 					
 					
-					
-					
-					
-					
-					
-					
+					listeEquipeSelect()
 					
 				?>
 			</select>
@@ -62,7 +82,19 @@
 	//****EX2*************************************************************************************************************
 	function listerjoueursParEquipe($numEquipe) {
 		
-		
+		try{
+			$db = new PDO("sqlite:bdd/joueurs.sqlite");
+			$sql = "select nomJoueur, nomEquipe from joueurs INNER JOIN equipes on equipes.numEquipe = joueurs.numEquipe ";
+			if($numEquipe != "toutes"){
+				$sql = $sql."where equipes.numEquipe = $numEquipe";
+			}
+			$res = $db->query($sql);
+			if($res){
+				return $res->fetchAll(PDO::FETCH_ASSOC);
+			}
+		}catch(Exception){
+		}
+		return array();
 		
 	}
 ?>
@@ -89,7 +121,7 @@
 				<?php
 					// Afficher la liste des équipes
 					
-					
+					listeEquipeSelect();
 					
 					
 				?>
@@ -105,9 +137,47 @@
 	//****EX3*************************************************************************************************************
 	function insererjoueur($joueur,$equipe){
 		
-		
-		
+		try{
+			$db = new PDO("sqlite:bdd/joueurs.sqlite");
+			$joueurSTR = $db->quote($joueur);
+			var_dump($joueurSTR);
+			$sql = "insert into joueurs (nomJoueur, numEquipe) values ($joueurSTR, $equipe)";
+			$res = $db->exec($sql);
+			if($res){
+				return array($joueur, $equipe);
+			}
+			
+		}catch(Exception){
+		}
+		return False;
 	}
 	
+?>
+
+
+
+<?php
+
+
+function navbar(){
+	?>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">Menu</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<a class="nav-link" href="EX1_ListerJoueurs.php">EX1</a>
+				<a class="nav-link" href="EX2listejoueursParEquipe.php">EX2</a>
+				<a class="nav-link" href="EX3_InsererJoueurs.php">EX3</a>
+			</div>
+			</div>
+		</div>
+	</nav>
+
+<?php 
+}
 ?>
 
