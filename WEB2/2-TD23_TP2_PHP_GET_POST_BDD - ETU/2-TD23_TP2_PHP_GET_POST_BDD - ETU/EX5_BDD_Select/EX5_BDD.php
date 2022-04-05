@@ -28,7 +28,7 @@
 					<option value="0">Choisir une ville</option>
 					<?php
 						foreach($tab as $value){
-							echo '<option value="'.$value["cp"].'">'.$value["cp"]." ".$value["commune"].'</option>';
+							echo '<option value="'.$value["insee"].'">'.$value["cp"]." ".$value["commune"].'</option>';
 						}
 					?>
 				</select>

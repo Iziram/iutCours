@@ -75,12 +75,12 @@
 			function insereUtilisateur($login,$pass,$rue,$codepostal,$ville){ 
 				$bdd = new PDO("sqlite:bdd/IUT.sqlite");
 				$ville = strtoupper($ville);
-				$res = $bdd->query("select * from villes where commune='$ville' and cp='$codepostal'");
+				$res = $bdd->query("select insee from villes where commune='$ville' and cp='$codepostal'");
 				if($res){
 					$tab = $res->fetch(PDO::FETCH_ASSOC);
 					if($tab){
 						try{
-							$sql = "insert into etudiants (mail,mdp,adresse) values ('$login','$pass','$rue')";
+							$sql = "insert into etudiants (mail,mdp,adresse) values (".$bdd->quote($login).",".$bdd->quote($pass).",".$bdd->quote($rue).",".$tab["insee"].")";
 							$res = $bdd->exec($sql);
 							if($res){
 								return True;
