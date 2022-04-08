@@ -15,18 +15,21 @@
 <table>
 	<tbody>
 <?php
-$nb = 0;
+//Même chose que dans la première version sauf qu'ici c'est dans un tableau
 $dir = opendir("./images");
 
 while(false!==($fichier = readdir($dir)))	{
-	if(preg_match("/.jpg|.JPG/", $fichier)==true)	{
-	// A compléter ici
+	if(preg_match("/.jpg|.JPG|.png|.PNG/", $fichier)==true)	{
 	
+	//Creation d'une ligne dans le tableau
 	echo "<tr>";
-	echo '<td><img src="'."./images/".$fichier.'"'."alt=\"$fichier\"/></td>";
+	//Affichage de l'image dans la première colonne
+	echo '<td><img src="'."./images/".$fichier.'"'." alt=\"$fichier\"/></td>";
+	//Affichage du nom du fichier dans la deuxième colonne
 	echo "<td>Nom du fichier : $fichier</td>";
+	//Affichage du lien dans la dernière colonne
 	echo '<td><a href="'."./images/".$fichier.'">Lien vers l\'image</a></td>';
-
+	//Fin de la ligne
 	echo "</tr>";
 	
 	

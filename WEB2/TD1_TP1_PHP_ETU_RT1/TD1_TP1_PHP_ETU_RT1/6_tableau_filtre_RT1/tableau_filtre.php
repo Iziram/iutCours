@@ -41,7 +41,7 @@ echo '<hr/>';
 afficheTableauHTML($personnes)  ;
 echo '<hr/>';  
 //
-afficheTableauFiltreHTML($personnes,'Toulouse')  ;
+afficheTableauFiltreHTML($personnes,'La Rochelle')  ;
        
 
 

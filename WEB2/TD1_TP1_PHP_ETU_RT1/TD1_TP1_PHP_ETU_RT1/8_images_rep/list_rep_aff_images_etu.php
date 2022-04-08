@@ -13,16 +13,19 @@
 
 
 <?php
-
-$nb=0;
+//On ouvre le dossier "./images"
 $dir = opendir("./images");
 
-while(false!==($fichier = readdir($dir)))	{
-	if(preg_match("/.jpg|.JPG/", $fichier)==true)	{
-	// A compléter ici
+//Tant qu'on peut lire des fichiers dans le dossier
+while(false !== ($fichier = readdir($dir)))	{
+	//On vérifie si c'est bien une image
+	if(preg_match("/.jpg|.JPG|.png|.PNG/", $fichier)==true){
+	//On affiche le nom de l'image
 	echo "<p>Nom du fichier : $fichier</p>";
+	//On place un lien vers l'image
 	echo '<p><a href="'."./images/".$fichier.'">Lien vers l\'image</a></p>';
-	echo '<p><img src="'."./images/".$fichier.'"'."alt=\"$fichier\"/></p>";
+	//On affiche l'image
+	echo '<p><img src="'."./images/".$fichier.'"'." alt=\"$fichier\"/></p>";
 	
 	}
 }
