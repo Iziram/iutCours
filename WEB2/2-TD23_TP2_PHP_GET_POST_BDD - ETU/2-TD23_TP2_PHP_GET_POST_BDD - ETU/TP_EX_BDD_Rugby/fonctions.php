@@ -17,8 +17,8 @@
 
 <?php
 	//******************Connexion BD*************************************************************************************
-	function connexionBD() {
-		
+	function connexionBD($db = "sqlite:bdd/joueurs.sqlite") {
+		return new PDO($db);
 	}
 ?>
 
@@ -26,8 +26,7 @@
 	//****EX1*************************************************************************************************************
 	function listerjoueurs() {
 		try{
-			$db = new PDO("sqlite:bdd/joueurs.sqlite");
-			$res = $db->query("select nomJoueur, nomEquipe from joueurs INNER JOIN equipes on equipes.numEquipe = joueurs.numEquipe");
+			$res = connexionBD()->query("select nomJoueur as Joueur, nomEquipe as Equipe from joueurs INNER JOIN equipes on equipes.numEquipe = joueurs.numEquipe");
 			if($res){
 				return $res->fetchAll(PDO::FETCH_ASSOC);
 			}
@@ -42,8 +41,7 @@
 	//****EX2*************************************************************************************************************
 	function listeEquipeSelect(){
 		try{
-			$db = new PDO("sqlite:bdd/joueurs.sqlite");
-			$res = $db->query("select nomEquipe, numEquipe from equipes");
+			$res = connexionBD()->query("select nomEquipe, numEquipe from equipes");
 			if($res){
 				$tab = $res->fetchAll(PDO::FETCH_ASSOC);
 				if($tab){
@@ -83,27 +81,35 @@
 	function listerjoueursParEquipe($numEquipe) {
 		
 		try{
-			$db = new PDO("sqlite:bdd/joueurs.sqlite");
-			$sql = "select nomJoueur, nomEquipe from joueurs INNER JOIN equipes on equipes.numEquipe = joueurs.numEquipe ";
+			$sql_ = "select nomJoueur as Joueur";
+			$base = " from joueurs INNER JOIN equipes on equipes.numEquipe = joueurs.numEquipe";
 			if($numEquipe != "toutes"){
-				$sql = $sql."where equipes.numEquipe = $numEquipe";
+				$sql = $sql_.$base. " where equipes.numEquipe = $numEquipe";
+			}else{
+				$sql = $sql_.", nomEquipe as Equipe ".$base;
 			}
-			$res = $db->query($sql);
+			$res = connexionBD()->query($sql);
 			if($res){
 				return $res->fetchAll(PDO::FETCH_ASSOC);
 			}
 		}catch(Exception){
 		}
 		return array();
-		
 	}
-?>
-<?php
-	//****EX2*************************************************************************************************************
-	function getNomEquipeParNum($numEquipe) {
-		
-		
-		
+
+	function nomEquipeParNum($num){
+		try{
+			$sql = "select nomEquipe from equipes where numEquipe = $num";
+			$res = connexionBD()->query($sql);
+			if($res){
+				$val = $res->fetch(PDO::FETCH_ASSOC);
+				return $val["nomEquipe"];
+			}
+			
+		}catch(Exception){
+
+		}
+		return "Le numéro $num ne correspond pas à une équipe.";
 	}
 ?>
 
@@ -130,7 +136,7 @@
 		</fieldset>
 	</form>
 	<?php
-	}// fin afficheFormulaireAjoutEtudiant
+	}
 ?>
 
 <?php
@@ -138,9 +144,8 @@
 	function insererjoueur($joueur,$equipe){
 		
 		try{
-			$db = new PDO("sqlite:bdd/joueurs.sqlite");
+			$db = connexionBD();
 			$joueurSTR = $db->quote($joueur);
-			var_dump($joueurSTR);
 			$sql = "insert into joueurs (nomJoueur, numEquipe) values ($joueurSTR, $equipe)";
 			$res = $db->exec($sql);
 			if($res){

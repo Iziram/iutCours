@@ -18,7 +18,11 @@
 				if(isset($_POST["joueur"]) && !empty($_POST["joueur"])
 				&& isset($_POST["equipe"]) && !empty($_POST["equipe"])){
 					$res = insererjoueur($_POST["joueur"], $_POST["equipe"]);
-					var_dump($res);
+					if($res){
+						echo "<p>Le joueur <strong>".$_POST["joueur"]. "</strong> a bien été ajouté à l'équipe <u>".nomEquipeParNum($_POST["equipe"])."</u></p>";
+					}else{
+						echo "Le joueur n'a pas pu être enregistré. Vérifiez les valeurs puis recommencez.";
+					}
 				}
 			}
 		?>

@@ -50,6 +50,8 @@
 				}
 				if(empty($_POST["genre"])){
 					$genreErr = "Il faut indiquer un genre.";	
+				}else{
+					$genre = formater_saisie($_POST["genre"]);
 				}
 				
 			}
