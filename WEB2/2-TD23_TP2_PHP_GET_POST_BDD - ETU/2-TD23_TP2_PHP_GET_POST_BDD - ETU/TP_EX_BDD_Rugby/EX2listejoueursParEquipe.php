@@ -17,6 +17,9 @@
 			if(!empty($_GET) && isset($_GET["equipe"]) && !empty($_GET["equipe"])){
 				$tab = listerjoueursParEquipe($_GET["equipe"]);
 				if($tab){
+					if($_GET["equipe"] != "toutes"){
+						echo "<h2>Composition de l'équipe : ".nomEquipeParNum($_GET["equipe"])."</h2>";
+					}
 					afficheTableau($tab);
 				}
 			}
