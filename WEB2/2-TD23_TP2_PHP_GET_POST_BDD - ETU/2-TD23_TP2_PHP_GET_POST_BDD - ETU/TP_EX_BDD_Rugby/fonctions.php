@@ -57,7 +57,7 @@
 	function afficheFormEquipe() {
 	?>
 	<h1> Sélectionner une Equipe pour afficher la liste des joueurs</h1>
-	<form action="" method="get">
+	<form action="EX2listejoueursParEquipe.php" method="get">
 		<fieldset>
 			<select name="equipe">
 				<option value="toutes">Toutes les Equipes</option>
@@ -81,12 +81,12 @@
 	function listerjoueursParEquipe($numEquipe) {
 		
 		try{
-			$sql_ = "select nomJoueur as Joueur";
+			$sql_ = "select nomJoueur as Joueur, nomEquipe as Equipe ";
 			$base = " from joueurs INNER JOIN equipes on equipes.numEquipe = joueurs.numEquipe";
 			if($numEquipe != "toutes"){
 				$sql = $sql_.$base. " where equipes.numEquipe = $numEquipe";
 			}else{
-				$sql = $sql_.", nomEquipe as Equipe ".$base;
+				$sql = $sql_.$base;
 			}
 			$res = connexionBD()->query($sql);
 			if($res){
@@ -119,11 +119,12 @@
 	function afficheFormulaireAjoutjoueur(){
 	?>
 	<h1>Insertion d'un nouveau joueur</h1>	    
-	<form action="" method="post">
+	<form action="EX3_InsererJoueurs.php" method="post">
 		<fieldset> 
-			<label for="id_joueur">Nom joueur : </label><input type="text" name="joueur" id="id_joueur" size="20" /><br />
+			<label for="id_joueur">Nom joueur : </label>
+			<input type="text" name="joueur" id="id_joueur" size="20" /><br />
 			<label for="id_equipe">Nom equipe : </label>
-			<select name="equipe">
+			<select name="equipe" id="id_equipe">
 				<?php
 					// Afficher la liste des équipes
 					
@@ -146,10 +147,20 @@
 		try{
 			$db = connexionBD();
 			$joueurSTR = $db->quote($joueur);
-			$sql = "insert into joueurs (nomJoueur, numEquipe) values ($joueurSTR, $equipe)";
-			$res = $db->exec($sql);
+
+			$sql = "select nomJoueur from joueurs where nomJoueur = ".$joueurSTR." and numEquipe = ".$equipe;
+			$res = $db->query($sql);
+
 			if($res){
-				return array($joueur, $equipe);
+
+				$present = $res->fetch(PDO::FETCH_ASSOC);
+				if(!$present){
+					$sql = "insert into joueurs (nomJoueur, numEquipe) values ($joueurSTR, $equipe)";
+					$res = $db->exec($sql);
+					if($res){
+						return array($joueur, $equipe);
+					}
+				}
 			}
 			
 		}catch(Exception){
