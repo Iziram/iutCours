@@ -14,14 +14,14 @@
 	}
 	
 	//******************************************************************************
-	function afficheMenu($login, $statut = false){	// à compléter
+	function afficheMenu($login, $statut = "Etudiant"){	// à compléter
 		echo '<p>votre login est '.$login.'</p>';
 	?>
 	<ul>
 		<li><a href="index.php?action=liste_utilisateur" title="Lister les utilisateurs">Lister les utilisateurs</a></li>
 		<li><a href="index.php?action=liste_utilisateur_ville" title="Lister les utilisateurs par villle">Lister les utilisateurs par ville</a></li>	
 		<?php
-		if($statut){
+		if($statut == "Prof"){
 			?>
 			<li><a href="insertion.php?action=inserer_utilisateur" title="Insérer un utilisateur">Insérer un utilisateur</a></li>	
 		<li><a href="modification.php?action=supprimer_utilisateur" title="Supprimer un utilisateur">Supprimer un utilisateur</a></li>	
@@ -105,25 +105,38 @@
 	//******************************************************************************
 	function afficheFormulaireChoixUtilisateur($choix){
 		
-		
-		
-		
-		
-		
-		
+		$retour = array();
+		try{
+			$bd = new PDO("sqlite:bdd/iut.sqlite");
+
+			$madb = new PDO('sqlite:bdd/IUT.sqlite'); 
+			$requete = "SELECT Email FROM utilisateurs";
+
+			$res = $madb->query($requete);
+			if($res){
+				$tab = $res->fetchAll(PDO::FETCH_ASSOC);
+				if($tab){
+					$retour = $tab;
+				}
+			}
+		}catch(Exception){
+
+		}
 	?>
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 		<fieldset> 
 			<select id="id_mail" name="mail" size="1">
 				<?php // on se sert de value directement 
 					
-					
+					foreach($retour as $key){
+						echo "<option value=\"".$key["Email"]."\">".$key["Email"]	."</option>";
+					}
 					
 					
 				?>
 			</select>
 			
-			
+			<input type="submit" value="<?php echo $choix; ?>" name="valider"/>
 			
 			
 		</fieldset>

@@ -10,11 +10,11 @@
 	<head>
 		<meta charset="utf-8">
 		<link href="style.css" rel="stylesheet" type="text/css" />
-		<title>WEB2 TD56 TP45 PHP Une Application BDD NOM_ETU 2021-2022 : Insertion</title>
+		<title>WEB2 TD56 TP45 PHP Une Application BDD HARTMANN_ETU 2021-2022 : Insertion</title>
 	</head>
 	<body>
 		<header>
-			<h1>WEB2 TD56 TP45 PHP Une Application BDD BDD NOM_ETU 2021-2022 : Insertion</h1>
+			<h1>WEB2 TD56 TP45 PHP Une Application BDD BDD HARTMANN_ETU 2021-2022 : Insertion</h1>
 		</header>
 		<nav>
 			<?php

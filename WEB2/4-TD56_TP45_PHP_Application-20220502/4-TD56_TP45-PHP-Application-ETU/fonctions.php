@@ -165,11 +165,21 @@
 	}
 	//*******************************************************************************************
 	function supprimerUtilisateur($mail){
-		$retour=0;
+		$retour= false;
 		$madb = new PDO('sqlite:bdd/IUT.sqlite'); 
 		// filtrer le paramètre	
 		
-		
+		$sql = "SELECT * from utilisateurs where Email =".$madb->quote($mail);
+		$res = $madb->query($sql);
+		if($res){
+			if($res->fetch(PDO::FETCH_ASSOC)){
+				$sql = "DELETE from utilisateurs where Email = ".$madb->quote($mail);
+				$res = $madb->exec($sql);
+				if($res){
+					$retour = true;
+				}
+			}
+		}
 		
 		
 		
