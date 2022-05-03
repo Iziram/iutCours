@@ -13,7 +13,7 @@ session_start();
 		
 		<?php
 			//variables affectées à des valeurs vides
-			$nomErr = $emailErr = $genreErr = $sitewebErr = "";
+			$nomErr = $emailErr = $genreErr = $sitewebErr = $capchaErr = "";
 			$nom = $email = $genre = $comment = $siteweb = "";
 			
 			
@@ -28,7 +28,6 @@ session_start();
 			if (!empty($_POST)) {
 				if(isset($_POST['captcha'])){
 					if($_POST['captcha']==$_SESSION['code']){
-						echo "Code correct";
 						if (empty($_POST["nom"])) { $nomErr = "Il faut saisir un nom";
 						} else { $nom = formater_saisie($_POST["nom"]);
 							if (!preg_match("/^[a-zA-Z ]*$/",$nom)) {
@@ -60,7 +59,7 @@ session_start();
 							$genre = formater_saisie($_POST["genre"]);
 						}
 						} else {
-						echo "Code incorrect";
+						$capchaErr = "Capcha incorrect";
 					}
 				}
 				{
@@ -89,10 +88,15 @@ session_start();
 			<input type="radio" name="genre" value="homme">Masculin
 			<input type="radio" name="genre" value="autre">Autre
 			<span class="error">* <?php echo $genreErr;?></span>
+			<br/>
+			<label for="capcha"> Entrez le capcha :</label>
+			<input type="text" name="captcha"/><span class="error"> * <?php echo " ".$capchaErr ?></span>
+			<br/>
+			<img src="../5-Capcha/image.php" onclick="this.src='image.php?' + Math.random();" alt="captcha" style="cursor:pointer;">
 			<br/><br/>
 			<input type="submit" name="submit" value="Submit">
 			<br>
-			<img src="image.php" onclick="this.src='image.php?' + Math.random();" alt="captcha" style="cursor:pointer;">
+			
 
 		</form>
 		
