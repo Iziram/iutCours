@@ -79,10 +79,21 @@
 				}
 			}
 			
-			
+			function writeLog($message){
+				$log = fopen("access.log",'a+');
+				fputs(
+					$log, 
+					"[".date("d-m-Y H:i:s")."]".
+					" $message \n"
+				);
+				fclose($log);
+			}
 			
 			//****************************************************************************************   
-			function utilisateurExiste($login,$pass){ 
+			function utilisateurExiste($login,$pass){
+
+				writeLog("Tentative de connexion à l'utilisateur '$login' de ".$_SERVER['REMOTE_ADDR']);
+
 				try {
 					$retour = false;
 					$madb = new PDO('sqlite:bdd/IUT.sqlite');			
@@ -93,11 +104,14 @@
 					//var_dump($tableau_assoc );	
 					if (sizeof($tableau_assoc)!=0) {	// s'il y a une réponse	=> utilisateur éxiste
 						$retour = true;
+						writeLog("Connexion à l'utilisateur '$login' réussie.");
 					}// fin if
 				}// fin try
 				catch (Exception $e) {		
 					echo "Erreur BDD" . $e->getMessage();		
-				}	// fin catch	
+				}	// fin catch
+				writeLog("Connexion à l'utilisateur '$login' échouée.");
+
 				return $retour;
 			}		
 		?>

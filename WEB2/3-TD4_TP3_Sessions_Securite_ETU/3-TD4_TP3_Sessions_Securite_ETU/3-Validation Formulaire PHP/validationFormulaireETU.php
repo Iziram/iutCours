@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -23,35 +26,45 @@
 			}
 
 			if (!empty($_POST)) {
-				if (empty($_POST["nom"])) { $nomErr = "Il faut saisir un nom";
-				} else { $nom = formater_saisie($_POST["nom"]);
-					if (!preg_match("/^[a-zA-Z ]*$/",$nom)) {
-						$nomErr = "Seules les lettres et les espaces sont autorisées.";
+				if(isset($_POST['captcha'])){
+					if($_POST['captcha']==$_SESSION['code']){
+						echo "Code correct";
+						if (empty($_POST["nom"])) { $nomErr = "Il faut saisir un nom";
+						} else { $nom = formater_saisie($_POST["nom"]);
+							if (!preg_match("/^[a-zA-Z ]*$/",$nom)) {
+								$nomErr = "Seules les lettres et les espaces sont autorisées.";
+							}
+						}
+		
+						if(empty($_POST["email"])){
+							$emailErr = "Il faut mettre une email";
+						}
+						else{
+							$email = formater_saisie($_POST["email"]);
+							if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+								$emailErr = "L'email n'est pas valide.";
+							}
+						}
+						if(!empty($_POST["siteweb"])){
+							$siteweb = formater_saisie($_POST["siteweb"]);
+							if(!filter_var($siteweb,FILTER_VALIDATE_URL)){
+								$sitewebErr = "L'url n'est pas valide.";
+							}
+						}
+						if(!empty($_POST["comment"])){
+							$comment = formater_saisie($_POST["comment"]);
+						}
+						if(empty($_POST["genre"])){
+							$genreErr = "Il faut indiquer un genre.";	
+						}else{
+							$genre = formater_saisie($_POST["genre"]);
+						}
+						} else {
+						echo "Code incorrect";
 					}
 				}
-
-				if(empty($_POST["email"])){
-					$emailErr = "Il faut mettre une email";
-				}
-				else{
-					$email = formater_saisie($_POST["email"]);
-					if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
-						$emailErr = "L'email n'est pas valide.";
-					}
-				}
-				if(!empty($_POST["siteweb"])){
-					$siteweb = formater_saisie($_POST["siteweb"]);
-					if(!filter_var($siteweb,FILTER_VALIDATE_URL)){
-						$sitewebErr = "L'url n'est pas valide.";
-					}
-				}
-				if(!empty($_POST["comment"])){
-					$comment = formater_saisie($_POST["comment"]);
-				}
-				if(empty($_POST["genre"])){
-					$genreErr = "Il faut indiquer un genre.";	
-				}else{
-					$genre = formater_saisie($_POST["genre"]);
+				{
+					
 				}
 				
 			}
@@ -78,6 +91,9 @@
 			<span class="error">* <?php echo $genreErr;?></span>
 			<br/><br/>
 			<input type="submit" name="submit" value="Submit">
+			<br>
+			<img src="image.php" onclick="this.src='image.php?' + Math.random();" alt="captcha" style="cursor:pointer;">
+
 		</form>
 		
 		<?php
