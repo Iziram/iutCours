@@ -1,0 +1,16 @@
+{
+    "autodoxygen.memoire.memoire": [
+        {
+            "name": "x",
+            "description": "la variable x"
+        },
+        {
+            "name": "f",
+            "description": "Une fonction f"
+        },
+        {
+            "name": "n",
+            "description": "Le nombre de rectangles"
+        }
+    ]
+}
