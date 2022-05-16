@@ -54,7 +54,33 @@
 							afficheTableau(listeCompte());
 							break;
 						case "Modifier":
+							afficheFormulaireModificationUtilisateur(formater_saisie($_POST["mail"]));
 							break;
+						case "Mettre à jour":
+							if(
+								isset($_POST["pass"])
+								&& isset($_POST["rue"])
+								&& isset($_POST["ville"])
+								&& isset($_POST["statut"])
+							){
+								if(
+									modifierUtilisateur(
+									$_POST["mail"],
+									$_POST["pass"],
+									$_POST["rue"],
+									$_POST["ville"],
+									$_POST["statut"]
+									)
+								){
+									echo "<h2>L'utilisateur a bien été modifié</h2>";
+								}else{
+									echo "<h2>L'utilisateur n'a pas pu être modifié</h2>";
+								}
+								afficheTableau(listeCompte());
+							}
+
+							break;
+
 					}
 				}
 

@@ -84,7 +84,7 @@
 				
 				if (!empty($_SESSION) && !empty($_POST) && isset($_POST["ville"]) ){
 					$ville = formater_saisie($_POST["ville"]);
-
+					afficheFormulaireUtilisateurParVille();
 					afficheTableau(listeUtilisateurParVille($ville));
 				}
 				

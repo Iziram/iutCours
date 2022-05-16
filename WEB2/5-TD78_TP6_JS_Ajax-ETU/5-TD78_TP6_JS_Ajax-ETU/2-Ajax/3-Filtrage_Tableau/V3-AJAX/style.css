@@ -1,0 +1,100 @@
+* {
+	box-sizing : border-box;
+}
+
+body{
+margin-top:2%;
+margin-left:5%;
+margin-right:5%;
+margin-bottom:2%;
+
+}
+
+h1{
+color: blue;
+text-align : center;
+font-size:150%;
+}
+
+a:link, a:active, a:visited {
+	color: #a71817;
+	background-color: transparent;
+}
+
+a:hover {
+	color: #a71817;
+	text-decoration: none;
+	background-color: transparent;
+	text-decoration: underline;
+}
+
+header {
+width:100%;
+padding: 1%;
+border:2px solid blue;
+margin-bottom:2%;
+
+/* background-image: url(rt.png);
+background-repeat: no-repeat;
+background-position: left center; */
+}
+
+nav {
+background-color:#00ff80;
+float:right;
+width:32%;
+padding:1%;
+border:2px solid blue;
+margin-bottom:2%;
+}
+
+article {
+float:left;
+width:65%;
+padding:1%;
+padding-bottom:2%;
+border:2px solid blue;
+margin-bottom:2%;
+}
+
+
+
+footer 
+{
+width:100%;
+clear: both;
+margin-top:2%;
+background-color: #00ff80;
+padding:1%;
+border:2px solid green;
+
+}
+
+
+table /* Le tableau en lui-même */
+{
+   margin: auto; /* Centre le tableau */
+   border: 2px solid green; /* Bordure du tableau avec effet 3D (solid) */
+   border-collapse: collapse; /* Colle les bordures entre elles */
+
+}
+
+th /* Les cellules d'en-tête */
+{
+   background-color: #00ff80;
+   color: white;
+   font-size: 1.1em;
+
+}
+
+td /* Les cellules normales */
+{
+   border: 1px solid green;
+   text-align: center; /* Tous les textes des cellules seront centrés*/
+   padding: 5px; /* Petite marge intérieure aux cellules pour éviter que le texte touche les bordures */
+}
+tr
+{
+border: 1px solid black;
+
+}

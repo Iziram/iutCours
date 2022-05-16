@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>EX Javascript Formulaire HTML5 Téléphone ETUDIANT</title>
+    <script src="control.js"></script>
+</head>
+
+<body>
+    <h1>EX Javascript Formulaire HTML5 Téléphone ETUDIANT</h1>
+    <form action="suite.php" onsubmit="return control()">
+        <fieldset>
+            <div class="libelle">Nom :</div>
+            <div class="champ"><input type="text" id="nom" placeholder="Saisir votre nom" required></div>
+            <div class="libelle">Email :</div>
+            <div class="champ"><input type="email" id="email" placeholder="Saisir votre email" required></div>
+            <div class="libelle">Tél Prof:</div>
+            <div class="champ"> <input type="text" id="tel" placeholder="Saisir votre tél" pattern="[0-9]*"></div>
+            <div class="libelle">Mobile:</div>
+            <div class="champ"> <input type="text" id="mobile" placeholder="Saisir votre tél" pattern="[0-9]*"></div>
+            <div class="libelle"><input type="submit" name="envoyer" value="Envoyer"></div>
+        </fieldset>
+    </form>
+    <style>
+        .err {
+            color: red;
+        }
+    </style>
+    <form action="suite.php" onsubmit="return control2()">
+        <fieldset>
+            <div class="libelle nom">Nom :</div>
+            <div class="champ nom"><input type="text" id="nom2" placeholder="Saisir votre nom" required></div>
+            <div class="libelle email">Email :</div>
+            <div class="champ email"><input type="email" id="email2" placeholder="Saisir votre email" required></div>
+            <div class="libelle telp">Tél Prof:</div>
+            <div class="champ telp"> <input type="text" id="tel2" placeholder="Saisir votre tél" pattern="[0-9]"></div>
+            <div class="libelle telm">Mobile:</div>
+            <div class="champ telm"> <input type="text" id="mobile2" placeholder="Saisir votre tél" pattern="[0-9]*"></div>
+            <div class="libelle "><input type="submit" name="envoyer" value="Envoyer"></div>
+        </fieldset>
+    </form>
+    <p id="err">
+
+    </p>
+    <footer>
+        <p>Philippe DURAND <a href="http://www.iut-lannion.fr">IUT Lannion</a></p>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>WEB2 Javascript 2022</title>
+
+    <style type="text/css">
+        .rouge {
+            color: red;
+            font-size: 0.7em;
+            font-style: verdana;
+            margin-left: 10px;
+        }
+
+        .bleu {
+            color: blue;
+            font-size: 0.7em;
+            font-style: verdana;
+            margin-left: 10px;
+        }
+
+        .estCache {
+            visibility: hidden;
+        }
+
+        .estVisible {
+            visibility: visible;
+        }
+    </style>
+    <script src="qcm.js"></script>
+    <script src="autre.js"></script>
+
+</head>
+
+<body>
+    <h1>WEB2 Javascript 2022</h1>
+    <h3>Testons votre culture générale</h3>
+
+    <p onclick="afficherQuestion(1)"><i>Cliquez ici pour commencer le questionnaire</i></p>
+
+    <div name="question1" id="question1">
+        <p><u>Question 1</u> - En quelle année JavaScript a-t-il été créé ?</p>
+        <input type="radio" name="annee" id="annee" value="1985"> 1985
+        <input type="radio" name="annee" id="annee" value="1990"> 1990
+        <input type="radio" name="annee" id="annee" value="1995"> 1995
+        <input type="button" name="btn_annee" value="OK" onclick="verifierQ1()">
+        <p id="msg1"></p>
+    </div>
+
+    <div name="question2" id="question2">
+        <p><u>Question 2</u> - En combien de jours a été créé le code JavaScript ?</p>
+        <label>Votre réponse : </label>
+        <input type="text" id="nbJours" name="nbJours" placeholder="Nombre de jours">
+        <input type="button" name="btn_nbJours" value="OK" onclick="verifierQ2()">
+        <p id="msg2"></p>
+    </div>
+
+    <div name="question3" id="question3">
+        <p><u>Question 3</u> - JavaScript a été créé pour le compte de la <i>Netscape Communications Corporation<i></p>
+        <input type="radio" name="vraifaux" value="Vrai"> Vrai
+        <input type="radio" name="vraifaux" value="Faux"> Faux
+        <input type="button" name="btn_edition" value="OK" onclick="verifierQ3()">
+        <p id="msg3"></p>
+    </div>
+
+    <p id="msgFinal">Source : WIKIPEDIA <a href="https://fr.wikipedia.org/wiki/JavaScript">Cliquez ici pour plus d'information</a>
+        <p>
+            <script>
+                cacherQuestions();
+            </script>
+
+</body>
+
+</html>
