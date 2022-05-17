@@ -1,23 +1,28 @@
  <!DOCTYPE html>
 <html lang="fr">
-<head>
-<meta charset="utf-8" />
-<link href="design/galerie.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="galerie_etu.js"></script>
-<title>Galerie d'images</title>
-</head>
-<body>
-<h1>Galerie d'images</h1>
-<hr />
-<div>
-<br/>
-<img id="i_pred" src="design/bPrec.gif" alt="précédent"/>
-<img id="i_suiv" src="design/bSuiv.gif" alt="suivant"/>
-<br />
-<p id="chemin_image"></p>
-<img id="image" src="" alt=""/>
-<br/>
-</div>
-<hr/>
-</body>
+    <head>
+        <meta charset="utf-8" />
+        <link href="design/galerie.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="galerie_etu.js"></script>
+        <title>Galerie d'images</title>
+        <script>lancement()</script>
+
+    </head>
+    <body onload="Deplacement('+')">
+        <h1>Galerie d'images</h1>
+        <hr />
+        <div>
+            <br/>
+            <img id="i_pred" src="design/bPrec.gif" alt="précédent" onclick="Deplacement('-')"/>
+
+            <img id="i_suiv" src="design/bSuiv.gif" alt="suivant" onclick="Deplacement('+')"/>
+            <br />
+
+            <p id="chemin_image"></p>
+
+            <img id="image" src="" alt=""/>
+            <br/>
+        </div>
+        <hr/>
+    </body>
 </html>

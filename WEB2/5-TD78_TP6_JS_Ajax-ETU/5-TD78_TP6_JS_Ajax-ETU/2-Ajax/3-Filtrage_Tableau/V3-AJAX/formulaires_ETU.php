@@ -9,7 +9,7 @@ function afficheFormulaireEtudiantParVilleAJAX(){
 <form id="form1" action="<?php echo $_SERVER['PHP_SELF']; ?>"  method="get">
 <fieldset> 
 <label for="id_ville">Rechercher Etudiant par Ville</label> 
-<select id="id_ville" name="ville" size="1"  >
+<select id="id_ville" name="ville" size="1" onchange="listeFiltreUtilisateurs(this.value)">
 			<option value="0">Choisir une Ville</option>
 			<?php
 			foreach ($tableau_assoc as $ligne)	{	

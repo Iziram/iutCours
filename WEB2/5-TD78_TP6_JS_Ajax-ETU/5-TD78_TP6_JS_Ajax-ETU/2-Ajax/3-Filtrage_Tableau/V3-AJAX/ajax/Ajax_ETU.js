@@ -1,28 +1,28 @@
 ﻿/*****************************************************************/
 function listeFiltreUtilisateurs(ville)	{
-var req_AJAX = null;// Objet qui sera crée
-if (window.XMLHttpRequest) 	{	// Mozilla, Safari
-	req_AJAX= new XMLHttpRequest();
-	} 
-if (req_AJAX) 	{
+	if(ville == 0) return;
+	if(window.fetch){
+		choix = new FormData();
+		choix.append('choix',ville);
+		let header = {
+            method: "post",
+            body: choix
+        };
+		window.fetch(
+			"listeUtilisateurs_ETU.php",
+			header
+		).then(res => res.text())
+		.then(
 
+			res => {
+				const el = document.getElementById('tableau');
+					el.innerHTML = res;
+			}
 
-
-
-
-	} 
-else 	{ 	
-	alert("EnvoiRequete: pas de XMLHTTP !");	
+		).catch( res => {console.error(res)})
 	}
-} // fin fonction listeUtilisateurs()
-
-function TraiteListeFiltreUtilisateurs(requete)	{
-	
-
-	
-	
-	
-	
 }
+
+
 
 
