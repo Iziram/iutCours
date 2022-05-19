@@ -3,6 +3,6 @@ function cacherBtnOK() {
         return el.type == "button"
     });
     btn.forEach(el => {
-        el.remove();
+        el.classList.add('estCache');
     });
 }
