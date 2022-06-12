@@ -8,13 +8,17 @@ Created on Tue Mar 15 09:31:27 2022
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.signal
-
+from scipy.io.wavfile import write
+from scipy.io import wavfile
 plt.close('all')
 
-
 ############################################################################
+
+
+
+
 def spectre(signal):
-    Fourier = 2/(len(signal))*np.fft.fftshift(np.fft.fft(signal,int(1000)))
+    Fourier = 2/len(signal)*np.fft.fftshift(np.fft.fft(signal,int(2*len(signal))))
     Module = np.abs(Fourier)
     Module1=Module[int(len(Module)/2):len(Module)]
     return Module1
@@ -46,7 +50,7 @@ def filtre(ordre, fc, typef,entree ):
         ax.set_ylim([-65,5])
         ax.xaxis.set_tick_params(labelsize=12)
         ax.yaxis.set_tick_params(labelsize=12)
-        ax.set_title('Gain en dB du filtre', fontsize=14)
+        ax.set_title('Gain en dB du filtre', fontsize=16)
         ax.set_xlabel('Fréquence, échelle semilog', fontsize=14)
         ax.set_ylabel('20log|G| en dB', fontsize=14)
         ax.grid(True, which="both")
@@ -69,7 +73,7 @@ def filtre(ordre, fc, typef,entree ):
         ax.set_ylim([-65,5])
         ax.xaxis.set_tick_params(labelsize=12)
         ax.yaxis.set_tick_params(labelsize=12)
-        ax.set_title('Gain en dB du filtre', fontsize=14)
+        ax.set_title('Gain en dB du filtre', fontsize=16)
         ax.set_xlabel('Fréquence, échelle semilog', fontsize=14)
         ax.set_ylabel('20log|G| en dB', fontsize=14)
         ax.grid(True, which="both")
@@ -85,100 +89,57 @@ def filtre(ordre, fc, typef,entree ):
     fig.tight_layout()
     out=scipy.signal.lfilter(b, a, entree)
     return out
-
-def sinus(a, f, t):
-    return a * np.sin(2*np.pi*f*t)
-def cosinus(a, f, t):
-    return a * np.cos(2*np.pi*f*t)
 #############################################################################
-fe=10000
-T=0.06
+
+
+# importation du fichier son
+fe, mod = wavfile.read("matthias.wav")
+T=len(mod)/fe
 
 t = np.linspace(0,T-1/fe,int(T*fe))
-f=np.linspace(0,fe/2-1/500,int(500))
+f=np.linspace(0,fe/2-1/len(mod),int(len(mod)))
 
-# Partie 2.1
-modulant = sinus(1, 100, t)
-affichage(t, modulant, "Modulant")
-"""
+""" == Partie 2.2 : Importation sous python == """
+# incompréhension ici, mon fichier à toutes les caractéristiques d'un fichier wav 24 bit PCM et fe = 22050Hz
+# néanmoins je dois diviser mon signal par 2**31 au lieu de 2**23
+signal = np.divide(mod, 2**31) 
 
-Le signal affiché correspond bien au signal "Modulan" entré.
-Il y a bien un motif qui dure 0.01 secondes et l'amplitude va bien de 1V à -1V
 
-"""
+# affichage(t,signal,"signal temporel échantillonné")
 
-affichage(f, spectre(modulant), "Spectre du modulant")
+# affichage(f, spectre(signal), 'spectre du signal échantillonné')
 
-""" 
-Le spectre est bien représenté, 
-on y voit une seule raie en f = 100Hz et qui a pour valeur 1V
-"""
+signal_filtre = filtre(7, 3000, 'low', signal)
+# affichage(f,spectre(signal_filtre), 'spectre du signal échantillonné et filtré')
 
-#Partie 2.2
+""" == Partie 2.3 : Transposition de fréquence == """
 
-porteuse = cosinus(1, 1000, t)
+signal_porteur = np.cos(2*np.pi*3307*t)
+signal_transporte = np.multiply(signal_porteur, signal_filtre)
 
-module = modulant * porteuse
+""" Affichage du signal porteur """
+# affichage(t, signal_porteur, 'Signal temporel porteur')
+# affichage(f, spectre(signal_porteur), 'spectre du signal porteur')
 
-affichage(t, porteuse, "Affichage de la porteuse")
-affichage(f, spectre(porteuse), "Affichage de la porteuse")
-affichage(t, module, "Affichage du module")
-affichage(f, spectre(module), "Affichage du module")
+""" Affichage du signal transporté """
+# affichage(t, signal_transporte, 'Signal temporel transporté')
+# affichage(f, spectre(signal_transporte), 'spectre du signal transporté')
 
-"""
-Le spectre du module généré correspond bien au spectre théorique.
-On retrouve bien 2 raies centrée autour de fe et ayant pour fréquence :
-fe - fm et fe +fm
-Leur amplitude étant 0.5 V.
-"""
 
-#Partie 3.1
-demod = module * porteuse
+""" == Partie 2.4 : Démodulation == """
 
-affichage(t, demod, "Affichage du module multiplé par la porteuse")
-affichage(f, spectre(demod), "Affichage du module multiplé par la porteuse")
-""" 
-Niveau temporel : l'amplitude du signal est 1V/-1V
-Niveau fréquentiel : 
-    Il y a 3 raies :
-        1ere raie : f= 100Hz A = 0,5V
-        2eme raie : f= 1900Hz A = 0.25V
-        3eme raie : f= 2100Hz A = 0.25V
+signal_demodule = np.multiply(signal_transporte, signal_porteur)
+signal_demodule_filtre = filtre(7, 3000, 'low', signal_demodule)
 
-Cela correspond à la théorie, nous avons bien une raie 
-correspondant à la raie du modulant et 2 raies déplacés du double de la porteuse.
-"""
+""" Affichage du signal demodulé """
+affichage(t, signal_demodule, 'Signal temporel démodulé')
+affichage(f, spectre(signal_demodule), 'spectre du signal démodulé')
 
-#Partie 3.2
+""" Affichage du signal demodulé et filtré """
+affichage(t, signal_demodule_filtre, 'Signal temporel démodulé et filtré')
+affichage(f, spectre(signal_demodule_filtre), 'spectre du signal démodulé et filtré')
 
-sortie = filtre(4, 200, "low", demod)
 
-affichage(f, spectre(sortie), "Spectre du signal de sortie")
-"""
-1 seule raie, avec f = 100Hz et A = 0.5
+""" == Partie 2.5 : Ecoute du son == """
+write('final.wav',fe,signal_demodule_filtre)
 
-Le passe bas garde alors la raie correspondant au signal modulant et retire les 
-fréquences correspondantes à l'échantillonage
-"""
-
-affichage(t, sortie, "Affichage du signal de sortie")
-affichage(t, modulant, "Affichage du signal de sortie")
-"""
-Les signaux sont quasiment identiques. Seul l'amplitude change, 
-0.5V/-0.5V pour le signal de sortie
-1V/-1V pour le signal modulant
-"""
-
-#Partie 4
-
-modulant = sinus(0.5, 100, t)
-porteuse = cosinus(1, 1000, t)
-
-module = (1 + modulant) * porteuse
-affichage(f, spectre(module), "Affichage du spectre du signal modulé")
-demod = module * porteuse
-sortie = filtre(2, [90,200], "band", demod)
-affichage(f, spectre(sortie), "Affichage du spectre du signal modulé")
-
-affichage(t, modulant, "Affichage du signal d'origine")
-affichage(t, sortie, "Affichage du signal de sortie")
