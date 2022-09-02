@@ -1,3 +1,0 @@
-- Fréquence d'échantillonage : 22050 Hz
-- Nombre de bits : 24
-- Fréquence porteuse : 3307 Hz
