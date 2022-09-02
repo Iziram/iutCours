@@ -14,6 +14,7 @@ class Equation2ndeDegre:
 
 
     """
+
     def __init__(self, parm_a: float = 0, parm_b: float = 0, parm_c: float = 0) -> None:
         """constructeur avec paramètres par défaut
         a, b, c : 3 variables locales à la méthode
