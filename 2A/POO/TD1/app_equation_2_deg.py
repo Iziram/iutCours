@@ -14,11 +14,14 @@ class Equation2ndDeg:
     """
 
     def __init__(self, coeff_a: float, coeff_b: float, coeff_c: float) -> None:
+        self.set_coeff(coeff_a, coeff_b, coeff_c)
+        self.__sol_1: float = None
+        self.__sol_2: float = None
+
+    def set_coeff(self, coeff_a: float, coeff_b: float, coeff_c: float) -> None:
         self.__a: float = coeff_a
         self.__b: float = coeff_b
         self.__c: float = coeff_c
-        self.__sol_1: float = None
-        self.__sol_2: float = None
 
     def get_delta(self) -> float:
         """!
@@ -33,13 +36,18 @@ class Equation2ndDeg:
         _delta: float = self.__b**2 - 4 * self.__a * self.__c
         return _delta
 
+    def is_solution_real(self) -> bool:
+        real: bool = True
+        real = self.get_delta() >= 0
+        return real
+
     def get_coeff(self) -> Tuple[float]:
         coeff: Tuple[float] = (self.__a, self.__b, self.__c)
         return coeff
 
     def calcule_les_solutions(self) -> Tuple[float]:
         delta: float = self.get_delta()
-        if delta > 0:
+        if self.is_solution_real():
             coeff_a, coeff_b, _ = self.get_coeff()
             self.__sol_1 = (coeff_b + delta**2) / (2 * coeff_a)
             self.__sol_2 = (coeff_b - delta**2) / (2 * coeff_a)
