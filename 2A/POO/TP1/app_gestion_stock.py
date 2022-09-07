@@ -1,16 +1,61 @@
+"""! @brief [description du fichier]
+ @file app_gestion_stock.py
+ @section libs Librairies/Modules
+  - typing (lien)
+ @section authors Auteur(s)
+  - Créé par Hartmann Matthias le 07/09/2022 .
+"""
 from typing import Dict, Tuple, List
 
 
 class Article:
+    """!
+    @brief [Description de la classe]
+
+
+    """
+
     def __init__(self, nom: str, quantite: int, prix: float):
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Article
+            @param nom : str => [description]
+            @param quantite : int => [description]
+            @param prix : float => [description]
+
+        """
         self.set(nom, quantite, prix)
 
     def set(self, nom: str, quantite: int, prix: float) -> None:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Article
+            @param nom : str => [description]
+            @param quantite : int => [description]
+            @param prix : float => [description]
+        Retour de la fonction :
+            @return None => [description]
+
+        """
         self.__nom: str = nom
         self.__quantite: int = quantite
         self.__prix: float = prix
 
     def acheter(self, quantite: int) -> float:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Article
+            @param quantite : int => [description]
+        Retour de la fonction :
+            @return float => [description]
+
+        """
         total: float = None
         if quantite <= self.__quantite:
             total = quantite * self.__prix
@@ -20,33 +65,126 @@ class Article:
         return total
 
     def get(self) -> str:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Article
+        Retour de la fonction :
+            @return str => [description]
+
+        """
+
         return f"Nom : {self.__nom} | Quantité : {self.__quantite} | Prix Unitaire : {self.__prix}€"
 
     def get_nom(self) -> str:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Article
+        Retour de la fonction :
+            @return str => [description]
+
+        """
         return self.__nom
 
     def get_quantite(self) -> int:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Article
+        Retour de la fonction :
+            @return int => [description]
+
+        """
         return self.__quantite
 
     def get_prix(self) -> float:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Article
+        Retour de la fonction :
+            @return float => [description]
+
+        """
         return self.__prix
 
     def get_dict(self) -> Dict[str, str or int or float]:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Article
+        Retour de la fonction :
+            @return Dict[str, str or int or float] => [description]
+
+        """
         return self.__dict__
 
     def get_attributs(self) -> Tuple[str, int, float]:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Article
+        Retour de la fonction :
+            @return Tuple[str, int, float] => [description]
+
+        """
         return (self.__nom, self.__quantite, self.__prix)
 
 
 class Magasin:
+    """!
+    @brief [Description de la classe]
+
+
+    """
+
     def __init__(self) -> None:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Magasin
+        Retour de la fonction :
+            @return None => [description]
+
+        """
         self.__liste_articles: List[Article] = []
         self.__chiffre_affaire: float = 0.0
 
     def ajouter(self, nom: str, quantite: int, prix: float) -> None:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Magasin
+            @param nom : str => [description]
+            @param quantite : int => [description]
+            @param prix : float => [description]
+        Retour de la fonction :
+            @return None => [description]
+
+        """
         self.__liste_articles.append(Article(nom, quantite, prix))
 
     def acheter(self, indice: int, quantite: int) -> float:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Magasin
+            @param indice : int => [description]
+            @param quantite : int => [description]
+        Retour de la fonction :
+            @return float => [description]
+
+        """
         total: float = 0.0
         if indice < len(self.__liste_articles):
             total = self.__liste_articles[indice].acheter(quantite)
@@ -55,9 +193,28 @@ class Magasin:
         return total
 
     def get(self) -> str:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Magasin
+        Retour de la fonction :
+            @return str => [description]
+
+        """
         return str([a.get_attributs() for a in self.__liste_articles])
 
     def get_indice(self, nom: str) -> int:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Magasin
+            @param nom : str => [description]
+        Retour de la fonction :
+            @return int => [description]
+
+        """
         iterator: int = 0
         indice: int = -1
         while iterator < len(self.__liste_articles):
@@ -68,6 +225,15 @@ class Magasin:
         return indice
 
     def get_chiffre_affaire(self) -> float:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param self => variable représentant l'instance de l'objet Magasin
+        Retour de la fonction :
+            @return float => [description]
+
+        """
         return self.__chiffre_affaire
 
 

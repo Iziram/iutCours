@@ -1,14 +1,13 @@
 from math import atan2, cos, sin, pi
+import copy
 
 
 class Complexe:
     MODE_REPRESENTATION = "math"
 
-    def __init__(self, x: float, y: float) -> None:
-        if Complexe.MODE_REPRESENTATION == "math":
-            self.set_rectangulaires(x, y)
-        elif Complexe.MODE_REPRESENTATION == "elec":
-            self.set_polaire(x, y)
+    def __init__(self) -> None:
+        self.__reel = None
+        self.__img = None
 
     def set_rectangulaires(self, reel: float, img: float) -> None:
         self.__reel = reel
@@ -45,27 +44,123 @@ class Complexe:
 
 
 class MaClasseMath:
+    """!
+    @brief [Description de la classe]
+
+
+    """
+
     @staticmethod
-    def multiplier(c1: Complexe, c2: Complexe) -> Complexe:
-        calcul: Complexe = None
-        temp_mode: str = Complexe.MODE_REPRESENTATION
-        Complexe.change_mode("elec")
-        calcul = Complexe(
-            c1.get_ro() * c2.get_ro(),
-            (cos(c1.get_teta() + c2.get_teta()) + sin(c1.get_teta() + c2.get_teta())),
+    def addition(c_1: Complexe, c_2: Complexe) -> Complexe:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param c_1 : Complexe => [description]
+            @param c_2 : Complexe => [description]
+        Retour de la fonction :
+            @return Complexe => [description]
+
+        """
+        calcul: Complexe
+        calcul = Complexe()
+        calcul.set_rectangulaires(
+            c_1.get_reel() + c_2.get_reel(), c_1.get_img() + c_2.get_img()
         )
-        Complexe.change_mode(temp_mode)
+        return calcul
+
+    @staticmethod
+    def soustraire(c_1: Complexe, c_2: Complexe) -> Complexe:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param c_1 : Complexe => [description]
+            @param c_2 : Complexe => [description]
+        Retour de la fonction :
+            @return Complexe => [description]
+
+        """
+        calcul: Complexe
+        calcul = Complexe()
+        calcul.set_rectangulaires(
+            c_1.get_reel() - c_2.get_reel(), c_1.get_img() - c_2.get_img()
+        )
+        return calcul
+
+    @staticmethod
+    def multiplier(c_1: Complexe, c_2: Complexe) -> Complexe:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param c1 : Complexe => [description]
+            @param c2 : Complexe => [description]
+        Retour de la fonction :
+            @return Complexe => [description]
+
+        """
+        calcul: Complexe = Complexe()
+
+        calcul.set_polaire(c_1.get_ro() * c_2.get_ro(), c_1.get_teta() + c_2.get_teta())
+
+        return calcul
+
+    @staticmethod
+    def diviser(c_1: Complexe, c_2: Complexe) -> Complexe:
+        """!
+        @brief [Description de la fonction]
+
+        Paramètres :
+            @param c1 : Complexe => [description]
+            @param c2 : Complexe => [description]
+        Retour de la fonction :
+            @return Complexe => [description]
+
+        """
+        calcul: Complexe = Complexe()
+
+        calcul.set_polaire(c_1.get_ro() / c_2.get_ro(), c_1.get_teta() - c_2.get_teta())
+
         return calcul
 
 
 if __name__ == "__main__":
-    z1 = Complexe(-0.5, -0.5)
+    # déclarez variables de type Complexe nommés z1, z2, z3, z4 et z5
+    z1: Complexe = Complexe()
+    z2: Complexe = Complexe()
+    z3: Complexe = Complexe()
+    z4: Complexe = Complexe()
+    z5: Complexe = Complexe()
+    # instanciez z1, z2, z3
+    # initialisez z1 avec les valeurs [1.0 ; 45.0°]
+    z1.set_polaire(1.0, pi / 4)
+
+    # instanciez z2 avec les valeurs Re= 0.7071 Im=-0.7071
+    z2.set_rectangulaires(0.7071, -0.7071)
+    # afficher les 3 complexes
     print(z1.get())
+    print(z2.get())
+    print(z3.get())
+    print("---------suite------------")
+    # Modifier les coordonnées de z3 avec les valeurs : Ro=2.0 Téta=90.0
+    z3.set_polaire(2.0, pi / 2)
+    # copier z3 dans z4 en utilisant la méthode copy du module copy
+    z4 = copy.copy(z3)
+    # modification de z4 pour vérification avec les valeurs Re=0.0 et Im=0.0
+    z4.set_rectangulaires(0.0, 0.0)
+    # afficher z4
+    print(z4.get())
+    # Multiplier z1 par z2 et mettre le résultat dans z5
+    z5 = MaClasseMath.multiplier(z1, z2)
+    # Ajouter z1 par z2 et mettre le résultat dans z6
+    z6 = MaClasseMath.addition(z1, z2)
+    print("---------nouveau mode affichage------------")
+    # changer le mode d'affichage et afficher les – complexes
     Complexe.change_mode("elec")
     print(z1.get())
-    z2 = Complexe(5, -3 * pi / 2.0)
-    Complexe.change_mode("math")
     print(z2.get())
-
-    z3 = MaClasseMath.multiplier(z1, z2)
     print(z3.get())
+    print(z4.get())
+    print(z5.get())
+    print(z6.get())
