@@ -1,0 +1,8 @@
+{
+    "autodoxygen.memoire.memoire": [
+        {
+            "name": "self",
+            "description": "variable représentant l'instance de l'objet Equation2ndDeg"
+        }
+    ]
+}
