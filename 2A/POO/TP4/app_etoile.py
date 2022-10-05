@@ -62,7 +62,7 @@ def afficheEffacePoints(points: List[Point], sleep_time: int = .5):
 
 
 def affiche_derniere_ligne(msg: str) -> None:
-    p = Point()
+    p = Point(0, 0, '')
     for i in range(len(msg)):
         p.affiche_car(i+1, GLOBALES .HAUTEUR+1, msg[i])
     # pour compléter la ligne avec des espaces
@@ -71,11 +71,19 @@ def affiche_derniere_ligne(msg: str) -> None:
 
 
 def compte_etoile(tpl):
+
     cnt: int = 0
     for i in tpl:
         if i.is_alive():
             cnt += 1
     return cnt
+
+
+def timer_compter(nb_etoiles):
+    while nb_etoiles > 0:
+        sleep(0.05)
+        nb_etoiles = compte_etoile(liste_etoiles)
+        affiche_derniere_ligne(f"nb etoiles : {nb_etoiles}")
 
 
 if __name__ == '__main__':
@@ -89,7 +97,7 @@ if __name__ == '__main__':
     temps_visible: float
     # initialisation et instanciation
     liste_etoiles = []
-    nb_etoiles = 100
+    nb_etoiles = 1000
     duree = 5.0
     os.system("cls")
     # boucle pour générer les etoiles et les ajouter à la liste
@@ -97,14 +105,14 @@ if __name__ == '__main__':
         # generer aléatoirement x, y, temps_sommeil, temps_visible
         x = randint(0, GLOBALES.LARGEUR)
         y = randint(0, GLOBALES.HAUTEUR)
-        temps_visible = randint(2, 4)*0.5
-        temps_sommeil = randint(2, 4)*0.1
-        liste_etoiles.append(Etoile(x, y, temps_sommeil, temps_visible))
+        temps_visible = randint(1, 10)*0.02
+        temps_sommeil = randint(1, 100) * 0.02
+        e = None
+        e = Etoile(x, y, temps_sommeil, temps_visible)
+        liste_etoiles.append(e)
     # boucle pour lancer les threads
     for etoile in liste_etoiles:
-        etoile.run()
+        etoile.start()
     # compter le nombre d'étoiles toutes les 30 ms
-    while nb_etoiles > 0:
-        sleep(0.03)
-        nb_etoiles = compte_etoile(liste_etoiles)
-        affiche_derniere_ligne(f"nb etoiles : {nb_etoiles}")
+    th1 = Thread(target=timer_compter, args=(nb_etoiles,))
+    th1.start()
