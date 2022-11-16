@@ -1,0 +1,20 @@
+--first part :  Introduction--
+
+Hello, My name is Matthias Hartmann, I'm 19 years old and I'm currently studying Networks and Telecommunications thanks to a sandwich course in the I.U.T of Lannion in France. During my free time i like practicing fencing or playing video games. But what i love doing is programming. This why i aspire to be a Software developer. That's why I've been learning, studying and focusing on aquiring Computer skills.
+
+
+--Second part : Skills / Education--
+
+Thanks to my sandwich course in Networks engineering and telecommunications i've earned loads of differents skills such as setting up a local area network and managing it or understand the protocols that rule internet. Moreover I'm also skilled in Programming. I've been programming since I'm twelve, during that time I learned quite a lot of programming languages, Python Javascript, Java beeing the main ones. I do have hands on experience on differents programming tools like GitHub to organise my projects or VisualStudioCode to program on. Theses skills make me a polyvent asset in an IT field.
+
+
+
+--Third part : Projects / Experiences--
+
+To mobilize thoses skills i've participated in multiples projects during my course and personal time. The latest was developing a web tool to display data. This project was part of my technical interview during the hiring process of my sandwich course job application. During this project I had to show that I knew how to code in Python and JavaScript but also comprehend the specification note. I've succesfuly delivered the project to the interviewer and was hired after that.
+
+--Last part : Contact Infos--
+
+If my profile interests you, you can always contact me. Whether it is by email : matthias.hartmann@iziram.fr
+or by phone : +33 781 510 261
+I hope you liked my profile and I'm waiting to hear about you.

@@ -1,0 +1,8 @@
+{
+    "autodoxygen.memoire.memoire": [
+        {
+            "name": "matrice",
+            "description": "une matrice numpy"
+        }
+    ]
+}
