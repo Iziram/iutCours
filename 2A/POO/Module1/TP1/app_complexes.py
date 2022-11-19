@@ -3,6 +3,8 @@ import copy
 
 
 class Complexe:
+    """ """
+
     MODE_REPRESENTATION = "math"
 
     def __init__(self) -> None:

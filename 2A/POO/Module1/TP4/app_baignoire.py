@@ -58,7 +58,8 @@ def pgrm_thread(vmax, vinit, tmp_remp, tmp_f, nb_r, nb_f):
 
 if __name__ == "__main__":
     print("Simple")
-    pgrm_simple(60, 0, 0.5, 0.5)
+    # pgrm_simple(60, 0, 0.5, 0.5)
     print("Thread")
     pgrm_thread(100, 50, 0.5, 0.3, 10, 8)
-    pgrm_thread(100, 50, 0.5, 0.3, 10, 5)
+    print("Thread2")
+    # pgrm_thread(100, 50, 0.5, 0.3, 10, 5)
