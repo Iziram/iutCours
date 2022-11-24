@@ -4,23 +4,25 @@ import sys
 
 
 class Client:
-
     def __init__(self, ip_server: str, port_server: int) -> None:
         self.__ip_serv: str = ip_server
         self.__port_serv: int = port_server
 
         self.__socket_echange: socket = socket(AF_INET, SOCK_STREAM)
 
-    def connexion(self) -> None:
+    def connexion(self) -> bool:
 
         try:
             self.__socket_echange.connect((self.__ip_serv, self.__port_serv))
+            return True
 
         except:
             print("La connexion n'a pas pu se faire")
+            return False
 
     def envoyer(self, msg: str) -> None:
-
+        if msg == "":
+            msg = " "
         tab_bytes: list[bytes] = msg.encode("utf-8")
 
         self.__socket_echange.send(tab_bytes)
@@ -77,7 +79,6 @@ if __name__ == "__main__":
 
     client = Client(ip_serveur, port_serveur)
 
-    client.connexion()
-
-    client.echange()
-    client.arret()
+    if client.connexion():
+        client.echange()
+        client.arret()
