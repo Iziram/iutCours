@@ -1,0 +1,14 @@
+"""
+Objectif : 
+3 MDP essais
+Le client se connecte au serveur en TCP [REG, VLD] -> [LOG, VLD] -> [PSS, VLD] ✅
+il se log et accède à la liste des autres clients ✅
+il choisit un autre client
+il "appelle" l'autre client (demande au serveur, serveur envoi un flag, clients
+    ouvrent UDP channel envoi et channel reception)
+il termine l'appel (demande au serveur, serveur envoi flag fin, clients ferment
+    UDP channel)
+il peut appeler quelqu'un d'autre ^
+il peut se déconnecter (envoie flag au serveur, serveur envoi flag. TCP channel fermé) ✅
+
+"""
