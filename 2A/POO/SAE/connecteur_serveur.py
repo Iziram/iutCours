@@ -1,8 +1,8 @@
 from socket import socket, AF_INET, SOCK_DGRAM, SOCK_STREAM
 from threading import Thread
-from common import Flag, CommandLink
 from enum import Enum, auto
 from select import select
+from common import Flag, CommandLink
 
 
 class Server:

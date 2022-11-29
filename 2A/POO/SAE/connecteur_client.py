@@ -1,8 +1,8 @@
-from socket import socket, AF_INET, SOCK_DGRAM, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_DGRAM
 from threading import Thread
-from common import Flag, CommandLink
 from sys import argv
 from time import sleep
+from common import Flag, CommandLink
 
 
 class Client(CommandLink):
@@ -19,29 +19,29 @@ class Client(CommandLink):
         self.__audio_port: int = None
         self.__audio_channel: socket = socket(AF_INET, SOCK_DGRAM)
 
-    def getAudioPort(self) -> int:
+    def get_audio_port(self) -> int:
         return self.__audio_port
 
-    def setAudioPort(self, port: int) -> None:
+    def set_audio_port(self, port: int) -> None:
         self.__audio_port = port
 
-    def setAudioChannel(self, address: str = "127.0.0.1") -> None:
+    def set_audio_channel(self, address: str = "127.0.0.1") -> None:
         self.__audio_channel.bind((address, self.__audio_port))
 
-    def closeAudioChannel(self) -> None:
+    def close_audio_channel(self) -> None:
         try:
             self.__audio_channel.close()
-        except:
+        except Exception:
             pass
         self.__audio_port = None
 
-    def maintainCommandChannel(self, timeout: float = 4.8):
+    def maintain_command_channel(self, timeout: float = 4.8):
         while self.__alive:
             sleep(timeout)
             if self.__alive:
                 self.sendTim()
 
-    def connectToCommandServer(self) -> bool:
+    def connect_to_command_server(self) -> bool:
         connected: bool = False
         self.getCommandChannel().connect((self.__server_ip, self.__server_port))
 
@@ -65,7 +65,7 @@ class Client(CommandLink):
         print("connected", connected)
         return connected
 
-    def commandSender(self):
+    def command_sender(self):
         while self.__alive:
             inp: str = input("f: ")
             if inp != "":
@@ -73,7 +73,7 @@ class Client(CommandLink):
                 if self.__alive:
                     self.sendFlag(flag)
 
-    def commandReceiver(self):
+    def command_receiver(self):
         try:
             while self.__alive:
                 flag_r, data = self.receiveFlag()
@@ -81,7 +81,7 @@ class Client(CommandLink):
                     print(flag_r, data)
                 if flag_r == Flag.ENT:
                     self.__alive = False
-        except:
+        except Exception:
             pass
         self.closeCommandChannel()
 
@@ -92,10 +92,10 @@ class Client(CommandLink):
 
 if __name__ == "__main__":
     clt = Client("127.0.0.1", 5000, argv[1], "mdp")
-    if clt.connectToCommandServer():
-        rec = Thread(target=clt.commandReceiver)
-        sen = Thread(target=clt.commandSender)
-        tims = Thread(target=clt.maintainCommandChannel)
+    if clt.connect_to_command_server():
+        rec = Thread(target=clt.command_receiver)
+        sen = Thread(target=clt.command_sender)
+        tims = Thread(target=clt.maintain_command_channel)
         sen.start()
         rec.start()
         tims.start()

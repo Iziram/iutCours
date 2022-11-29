@@ -1,5 +1,5 @@
 from enum import Enum
-from socket import socket, AF_INET, SOCK_DGRAM, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_STREAM
 
 
 class Flag(Enum):
@@ -29,6 +29,10 @@ class Flag(str, Enum):
     INF = "inf"  # general info of call "info time:1000 rec:username"
     FIN = "fin"  # Close current call
 
+    # JSON
+    GAN = "gan"  # Get the phone book "get {[...]}"
+    PAN = "pan"  # upload the phone  book "pan {[...]}"
+
     @staticmethod
     def getFlagFromStr(str_flag: str) -> Flag:
         flag: Flag
@@ -38,7 +42,7 @@ class Flag(str, Enum):
             flag = Flag.NUL
         return flag
 
-    def encode(self, encoding: str) -> bytes:
+    def encode(self, encoding: str, _: str) -> bytes:
         return self.value.encode(encoding)
 
 
@@ -53,7 +57,7 @@ class CommandLink:
         flag: Flag = Flag.getFlagFromStr(data[0])
         return (flag, data[1:])
 
-    def sendFlag(self, flag: Flag = None, data: str = None, flag_data: str = None):
+    def sendFlag(self, flag: Flag = None, data: str = None):
         bytes_array: bytes
         if data is not None:
             bytes_array = f"{flag} {data}".encode("utf-8")
@@ -77,5 +81,5 @@ class CommandLink:
     def getCommandChannel(self) -> socket:
         return self.__command_channel
 
-    def setCommandChannel(self, socket: socket):
-        self.__command_channel = socket
+    def setCommandChannel(self, _socket_: socket):
+        self.__command_channel = _socket_
