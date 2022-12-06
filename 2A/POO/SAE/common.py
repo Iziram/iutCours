@@ -23,8 +23,9 @@ class Flag(str, Enum):
     LSD = "lsd"  # Demands clients list
     LSR = "lsr"  # Answers with clients list "lsg <username> <username> ..."
 
-    CAL = "cal"  # Demands to call client "cal <username> <port client>"
+    CAL = "cal"  # Demands to call client "cal <username>"
     SOC = "soc"  # Answers with port to send data "soc 12345"
+    POR = "por"  # Client gives his audio socket "por 127.0.0.1 42069"
     STA = "sta"  # Start the call
     INF = "inf"  # general info of call "info time:1000 rec:username"
     FIN = "fin"  # Close current call
@@ -42,7 +43,7 @@ class Flag(str, Enum):
             flag = Flag.NUL
         return flag
 
-    def encode(self, encoding: str, _: str) -> bytes:
+    def encode(self, encoding: str, _: str = None) -> bytes:
         return self.value.encode(encoding)
 
 
@@ -53,16 +54,18 @@ class CommandLink:
     def receiveFlag(self) -> tuple[Flag, list[str]]:
         bytes_array: bytes = self.getCommandChannel().recv(255)
         data: str = bytes_array.decode("utf-8").split(" ")
-
         flag: Flag = Flag.getFlagFromStr(data[0])
         return (flag, data[1:])
 
-    def sendFlag(self, flag: Flag = None, data: str = None):
+    def sendFlag(self, flag: Flag = None, data: str = None, flag_str: str = None):
         bytes_array: bytes
-        if data is not None:
-            bytes_array = f"{flag} {data}".encode("utf-8")
+        if flag_str is None:
+            if data is not None:
+                bytes_array = f"{flag} {data}".encode(encoding="utf-8")
+            else:
+                bytes_array = flag.encode(encoding="utf-8")
         else:
-            bytes_array = flag.encode("utf-8")
+            bytes_array = flag_str.encode("utf-8")
         self.getCommandChannel().send(bytes_array)
 
     def sendTim(self):
@@ -72,7 +75,7 @@ class CommandLink:
             pass
 
     def closeCommandChannel(self) -> None:
-        print("CloseCommandChannel USED")
+        print("CloseCommandChannel USED", repr(self))
         try:
             self.getCommandChannel().close()
         except:
