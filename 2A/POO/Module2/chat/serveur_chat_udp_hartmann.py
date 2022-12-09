@@ -8,6 +8,7 @@ class Serveur_UDP:
         self.__socket_ecoute_echange = socket(AF_INET, SOCK_DGRAM)
         self.__socket_ecoute_echange.bind(("", port_ecoute_echange))
         self.__liste_addr_clients: list[tuple] = []
+        self.__active: bool = True
 
     def recevoir(self) -> str:
         try:
@@ -29,7 +30,6 @@ class Serveur_UDP:
         self.__socket_ecoute_echange.sendto(tab_bytes, addr_client)
 
     def envoyer_a_tous(self, msg: str):
-        tab_bytes: bytes = f"[{msg}]".encode("utf-8")
         for addr in self.__liste_addr_clients:
             try:
                 self.envoyer(msg, addr)
@@ -37,7 +37,7 @@ class Serveur_UDP:
                 self.__liste_addr_clients.remove(addr)
 
     def echange(self) -> None:
-        while True:
+        while self.__active:
             msg = self.recevoir()
             if msg is not None:
                 print(f"Client: {msg}")
@@ -66,8 +66,8 @@ class Serveur_UDP:
         def quit():
             self.envoyer_a_tous("fin")
             self.close()
+            self.__active = False
             print("Fin de l'application")
-            os._exit(0)
 
         def liste():
             print(self.__liste_addr_clients)

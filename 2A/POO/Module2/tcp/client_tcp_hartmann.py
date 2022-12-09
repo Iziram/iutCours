@@ -9,6 +9,7 @@ class Client:
         self.__port_serv: int = port_server
 
         self.__socket_echange: socket = socket(AF_INET, SOCK_STREAM)
+        self.__fin: bool = False
 
     def connexion(self) -> bool:
 
@@ -37,9 +38,7 @@ class Client:
 
     def echange(self) -> None:
 
-        fin: bool = False
-
-        while not fin:
+        while not self.__fin:
 
             msg: str = input("Message à transmettre: ")
 
@@ -47,10 +46,10 @@ class Client:
 
             msg_server: str = self.recevoir()
             print(f"Server:  {msg_server}")
-            fin = msg_server == "[fin]"
+            self.__fin = msg_server == "[fin]"
 
     def arret(self) -> None:
-
+        self.__fin = True
         self.__socket_echange.close()
 
 
