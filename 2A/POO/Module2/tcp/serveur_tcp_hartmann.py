@@ -42,7 +42,6 @@ class ServiceEchange(Thread):
 
     def echange(self) -> None:
         fin: bool = False
-        # vérif bytes vide
         try:
             while not fin:
                 msg_client: str = self.recevoir()
