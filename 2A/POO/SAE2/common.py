@@ -89,12 +89,18 @@ class Connector:
     def command_close(self):
         self.__command_channel.close()
 
-    def command_prepare_listening(self, addr: str, port: int):
+    def command_prepare_listening(self, addr: str, port: int, timeout: int = None):
         self.__command_channel.bind((addr, port))
         self.__command_channel.listen(1)
+        if timeout is not None:
+            self.__command_channel.settimeout(timeout)
 
     def command_listen(self) -> tuple[socket, tuple[str, int]]:
-        return self.__command_channel.accept()
+        try:
+            return self.__command_channel.accept()
+        except OSError:
+            if not self.is_command_closed:
+                self.command_close()
 
     def command_connect(self, addr: str, port: int):
         self.__command_channel.connect((addr, port))
@@ -148,6 +154,8 @@ class CommandInterpreter:
     def run_command(self, identifier: object, *data: tuple[object]):
         if identifier in self.__switch:
             self.__switch[identifier](*data)
+        else:
+            self.__switch["__default__"]()
 
-    def set_default_command(self):
-        pass
+    def set_default_command(self, function: function):
+        self.__switch["__default__"] = function
