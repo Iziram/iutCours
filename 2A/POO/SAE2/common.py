@@ -11,7 +11,7 @@ class Flag(str, Enum):
     # signing
     REG = "reg"  # Starts the signing exchange
     LOG = "log"  # Sends the username "log <username>"
-    PSS = "pss"  # Sends the password "pss <password: hash?>"
+    PSS = "pss"  # Sends the password "pss <password>"
     AUT = "aut"  # Client is authenticated
     # Quality control
     VLD = "vld"  # Valid
@@ -126,6 +126,8 @@ class Connector:
         return self.__command_channel.getpeername()
 
     def audio_in_bind(self, addr: str, port: int):
+        print(type(addr), type(port))
+        print(addr, port)
         self.__audio_in_channel.bind((addr, port))
 
     def audio_in_receive(self, buffer: int = 2048) -> tuple[bytes, tuple[str, int]]:
