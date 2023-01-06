@@ -55,9 +55,9 @@ class Ihm_Mdp(Tk):
         self.__check_majuscules.grid(column=0, row=2)
         self.__check_car_special.grid(column=0, row=3)
 
-        self.__entree_mdp.grid(column=0, row=0)
-        self.__btn_gen.grid(column=0, row=1)
-        self.__btn_quitter.grid(column=1, row=1)
+        self.__entree_mdp.pack(fill="y")
+        self.__btn_gen.pack(side="left", padx=5)
+        self.__btn_quitter.pack(side="right", padx=5)
 
         self.__entree_nb_car.bind("<KeyRelease>", self.generer_mdp)
         self.__check_car_special.bind("<ButtonRelease-1>", self.generer_mdp)
