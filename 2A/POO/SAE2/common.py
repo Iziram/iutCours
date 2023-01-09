@@ -23,9 +23,8 @@ class Flag(str, Enum):
     LSD = "lsd"  # Demands clients list
     LSR = "lsr"  # Answers with clients list "lsg <username> <username> ..."
 
-    CAL = "cal"  # Demands to call client "cal <username>"
-    SOC = "soc"  # Answers with port to send data "soc 12345"
-    POR = "por"  # Client gives his audio socket "por 127.0.0.1 42069"
+    CAL = "cal"  # Demands to call client "cal <username> [usernames...]"
+    ASK = "ask"  # Sent to client that can't be directly called "ask <confName>"
     STA = "sta"  # Start the call
     INF = "inf"  # general info of call "info time:1000 rec:username"
     FIN = "fin"  # Close current call
