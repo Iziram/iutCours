@@ -84,7 +84,9 @@ class ClientServer(Connector, Thread):
 
         def log(username):
             if self.__status == "REGISTERING":
-                if username not in [c.getUserName() for c in Server.CLIENT_LIST]:
+                if username not in [
+                    c.getUserName() for c in Server.CLIENT_LIST.values()
+                ]:
                     self.setUserName(username)
                     self.sendFlag(Flag.VLD)
                 else:
@@ -114,7 +116,8 @@ class ClientServer(Connector, Thread):
 
         def lsd():
             self.sendFlag(
-                Flag.LSR, " ".join([c.getUserName() for c in Server.CLIENT_LIST])
+                Flag.LSR,
+                " ".join([c.getUserName() for c in Server.CLIENT_LIST.values()]),
             )
 
         def default():
@@ -192,7 +195,7 @@ class Server(Connector, Thread):
             try:
                 command_channel, addr = self.command_listen()
                 client_server: ClientServer = ClientServer(command_channel, addr)
-                Server.CLIENT_LIST[addr](client_server)
+                Server.CLIENT_LIST[addr] = client_server
 
                 client_server.start()
             except timeout:
