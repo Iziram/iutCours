@@ -1,6 +1,7 @@
 from common import Connector, CommandInterpreter, Flag
 from threading import Thread
 from socket import socket, timeout
+from database import Database
 
 
 class ClientServer(Connector, Thread):
@@ -52,7 +53,9 @@ class ClientServer(Connector, Thread):
         if flag_str is not None:
             self.command_send(flag_str.encode("utf-8"))
         else:
-            msg: str = flag.value + data
+            msg: str = flag.value
+            if data != "":
+                msg += " " + data
             self.command_send(msg.encode("utf-8"))
 
     def get_commands_worker(self):
@@ -78,12 +81,14 @@ class ClientServer(Connector, Thread):
 
         def pss(password):
             if self.__status == "REGISTERING":
-                # TODO: Lier une bdd sqlite
-                if True:
+                db: Database = Database("bdd.sqlite")
+                db.ouverture_BDD()
+                if db.isLoginValid(self.__username, password):
                     self.__status = "AUTHENTICATED"
                     self.sendFlag(Flag.AUT)
                 else:
                     self.sendFlag(Flag.REF, "password invalid")
+                db.fermeture_BDD()
             else:
                 self.sendFlag(Flag.REF, "NOT REGISTERING")
 
@@ -91,6 +96,8 @@ class ClientServer(Connector, Thread):
             self.sendFlag(Flag.ENT)
             self.command_close()
             self.__active = False
+
+            Server.CLIENT_LIST.remove(self)
 
         def lsd():
             self.sendFlag(

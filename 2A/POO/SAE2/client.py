@@ -2,6 +2,8 @@ from common import Connector, CommandInterpreter, Flag
 from threading import Thread
 import pyaudio as pyaud
 
+from sys import argv
+
 
 class Client(Connector):
     AUDIO = pyaud.PyAudio()
@@ -13,7 +15,7 @@ class Client(Connector):
     def __init__(
         self,
         username: str,
-        command_interpreter: CommandInterpreter = None,
+        password: str,
         addr: str = "127.0.0.2",
         port: int = 5001,
         server_ip: str = "127.0.0.1",
@@ -22,6 +24,7 @@ class Client(Connector):
         Connector.__init__(self)
 
         self.__username: str = username
+        self.__password: str = password
 
         self.audio_in_bind(addr, port)
         self.audio_out_bind(addr, port + 1)
@@ -29,7 +32,7 @@ class Client(Connector):
 
         self.__audio_connected: bool = False
 
-        self.command_interpreter: CommandInterpreter = command_interpreter
+        self.__command_interpreter: CommandInterpreter = self.get_commands_worker()
 
         self.__stream_out = Client.AUDIO.open(
             format=Client.FORMAT,
@@ -49,6 +52,25 @@ class Client(Connector):
         self.__server_ip: str = server_ip
         self.__server_port: int = server_port
 
+    def get_commands_worker(self):
+        def ent():
+            self.disconnect()
+            print("debug: disconnected")
+
+        def lsr(*data):
+            print(data)
+
+        def default():
+            pass
+
+        interpreter: CommandInterpreter = CommandInterpreter(
+            (Flag.LSR, lsr),
+            (Flag.ENT, ent),
+        )
+        interpreter.set_default_command(default)
+
+        return interpreter
+
     def connect(self):
         try:
             self.command_connect(self.__server_ip, self.__server_port)
@@ -63,10 +85,9 @@ class Client(Connector):
                 self.sendFlag(Flag.LOG, self.__username)
                 ans, ans_data = self.getFlagData()
                 if ans == Flag.VLD:
-                    self.sendFlag(Flag.PSS, "1234")
+                    self.sendFlag(Flag.PSS, self.__password)
                     ans, ans_data = self.getFlagData()
                     if ans == Flag.AUT:
-                        print("YAY")
                         self.__connected = True
                         return self.__connected
                     else:
@@ -81,8 +102,25 @@ class Client(Connector):
             self.__connected = False
             return self.__connected
 
+    def sendData(self):
+        while self.__connected:
+            flag: Flag = Flag.getFlagFromStr(input("Flag: "))
+            data: str = input("Data: ")
+
+            self.sendFlag(flag, data)
+
+    def receiveData(self):
+        while self.__connected:
+            flag: Flag
+            data: list[str]
+
+            flag, data = self.getFlagData()
+            print("reçu: ", flag, data)
+            self.__command_interpreter.run_command(flag, *data)
+
     def getFlagData(self) -> tuple[Flag, list[str]]:
         msg = self.command_receive().decode("utf-8").split(" ")
+        print(*msg)
         flag: Flag = Flag.getFlagFromStr(msg[0])
         data: list[str] = msg[1:]
         return (flag, data)
@@ -126,5 +164,20 @@ class Client(Connector):
 
 
 if __name__ == "__main__":
-    client: Client = Client("bob")
-    print(client.connect())
+    client_name: str = "bob"
+    password: str = "1234"
+    ip = "2"
+    if len(argv) > 1:
+        client_name = argv[1]
+        password = argv[2]
+        if len(argv) >= 4:
+            ip = argv[3]
+
+    client: Client = Client(client_name, password, addr=f"127.0.0.{ip}")
+    if client.connect():
+        th: Thread = Thread(target=client.receiveData, name="clientReceive")
+        th.start()
+        th: Thread = Thread(target=client.sendData, name="clientSend")
+        th.start()
+    else:
+        print("Connexion refusée")

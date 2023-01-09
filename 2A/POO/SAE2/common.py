@@ -116,10 +116,13 @@ class Connector:
             return False  # socket is open and reading from it would block
         except ConnectionResetError:
             return True  # socket was closed for some other reason
-        except Exception as e:
-            return False
+        except Exception:
+            return True
         finally:
-            self.__command_channel.setblocking(True)
+            try:
+                self.__command_channel.setblocking(True)
+            except:
+                return True
         return False
 
     def command_peer(self) -> tuple[str, int]:
