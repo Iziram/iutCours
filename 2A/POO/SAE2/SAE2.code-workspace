@@ -1,0 +1,18 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "sqltools.connections": [
+      {
+        "previewLimit": 50,
+        "driver": "SQLite",
+        "database": "${workspaceFolder:SAE2}/bdd.sqlite",
+        "name": "softphone"
+      }
+    ],
+    "sqltools.useNodeRuntime": true
+  }
+}

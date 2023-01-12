@@ -57,5 +57,5 @@ def udp_test(addr: int = "127.0.0.1", port: int = 5001):
 
 
 if __name__ == "__main__":
-    # tcp_test()
-    udp_test()
+    tcp_test()
+    # udp_test()

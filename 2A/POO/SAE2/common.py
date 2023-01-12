@@ -11,7 +11,7 @@ class Flag(str, Enum):
     # signing
     REG = "reg"  # Starts the signing exchange
     LOG = "log"  # Sends the username "log <username>"
-    PSS = "pss"  # Sends the password "pss <password: hash?>"
+    PSS = "pss"  # Sends the password "pss <password>"
     AUT = "aut"  # Client is authenticated
     # Quality control
     VLD = "vld"  # Valid
@@ -23,9 +23,8 @@ class Flag(str, Enum):
     LSD = "lsd"  # Demands clients list
     LSR = "lsr"  # Answers with clients list "lsg <username> <username> ..."
 
-    CAL = "cal"  # Demands to call client "cal <username>"
-    SOC = "soc"  # Answers with port to send data "soc 12345"
-    POR = "por"  # Client gives his audio socket "por 127.0.0.1 42069"
+    CAL = "cal"  # Demands to call client "cal <username> [usernames...]"
+    ASK = "ask"  # Sent to client that can't be directly called "ask <confName>"
     STA = "sta"  # Start the call
     INF = "inf"  # general info of call "info time:1000 rec:username"
     FIN = "fin"  # Close current call
@@ -89,12 +88,18 @@ class Connector:
     def command_close(self):
         self.__command_channel.close()
 
-    def command_prepare_listening(self, addr: str, port: int):
+    def command_prepare_listening(self, addr: str, port: int, timeout: int = None):
         self.__command_channel.bind((addr, port))
         self.__command_channel.listen(1)
+        if timeout is not None:
+            self.__command_channel.settimeout(timeout)
 
     def command_listen(self) -> tuple[socket, tuple[str, int]]:
-        return self.__command_channel.accept()
+        try:
+            return self.__command_channel.accept()
+        except OSError:
+            if not self.is_command_closed:
+                self.command_close()
 
     def command_connect(self, addr: str, port: int):
         self.__command_channel.connect((addr, port))
@@ -110,16 +115,21 @@ class Connector:
             return False  # socket is open and reading from it would block
         except ConnectionResetError:
             return True  # socket was closed for some other reason
-        except Exception as e:
-            return False
+        except Exception:
+            return True
         finally:
-            self.__command_channel.setblocking(True)
+            try:
+                self.__command_channel.setblocking(True)
+            except:
+                return True
         return False
 
     def command_peer(self) -> tuple[str, int]:
         return self.__command_channel.getpeername()
 
     def audio_in_bind(self, addr: str, port: int):
+        print(type(addr), type(port))
+        print(addr, port)
         self.__audio_in_channel.bind((addr, port))
 
     def audio_in_receive(self, buffer: int = 2048) -> tuple[bytes, tuple[str, int]]:
@@ -148,6 +158,8 @@ class CommandInterpreter:
     def run_command(self, identifier: object, *data: tuple[object]):
         if identifier in self.__switch:
             self.__switch[identifier](*data)
+        else:
+            self.__switch["__default__"]()
 
-    def set_default_command(self):
-        pass
+    def set_default_command(self, function: function):
+        self.__switch["__default__"] = function

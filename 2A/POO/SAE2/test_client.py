@@ -7,6 +7,7 @@ from sys import argv
 def tcp_test():
     client: Connector = Connector()
     client.command_connect("127.0.0.1", 5000)
+    print(client.getConnexionInfo())
     msg: str = " "
 
     while msg != "fin":
@@ -39,8 +40,8 @@ def udp_test(addr: int = "127.0.0.2", port: int = 5001):
 
 
 if __name__ == "__main__":
-    # tcp_test()
-    if len(argv) > 1:
-        udp_test(f"127.0.0.{argv[1]}")
-    else:
-        udp_test()
+    tcp_test()
+    # if len(argv) > 1:
+    #     udp_test(f"127.0.0.{argv[1]}")
+    # else:
+    #     udp_test()
