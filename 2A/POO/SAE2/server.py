@@ -1,7 +1,8 @@
-from common import Connector, CommandInterpreter, Flag
+from common import Connector, CommandInterpreter, Flag, secondsToClock
 from threading import Thread
 from socket import socket, timeout
 from database import Database
+from time import time, sleep
 
 
 class Server(Connector):
@@ -27,8 +28,16 @@ class ClientServer(Connector, Thread):
         self.__active: bool = True
         self.__connection_infos: tuple[str, int] = connection_infos
 
+        self.__asked_call: tuple[int, bool] = (None, False)
+
     def __str__(self) -> str:
         return f"<{self.__username}:{self.__status}>"
+
+    def getAskedCall(self) -> tuple[int, bool]:
+        return self.__asked_call
+
+    def setAskedCall(self, asked_call: int = None, res: bool = False):
+        self.__asked_call = (asked_call, res)
 
     def getStatus(self) -> str:
         return self.__status
@@ -85,7 +94,7 @@ class ClientServer(Connector, Thread):
         def log(username):
             if self.__status == "REGISTERING":
                 if username not in [
-                    c.getUserName() for c in Server.CLIENT_LIST.values()
+                    c.getUserName() for c in Server.CLIENT_DICT.values()
                 ]:
                     self.setUserName(username)
                     self.sendFlag(Flag.VLD)
@@ -112,12 +121,22 @@ class ClientServer(Connector, Thread):
             self.command_close()
             self.__active = False
 
-            Server.CLIENT_LIST.remove(self)
+            Server.CLIENT_DICT.remove(self)
+
+        def res(b: str):
+            b: bool = bool(int(b))
+            conf_call: ConfCall = Server.CONFCALL_DICT.get(self.getAskedCall[0])
+            self.setAskedCall(conf_call.getId(), b)
+            conf_call.prepareClient(self)
+
+        def fin():
+            call_id: int = self.getStatus().replace("")
+            conf_call: ConfCall = Server.CONFCALL_DICT.get(call_id)
 
         def lsd():
             self.sendFlag(
                 Flag.LSR,
-                " ".join([c.getUserName() for c in Server.CLIENT_LIST.values()]),
+                " ".join([c.getUserName() for c in Server.CLIENT_DICT.values()]),
             )
 
         def default():
@@ -130,6 +149,7 @@ class ClientServer(Connector, Thread):
             (Flag.PSS, pss),
             (Flag.LOG, log),
             (Flag.REG, reg),
+            (Flag.RES, res),
         )
         interpreter.set_default_command(default)
 
@@ -146,19 +166,57 @@ class ConfCall:
         ConfCall.NB_CALL += 1
         self.__id: int = ConfCall.NB_CALL
 
+        self.__start_time: float = None
+
     def getId(self) -> int:
         return self.__id
 
     def getName(self) -> str:
         return ":".join([c.getUserName() for c in self.__clients])
 
+    def startCall(self):
+        if len(self.__active_clients) > 1:
+            for cli in self.__active_clients:
+                cli.sendFlag(Flag.STA)
+                cli.setStatus(f"CALLING:{self.getId()}")
+            self.__start_time = time()
+
+    def joinCall(self, client: ClientServer):
+        if client in self.__clients:
+            client.sendFlag(Flag.STA)
+            client.setStatus(f"CALLING:{self.getId()}")
+
+    def sendPeriodInfos(self):
+        while len(self.__active_clients) > 1:
+            sleep(1)
+            elapsed_time: float = time() - self.__start_time
+            clients: str = self.getName().replace(":", ",")
+            infos: str = f"time:{secondsToClock(elapsed_time)} act:{clients}"
+            self.sendAllActiveClients(Flag.INF, infos)
+
+    def sendAllActiveClients(self, flag: Flag, data: str = ""):
+        for cli in self.__active_clients:
+            cli.sendFlag(flag, data)
+
+    def removeActiveClient(self, client: ClientServer):
+        if client in self.__active_clients:
+            self.__active_clients.remove(client)
+
     def prepareConf(self):
         for c in self.__clients:
             if c.getStatus() == "AUTHENTICATED":
-                self.__active_clients.append(c)
-                c.setStatus(f"CALL:{self.__id}")
-            else:
                 c.sendFlag(Flag.ASK, self.getName())
+                c.setAskedCall(self.getId(), Flag.NUL)
+
+    def startCall(self):
+        for client in self.__active_clients:
+            client.sendFlag(Flag.STA)
+
+    def prepareClient(self, client: ClientServer):
+        if client in self.__clients:
+            if client.getAskedCall()[1]:
+                self.__active_clients.append(client)
+            client.setAskedCall()
 
     def redirectAudioData(self, audioData: bytes, clientfrom: ClientServer):
 
@@ -171,8 +229,8 @@ class ConfCall:
 
 
 class Server(Connector, Thread):
-    CLIENT_LIST: dict[tuple[str, int], ClientServer] = {}
-    CONFCALL_LIST: dict[int, ConfCall] = {}
+    CLIENT_DICT: dict[tuple[str, int], ClientServer] = {}
+    CONFCALL_DICT: dict[int, ConfCall] = {}
 
     def __init__(self, addr: str = "127.0.0.1", port: int = 5000) -> None:
         self.__addr = addr
@@ -190,12 +248,12 @@ class Server(Connector, Thread):
         self.__command_interpreter: CommandInterpreter = self.get_commands_worker()
 
     def start_self(self):
-        self.command_prepare_listening(self.__addr, self.__port, timeout=10)
+        self.command_prepare_DICTening(self.__addr, self.__port, timeout=10)
         while self.__active:
             try:
-                command_channel, addr = self.command_listen()
+                command_channel, addr = self.command_DICTen()
                 client_server: ClientServer = ClientServer(command_channel, addr)
-                Server.CLIENT_LIST[addr] = client_server
+                Server.CLIENT_DICT[addr] = client_server
 
                 client_server.start()
             except timeout:
@@ -205,7 +263,7 @@ class Server(Connector, Thread):
 
     def stop_self(self):
         self.__active = False
-        for c in Server.CLIENT_LIST.values():
+        for c in Server.CLIENT_DICT.values():
             c.close()
         self.command_close()
 
@@ -221,7 +279,7 @@ class Server(Connector, Thread):
 
         def list():
             peers: list[str] = [
-                f"{c.command_peer()}" for c in Server.CLIENT_LIST.values()
+                f"{c.command_peer()}" for c in Server.CLIENT_DICT.values()
             ]
             print(peers)
 
@@ -230,17 +288,17 @@ class Server(Connector, Thread):
 
         def disconnect(peer: str):
             if peer == "all":
-                for c in Server.CLIENT_LIST.values():
+                for c in Server.CLIENT_DICT.values():
                     c.command_close()
-                Server.CLIENT_LIST.clear()
+                Server.CLIENT_DICT.clear()
             else:
                 client: ClientServer = [
                     c
-                    for c in Server.CLIENT_LIST.values()
+                    for c in Server.CLIENT_DICT.values()
                     if c.command_peer()[1] == int(peer)
                 ]
                 client.command_close()
-                Server.CLIENT_LIST.pop(client.getConnectionInfos())
+                Server.CLIENT_DICT.pop(client.getConnectionInfos())
 
         def default():
             print("Invalid Command")
@@ -268,12 +326,12 @@ class Server(Connector, Thread):
             audioDataIn: bytes
             addr: tuple[str, int]
             audioDataIn, addr = self.audio_in_receive()
-            client: ClientServer = Server.CLIENT_LIST.get(addr, None)
+            client: ClientServer = Server.CLIENT_DICT.get(addr, None)
             if client is not None:
                 status: str = client.getStatus()
                 if status.startswith("CALL:"):
                     call_id: int = int(status.removeprefix("CALL:"))
-                    call: ConfCall = Server.CONFCALL_LIST[call_id]
+                    call: ConfCall = Server.CONFCALL_DICT[call_id]
                     call.redirectAudioData(audioDataIn, client)
 
 

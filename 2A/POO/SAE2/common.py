@@ -24,9 +24,11 @@ class Flag(str, Enum):
     LSR = "lsr"  # Answers with clients list "lsg <username> <username> ..."
 
     CAL = "cal"  # Demands to call client "cal <username> [usernames...]"
-    ASK = "ask"  # Sent to client that can't be directly called "ask <confName>"
+    ASK = "ask"  # ask a client if he wants to answer the call "ask <callName>"
+    RES = "res"  # response to ASK flag "res <bool:1|0>"
     STA = "sta"  # Start the call
-    INF = "inf"  # general info of call "info time:1000 rec:username"
+    JON = "jon"  # Join a call (if call not ended) "jon <confName>"
+    INF = "inf"  # general info of call "info time:00h00m00s act:usr1,usr2,usr3,..."
     FIN = "fin"  # Close current call
 
     # JSON
@@ -163,3 +165,20 @@ class CommandInterpreter:
 
     def set_default_command(self, function: function):
         self.__switch["__default__"] = function
+
+
+def secondsToClock(secs):
+    secs: int = int(secs)
+    hours: int = secs // 3600
+    secs %= 3600
+    minutes: int = secs // 60
+    secs %= 60
+
+    if hours < 10:
+        hours: str = f"0{hours}"
+    if minutes < 10:
+        minutes: str = f"0{minutes}"
+    if secs < 10:
+        secs: str = f"0{secs}"
+
+    return f"{hours}h{minutes}m{secs}s"
