@@ -386,7 +386,7 @@ class Server(Connector, Thread):
                         call: ConfCall = Server.CONFCALL_DICT[call_id]
                         call.redirectAudioData(audioDataIn, client)
             except timeout:
-                self.__active = False
+                pass
 
 
 if __name__ == "__main__":
