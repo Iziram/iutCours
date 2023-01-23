@@ -80,10 +80,24 @@ class Client(Connector):
             th: Thread = Thread(target=answerTimeOut, name="answerTimeOUT")
             th.start()
 
+        def sta():
+
+            self.__audio_connected = True
+
+            Thread(target=self.receive_audio, name="audioClientIn").start()
+            x: str = input("data: ")
+            while x != "stop":
+                by = x.encode("utf-8")
+                self.audio_out_send(by, self.__server_ip, self.__server_port + 1)
+                x = input("data: ")
+
+            self.__audio_connected = False
+
         interpreter: CommandInterpreter = CommandInterpreter(
             (Flag.LSR, lsr),
             (Flag.ENT, ent),
             (Flag.ASK, ask),
+            (Flag.STA, sta),
         )
         interpreter.set_default_command(default)
 
@@ -175,10 +189,11 @@ class Client(Connector):
     def listen_audio(self, data: bytes):
         self.__stream_out.write(data)
 
-    def listen_audio(self):
+    def receive_audio(self):
         while self.__audio_connected:
             data: bytes = self.audio_in_receive(Client.CHUNKS * 2)[0]
-            self.listen_audio(data)
+            # self.listen_audio(data)
+            print("audio client:", data.decode("utf-8"))
 
     def send_audio(self):
         while self.__audio_connected:

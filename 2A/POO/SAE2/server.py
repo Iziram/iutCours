@@ -121,23 +121,46 @@ class ClientServer(Connector, Thread):
             self.command_close()
             self.__active = False
 
-            Server.CLIENT_DICT.remove(self)
+            Server.CLIENT_DICT.pop(self.getConnectionInfos())
 
         def res(b: str):
             b: bool = bool(int(b))
-            conf_call: ConfCall = Server.CONFCALL_DICT.get(self.getAskedCall[0])
+            conf_call: ConfCall = Server.CONFCALL_DICT.get(self.getAskedCall()[0])
             self.setAskedCall(conf_call.getId(), b)
             conf_call.prepareClient(self)
 
         def fin():
-            call_id: int = self.getStatus().replace("")
+            call_id: int = int(self.getStatus().replace("CALLING:", ""))
             conf_call: ConfCall = Server.CONFCALL_DICT.get(call_id)
+            conf_call.removeActiveClient(self)
 
         def lsd():
             self.sendFlag(
                 Flag.LSR,
                 " ".join([c.getUserName() for c in Server.CLIENT_DICT.values()]),
             )
+
+        def cal(*names):
+            if not self.getStatus().startswith("CALL"):
+                clients: list[ClientServer] = [
+                    c
+                    for c in list(Server.CLIENT_DICT.values())
+                    if c.getUserName() in names
+                ]
+                clients.append(self)
+                new_call: ConfCall = ConfCall(*clients)
+                Server.CONFCALL_DICT[new_call.getId()] = new_call
+
+                # self.setAskedCall(new_call.getId(), True)
+                # new_call.prepareClient(self)
+
+                new_call.prepareConf()
+
+                def launch():
+                    sleep(15)
+                    new_call.startCall()
+
+                Thread(target=launch, name="startpoint").start()
 
         def default():
             print(f"<{self.__username}> Invalid Command")
@@ -150,6 +173,8 @@ class ClientServer(Connector, Thread):
             (Flag.LOG, log),
             (Flag.REG, reg),
             (Flag.RES, res),
+            (Flag.CAL, cal),
+            (Flag.FIN, fin),
         )
         interpreter.set_default_command(default)
 
@@ -175,11 +200,16 @@ class ConfCall:
         return ":".join([c.getUserName() for c in self.__clients])
 
     def startCall(self):
+        print("debug: ", "starting call", len(self.__active_clients))
         if len(self.__active_clients) > 1:
             for cli in self.__active_clients:
                 cli.sendFlag(Flag.STA)
                 cli.setStatus(f"CALLING:{self.getId()}")
             self.__start_time = time()
+
+            # Thread(
+            #     target=self.sendPeriodInfos, name=f"periodInfoCall{self.__id}"
+            # ).start()
 
     def joinCall(self, client: ClientServer):
         if client in self.__clients:
@@ -204,15 +234,11 @@ class ConfCall:
 
     def prepareConf(self):
         for c in self.__clients:
-            if c.getStatus() == "AUTHENTICATED":
-                c.sendFlag(Flag.ASK, self.getName())
-                c.setAskedCall(self.getId(), Flag.NUL)
-
-    def startCall(self):
-        for client in self.__active_clients:
-            client.sendFlag(Flag.STA)
+            c.sendFlag(Flag.ASK, self.getName())
+            c.setAskedCall(self.getId(), Flag.NUL)
 
     def prepareClient(self, client: ClientServer):
+        print("debug: prepareclient: ", client.getUserName())
         if client in self.__clients:
             if client.getAskedCall()[1]:
                 self.__active_clients.append(client)
@@ -248,10 +274,10 @@ class Server(Connector, Thread):
         self.__command_interpreter: CommandInterpreter = self.get_commands_worker()
 
     def start_self(self):
-        self.command_prepare_DICTening(self.__addr, self.__port, timeout=10)
+        self.command_prepare_listening(self.__addr, self.__port, timeout=10)
         while self.__active:
             try:
-                command_channel, addr = self.command_DICTen()
+                command_channel, addr = self.command_listen()
                 client_server: ClientServer = ClientServer(command_channel, addr)
                 Server.CLIENT_DICT[addr] = client_server
 
@@ -327,6 +353,7 @@ class Server(Connector, Thread):
             addr: tuple[str, int]
             audioDataIn, addr = self.audio_in_receive()
             client: ClientServer = Server.CLIENT_DICT.get(addr, None)
+            print("debug datain audio:", audioDataIn)
             if client is not None:
                 status: str = client.getStatus()
                 if status.startswith("CALL:"):
