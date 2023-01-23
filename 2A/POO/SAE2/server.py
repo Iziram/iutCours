@@ -3,6 +3,7 @@ from threading import Thread
 from socket import socket, timeout
 from database import Database
 from time import time, sleep
+from sys import exit as sysExit
 
 
 class Server(Connector):
@@ -50,9 +51,12 @@ class ClientServer(Connector, Thread):
 
     def run(self):
         while self.__active:
-            flag, data = self.getFlagData()
-            print(f"{self}", flag, data)
-            self.__interpreter.run_command(flag, *data)
+            try:
+                flag, data = self.getFlagData()
+                print(f"{self}", flag, data)
+                self.__interpreter.run_command(flag, *data)
+            except:
+                pass
 
     def close(self):
         self.command_close()
@@ -121,7 +125,7 @@ class ClientServer(Connector, Thread):
             self.command_close()
             self.__active = False
 
-            Server.CLIENT_DICT.pop(self.getConnectionInfos())
+            Server.CLIENT_DICT.pop(self.getConnectionInfos()[0])
 
         def res(b: str):
             b: bool = bool(int(b))
@@ -130,9 +134,11 @@ class ClientServer(Connector, Thread):
             conf_call.prepareClient(self)
 
         def fin():
-            call_id: int = int(self.getStatus().replace("CALLING:", ""))
-            conf_call: ConfCall = Server.CONFCALL_DICT.get(call_id)
-            conf_call.removeActiveClient(self)
+            if self.getStatus().startswith("CALLING:"):
+                call_id: int = int(self.getStatus().replace("CALLING:", ""))
+                conf_call: ConfCall = Server.CONFCALL_DICT.get(call_id)
+                conf_call.removeActiveClient(self)
+                self.sendFlag(Flag.FIN)
 
         def lsd():
             self.sendFlag(
@@ -141,7 +147,7 @@ class ClientServer(Connector, Thread):
             )
 
         def cal(*names):
-            if not self.getStatus().startswith("CALL"):
+            if not self.getStatus().startswith("CALLING:"):
                 clients: list[ClientServer] = [
                     c
                     for c in list(Server.CLIENT_DICT.values())
@@ -211,6 +217,13 @@ class ConfCall:
             #     target=self.sendPeriodInfos, name=f"periodInfoCall{self.__id}"
             # ).start()
 
+    def stopCall(self):
+        self.__start_time = None
+        self.sendAllActiveClients(Flag.FIN)
+        for c in self.__active_clients:
+            self.removeActiveClient(c)
+        Server.CONFCALL_DICT.pop(self.getId())
+
     def joinCall(self, client: ClientServer):
         if client in self.__clients:
             client.sendFlag(Flag.STA)
@@ -231,6 +244,9 @@ class ConfCall:
     def removeActiveClient(self, client: ClientServer):
         if client in self.__active_clients:
             self.__active_clients.remove(client)
+            client.setStatus("AUTHENTICATED")
+            if len(self.__active_clients) < 2 and self.__start_time is not None:
+                self.stopCall()
 
     def prepareConf(self):
         for c in self.__clients:
@@ -245,17 +261,17 @@ class ConfCall:
             client.setAskedCall()
 
     def redirectAudioData(self, audioData: bytes, clientfrom: ClientServer):
-
+        print("debug: audioInCall", audioData)
         redirected_clients: list[ClientServer] = [
             c for c in self.__active_clients if c != clientfrom
         ]
 
         for c in redirected_clients:
-            ConfCall.SERVER.audio_out_send(audioData, *c.getConnectionInfos())
+            ConfCall.SERVER.audio_out_send(audioData, c.getConnectionInfos()[0], 5001)
 
 
 class Server(Connector, Thread):
-    CLIENT_DICT: dict[tuple[str, int], ClientServer] = {}
+    CLIENT_DICT: dict[str, ClientServer] = {}
     CONFCALL_DICT: dict[int, ConfCall] = {}
 
     def __init__(self, addr: str = "127.0.0.1", port: int = 5000) -> None:
@@ -275,11 +291,18 @@ class Server(Connector, Thread):
 
     def start_self(self):
         self.command_prepare_listening(self.__addr, self.__port, timeout=10)
+        Thread(target=self.getAudioRedirect, name="audioRedirect").start()
         while self.__active:
             try:
                 command_channel, addr = self.command_listen()
+                print(
+                    "debug: ",
+                    addr,
+                    command_channel.getpeername(),
+                    command_channel.getsockname(),
+                )
                 client_server: ClientServer = ClientServer(command_channel, addr)
-                Server.CLIENT_DICT[addr] = client_server
+                Server.CLIENT_DICT[addr[0]] = client_server
 
                 client_server.start()
             except timeout:
@@ -311,6 +334,7 @@ class Server(Connector, Thread):
 
         def quit():
             stop()
+            sysExit()
 
         def disconnect(peer: str):
             if peer == "all":
@@ -349,17 +373,20 @@ class Server(Connector, Thread):
 
     def getAudioRedirect(self):
         while self.__active:
-            audioDataIn: bytes
-            addr: tuple[str, int]
-            audioDataIn, addr = self.audio_in_receive()
-            client: ClientServer = Server.CLIENT_DICT.get(addr, None)
-            print("debug datain audio:", audioDataIn)
-            if client is not None:
-                status: str = client.getStatus()
-                if status.startswith("CALL:"):
-                    call_id: int = int(status.removeprefix("CALL:"))
-                    call: ConfCall = Server.CONFCALL_DICT[call_id]
-                    call.redirectAudioData(audioDataIn, client)
+            try:
+                audioDataIn: bytes
+                addr: tuple[str, int]
+                audioDataIn, addr = self.audio_in_receive()
+                client: ClientServer = Server.CLIENT_DICT.get(addr[0])
+                print("debug audioServ: ", client, addr)
+                if client is not None:
+                    status: str = client.getStatus()
+                    if status.startswith("CALLING:"):
+                        call_id: int = int(status.removeprefix("CALLING:"))
+                        call: ConfCall = Server.CONFCALL_DICT[call_id]
+                        call.redirectAudioData(audioDataIn, client)
+            except timeout:
+                self.__active = False
 
 
 if __name__ == "__main__":

@@ -1,10 +1,12 @@
 from common import Connector, CommandInterpreter, Flag
 from threading import Thread
 import pyaudio as pyaud
+from socket import timeout
 
 from time import sleep
 
 from sys import argv
+from sys import exit as sysExit
 
 
 class Client(Connector):
@@ -19,7 +21,7 @@ class Client(Connector):
         username: str,
         password: str,
         addr: str = "127.0.0.2",
-        port: int = 5001,
+        port: int = 5000,
         server_ip: str = "127.0.0.1",
         server_port: int = 5000,
     ) -> None:
@@ -28,8 +30,10 @@ class Client(Connector):
         self.__username: str = username
         self.__password: str = password
 
-        self.audio_in_bind(addr, port)
-        self.audio_out_bind(addr, port + 1)
+        self.command_channel_bind(addr, port)
+
+        self.audio_in_bind(addr, port + 1)
+        self.audio_out_bind(addr, port + 2)
         self.__connected: bool = False
 
         self.__audio_connected: bool = False
@@ -59,6 +63,7 @@ class Client(Connector):
     def get_commands_worker(self):
         def ent():
             self.disconnect()
+            print("debug: ", self.__audio_connected, self.__connected)
             print("debug: disconnected")
 
         def lsr(*data):
@@ -85,12 +90,19 @@ class Client(Connector):
             self.__audio_connected = True
 
             Thread(target=self.receive_audio, name="audioClientIn").start()
-            x: str = input("data: ")
-            while x != "stop":
-                by = x.encode("utf-8")
-                self.audio_out_send(by, self.__server_ip, self.__server_port + 1)
-                x = input("data: ")
 
+            def test():
+                while self.__audio_connected:
+                    self.audio_out_send(
+                        self.__username.encode("utf-8"),
+                        self.__server_ip,
+                        self.__server_port + 1,
+                    )
+                    sleep(1)
+
+            Thread(target=test, name="audioClientOut").start()
+
+        def fin():
             self.__audio_connected = False
 
         interpreter: CommandInterpreter = CommandInterpreter(
@@ -98,6 +110,7 @@ class Client(Connector):
             (Flag.ENT, ent),
             (Flag.ASK, ask),
             (Flag.STA, sta),
+            (Flag.FIN, fin),
         )
         interpreter.set_default_command(default)
 
@@ -138,8 +151,12 @@ class Client(Connector):
         while self.__connected:
             flag: Flag = Flag.getFlagFromStr(input("Flag: "))
             data: str = input("Data: ")
+            print("BEFORE")
+            if self.__connected:
+                print("AFTER TRUE")
 
-            self.sendFlag(flag, data)
+                self.sendFlag(flag, data)
+            print("AFTER FALSE")
 
     def receiveData(self):
         while self.__connected:
@@ -151,11 +168,15 @@ class Client(Connector):
             self.__command_interpreter.run_command(flag, *data)
 
     def getFlagData(self) -> tuple[Flag, list[str]]:
-        msg = self.command_receive().decode("utf-8").split(" ")
-        print(*msg)
-        flag: Flag = Flag.getFlagFromStr(msg[0])
-        data: list[str] = msg[1:]
-        return (flag, data)
+        try:
+            msg = self.command_receive().decode("utf-8").split(" ")
+            print(*msg)
+            flag: Flag = Flag.getFlagFromStr(msg[0])
+            data: list[str] = msg[1:]
+            return (flag, data)
+        except:
+            self.__connected = False
+            return None
 
     def sendFlag(self, flag: Flag = None, data: str = "", flag_str: str = None):
         if flag_str is not None:
@@ -179,9 +200,11 @@ class Client(Connector):
             self.__audio_in_channel.close()
             self.__audio_out_channel.close()
             self.__connected = False
+            self.__audio_connected = False
 
         except:
             self.__connected = False
+        sysExit()
 
     def save_audio(self) -> bytes:
         self.__stream_in.read(Client.CHUNKS)
@@ -191,9 +214,12 @@ class Client(Connector):
 
     def receive_audio(self):
         while self.__audio_connected:
-            data: bytes = self.audio_in_receive(Client.CHUNKS * 2)[0]
-            # self.listen_audio(data)
-            print("audio client:", data.decode("utf-8"))
+            try:
+                data: bytes = self.audio_in_receive(Client.CHUNKS * 2)[0]
+                # self.listen_audio(data)
+                print("audio client:", data.decode("utf-8"))
+            except timeout:
+                pass
 
     def send_audio(self):
         while self.__audio_connected:

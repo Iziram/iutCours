@@ -78,6 +78,8 @@ class Connector:
             else socket(AF_INET, SOCK_DGRAM)
         )
 
+        self.__audio_in_channel.settimeout(4.0)
+
     def command_send(self, data: bytes):
         if not self.is_command_closed():
             self.__command_channel.sendall(data)
@@ -142,6 +144,9 @@ class Connector:
 
     def audio_out_bind(self, addr: str, port: int):
         self.__audio_out_channel.bind((addr, port))
+
+    def command_channel_bind(self, addr: str, port: int):
+        self.__command_channel.bind((addr, port))
 
 
 class function:
