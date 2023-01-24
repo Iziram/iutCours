@@ -417,6 +417,7 @@ class Server(Connector):
             sleep(1)
             try:
                 for client in Server.CLIENT_DICT.values():
-                    client.getInterpreter().run_command(Flag.LSD)
+                    if client.getStatus() not in ("UNKNOWN", "REGISTERING"):
+                        client.getInterpreter().run_command(Flag.LSD)
             except:
                 pass

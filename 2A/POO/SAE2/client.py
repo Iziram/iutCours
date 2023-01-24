@@ -206,7 +206,7 @@ class Client(Connector):
         sysExit()
 
     def save_audio(self) -> bytes:
-        self.__stream_in.read(Client.CHUNKS)
+        return self.__stream_in.read(Client.CHUNKS)
 
     def listen_audio(self, data: bytes):
         self.__stream_out.write(data)
@@ -216,8 +216,7 @@ class Client(Connector):
         while self.__audio_connected:
             try:
                 data: bytes = self.audio_in_receive(Client.CHUNKS * 2)[0]
-                # self.listen_audio(data)
-                print("audio client:", data.decode("utf-8"))
+                self.listen_audio(data)
             except timeout:
                 pass
 

@@ -335,17 +335,20 @@ class client_connected(Toplevel):
     def startCall(self):
         client = self.__fp.getClient()
         Thread(target=client.receive_audio, name="audioClientIn").start()
-        # Thread(target=client.send_audio, name="audioClientOut").start()
+        Thread(target=client.send_audio, name="audioClientOut").start()
         self.__call: client_call = client_call(self.__fp)
 
     def setClientList(self, *names):
-        current_names: list[str] = list(self.__middle_list.get(0, END))
-        current_names.append(self.__fp.getClientInfos()["username"])
-        if set(current_names) != set(names):
-            self.__middle_list.delete(0, END)
-            for i, v in enumerate(names):
-                if v != self.__fp.getClientInfos()["username"]:
-                    self.__middle_list.insert(i, v)
+        try:
+            current_names: list[str] = list(self.__middle_list.get(0, END))
+            current_names.append(self.__fp.getClientInfos()["username"])
+            if set(current_names) != set(names):
+                self.__middle_list.delete(0, END)
+                for i, v in enumerate(names):
+                    if v != self.__fp.getClientInfos()["username"]:
+                        self.__middle_list.insert(i, v)
+        except:
+            pass
 
     def setCall(self):
         selected: tuple[int] = self.__middle_list.curselection()
