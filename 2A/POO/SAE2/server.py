@@ -281,6 +281,7 @@ class ConfCall:
         ]
 
         for c in redirected_clients:
+            print("redirected")
             ConfCall.SERVER.audio_out_send(audioData, c.getConnectionInfos()[0], 5001)
 
 

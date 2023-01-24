@@ -138,12 +138,9 @@ class Client(Connector):
         while self.__connected:
             flag: Flag = Flag.getFlagFromStr(input("Flag: "))
             data: str = input("Data: ")
-            print("BEFORE")
             if self.__connected:
-                print("AFTER TRUE")
 
                 self.sendFlag(flag, data)
-            print("AFTER FALSE")
 
     def receiveData(self):
         while self.__connected:
@@ -151,13 +148,11 @@ class Client(Connector):
             data: list[str]
 
             flag, data = self.getFlagData()
-            print("reçu: ", flag, data)
             self.__command_interpreter.run_command(flag, *data)
 
     def getFlagData(self) -> tuple[Flag, list[str]]:
         try:
             msg = self.command_receive().decode("utf-8").split(" ")
-            print(*msg)
             flag: Flag = Flag.getFlagFromStr(msg[0])
             data: list[str] = msg[1:]
             return (flag, data)
@@ -206,7 +201,7 @@ class Client(Connector):
     def send_audio(self):
         while self.__audio_connected:
             data: bytes = self.save_audio()
-            self.audio_out_send(data, self.__server_ip, self.__server_port)
+            self.audio_out_send(data, self.__server_ip, self.__server_port + 1)
 
     def setUsername(self, username: str):
         self.__username = username
