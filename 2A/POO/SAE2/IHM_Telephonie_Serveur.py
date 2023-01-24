@@ -4,6 +4,7 @@
   - tkinter (lien)
  @section authors Auteur(s)
   - Créé par Sandra Valentin le 06/01/2023 .
+  - Mis à jour par Matthias HARTMANN le 24/01/2023 .
 """
 from tkinter import *
 from tkinter.messagebox import *
@@ -13,6 +14,80 @@ from server import Server
 """
 Début de l'IHM côté serveur
 """
+
+
+class TextWithVar(Text):
+    """A text widget that accepts a 'textvariable' option"""
+
+    def __init__(self, parent, *args, **kwargs):
+        try:
+            self._textvariable = kwargs.pop("textvariable")
+        except KeyError:
+            self._textvariable = None
+
+        Text.__init__(self, parent, *args, **kwargs)
+
+        # if the variable has data in it, use it to initialize
+        # the widget
+        if self._textvariable is not None:
+            self.insert("1.0", self._textvariable.get())
+
+        # this defines an internal proxy which generates a
+        # virtual event whenever text is inserted or deleted
+        self.tk.eval(
+            """
+            proc widget_proxy {widget widget_command args} {
+
+                # call the real tk widget command with the real args
+                set result [uplevel [linsert $args 0 $widget_command]]
+
+                # if the contents changed, generate an event we can bind to
+                if {([lindex $args 0] in {insert replace delete})} {
+                    event generate $widget <<Change>> -when tail
+                }
+                # return the result from the real widget command
+                return $result
+            }
+            """
+        )
+
+        # this replaces the underlying widget with the proxy
+        self.tk.eval(
+            """
+            rename {widget} _{widget}
+            interp alias {{}} ::{widget} {{}} widget_proxy {widget} _{widget}
+        """.format(
+                widget=str(self)
+            )
+        )
+
+        # set up a binding to update the variable whenever
+        # the widget changes
+        self.bind("<<Change>>", self._on_widget_change)
+
+        # set up a trace to update the text widget when the
+        # variable changes
+        if self._textvariable is not None:
+            self._textvariable.trace("wu", self._on_var_change)
+
+    def _on_var_change(self, *args):
+        """Change the text widget when the associated textvariable changes"""
+
+        # only change the widget if something actually
+        # changed, otherwise we'll get into an endless
+        # loop
+        text_current = self.get("1.0", "end-1c")
+        var_current = self._textvariable.get()
+        if text_current != var_current:
+            self.delete("1.0", "end")
+            self.insert("1.0", var_current)
+            self.see(END)
+
+    def _on_widget_change(self, event=None):
+        """Change the variable when the widget changes"""
+        if self._textvariable is not None:
+            self._textvariable.set(self.get("1.0", "end-1c"))
+            self.see(END)
 
 
 class cote_server(Tk, Server):
@@ -52,15 +127,13 @@ class cote_server(Tk, Server):
 
         self.__var_log = StringVar()
 
-        self.__win_log = Label(
+        self.__win_log = TextWithVar(
             self.__Frame_btm,
             width=120,
             height=40,
             textvariable=self.__var_log,
             bg="white",
             relief=GROOVE,
-            justify=LEFT,
-            anchor="nw",
         )
         self.__btn_quit = Button(
             self.__Frame_top, text="Quitter", bg="red", command=self.callback
@@ -76,6 +149,8 @@ class cote_server(Tk, Server):
         self.__btn_csl.grid(row=3, column=2)
         self.__btn_quit.grid(row=3, column=3)
         self.__win_log.pack()
+
+        self.__win_log.bind("<Key>", lambda e: "break")
 
         Server.LOG.setEvent(lambda x: self.__var_log.set(x))
 
@@ -119,15 +194,11 @@ class console_serv(Toplevel):
         # Instancation des variables
         self.__fp.withdraw()
         self.__btn_hlp = Button(self, text="❓", command=lambda: hlp_srv(self))
-        self.__text_log = Label(
+        self.__text_log = TextWithVar(
             self,
-            width=120,
-            height=40,
             textvariable=self.__fp.getVarLog(),
             bg="white",
             relief=GROOVE,
-            anchor="nw",
-            justify=LEFT,
         )
         self.__btn_send = Button(self, text="Envoyer", command=self.action)
         self.__entry_input = Entry(self, width=160)
@@ -135,6 +206,7 @@ class console_serv(Toplevel):
 
         # Ajout des widgets
         self.__text_log.grid(row=1, column=0, padx=5, pady=5)
+
         self.__btn_hlp.grid(row=0, column=1, padx=5, pady=5)
         self.__entry_input.grid(row=2, column=0, padx=5, pady=5)
         self.__btn_send.grid(row=2, column=1, padx=5, pady=5)
@@ -144,6 +216,7 @@ class console_serv(Toplevel):
         # ajout d'evenements
         self.__entry_input.bind("<Return>", self.action)
         self.__entry_input.bind("<KP_Enter>", self.action)
+        self.__text_log.bind("<Key>", lambda e: "break")
 
     def configuration(self) -> None:
         # applel du modificateur de la classe mêre

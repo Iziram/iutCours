@@ -75,7 +75,7 @@ class ClientServer(Connector, Thread):
         while self.__active:
             try:
                 flag, data = self.getFlagData()
-                Server.LOG.add(f"{self}", flag, data)
+                Server.LOG.add(f"{self} ⬅ {flag} {data}")
                 self.__interpreter.run_command(flag, *data)
             except:
                 pass
@@ -101,7 +101,7 @@ class ClientServer(Connector, Thread):
             self.command_send(flag_str.encode("utf-8"))
         else:
 
-            Server.LOG.add(f"ENVOI FLAG: {flag} {data}")
+            Server.LOG.add(f"{self.__username} ➡ {flag} {data}")
 
             msg: str = flag.value
             if data != "":
@@ -117,7 +117,7 @@ class ClientServer(Connector, Thread):
                 self.sendFlag(Flag.VLD)
                 self.__status = "REGISTERING"
             else:
-                self.sendFlag(Flag.REF, "ALREADY REGISTERED")
+                self.sendFlag(Flag.REF, "DÉJA ENREGISTRÉ")
 
         def log(username):
             if self.__status == "REGISTERING":
@@ -127,9 +127,9 @@ class ClientServer(Connector, Thread):
                     self.setUserName(username)
                     self.sendFlag(Flag.VLD)
                 else:
-                    self.sendFlag(Flag.REF, "username already taken")
+                    self.sendFlag(Flag.REF, "LE PSEUDO EST DÉJÀ UTILISÉ")
             else:
-                self.sendFlag(Flag.REF, "NOT REGISTERING")
+                self.sendFlag(Flag.REF, "NON ENREGISTRÉ")
 
         def pss(password):
             if self.__status == "REGISTERING":
@@ -139,10 +139,10 @@ class ClientServer(Connector, Thread):
                     self.__status = "AUTHENTICATED"
                     self.sendFlag(Flag.AUT)
                 else:
-                    self.sendFlag(Flag.REF, "password invalid")
+                    self.sendFlag(Flag.REF, "MOT DE PASSE INCORRECT")
                 db.fermeture_BDD()
             else:
-                self.sendFlag(Flag.REF, "NOT REGISTERING")
+                self.sendFlag(Flag.REF, "NON ENREGISTRÉ")
 
         def ent():
             self.sendFlag(Flag.ENT)
@@ -193,7 +193,7 @@ class ClientServer(Connector, Thread):
                 Thread(target=launch, name="startpoint").start()
 
         def default():
-            Server.LOG.add(f"<{self.__username}> Invalid Command")
+            Server.LOG.add(f"<{self.__username}> ⬅ Flag Invalide")
 
         interpreter: CommandInterpreter = CommandInterpreter(
             (Flag.TIM, tim),
@@ -323,11 +323,11 @@ class Server(Connector):
             while self.__active:
                 try:
                     command_channel, addr = self.command_listen()
-                    Server.LOG.add(f"new Client: {addr}")
+                    Server.LOG.add("🖥" + f"Un nouveau client s'est connecté: {addr}")
+
                     client_server: ClientServer = ClientServer(command_channel, addr)
                     Server.CLIENT_DICT[addr[0]] = client_server
                     client_server.start()
-                    Server.LOG.add(client_server)
                 except timeout:
                     pass
                 except TypeError:
@@ -343,7 +343,7 @@ class Server(Connector):
 
     def get_commands_worker(self):
         def start():
-            Server.LOG.add("Server started listening")
+            Server.LOG.add("🖥 Le serveur est en écoute")
             th: Thread = Thread(name="ServerListen", target=self.start_self)
             th.start()
 
@@ -353,9 +353,13 @@ class Server(Connector):
 
         def list():
             peers: list[str] = [
-                f"{c.command_peer()}" for c in Server.CLIENT_DICT.values()
+                f"{c.command_peer()[0]}/{c.getUserName()}"
+                for c in Server.CLIENT_DICT.values()
             ]
-            Server.LOG.add(" | ".join(peers) + "test")
+            if len(peers) > 0:
+                Server.LOG.add("🖥 " + " | ".join(peers))
+            else:
+                Server.LOG.add("🖥 Aucun client connecté")
 
         def quit():
             stop()
@@ -376,7 +380,7 @@ class Server(Connector):
                 Server.CLIENT_DICT.pop(client.getConnectionInfos())
 
         def default():
-            Server.LOG.add("Invalid Command")
+            Server.LOG.add("🖥 Commande Inconnue")
 
         interpreter: CommandInterpreter = CommandInterpreter(
             ("start", start),
