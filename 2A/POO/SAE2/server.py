@@ -6,6 +6,28 @@ from time import time, sleep
 from sys import exit as sysExit
 
 
+class function:
+    pass
+
+
+class Logger:
+    def __init__(self) -> None:
+        self.__logs: list[str] = []
+        self.__event: function = None
+
+    def add(self, msg: str):
+        self.__logs.append(msg)
+        self.__event("\n".join(self.__logs))
+
+    def remove(self, msg: str):
+        if msg in self.__logs:
+            self.__logs.remove(msg)
+            self.__event(self.__logs)
+
+    def setEvent(self, func: function):
+        self.__event = func
+
+
 class Server(Connector):
     pass
 
@@ -53,7 +75,7 @@ class ClientServer(Connector, Thread):
         while self.__active:
             try:
                 flag, data = self.getFlagData()
-                print(f"{self}", flag, data)
+                Server.LOG.add(f"{self}", flag, data)
                 self.__interpreter.run_command(flag, *data)
             except:
                 pass
@@ -75,10 +97,12 @@ class ClientServer(Connector, Thread):
         return (flag, data)
 
     def sendFlag(self, flag: Flag = None, data: str = "", flag_str: str = None):
-        print("envoi flag:", flag, data)
         if flag_str is not None:
             self.command_send(flag_str.encode("utf-8"))
         else:
+
+            Server.LOG.add(f"ENVOI FLAG: {flag} {data}")
+
             msg: str = flag.value
             if data != "":
                 msg += " " + data
@@ -169,7 +193,7 @@ class ClientServer(Connector, Thread):
                 Thread(target=launch, name="startpoint").start()
 
         def default():
-            print(f"<{self.__username}> Invalid Command")
+            Server.LOG.add(f"<{self.__username}> Invalid Command")
 
         interpreter: CommandInterpreter = CommandInterpreter(
             (Flag.TIM, tim),
@@ -206,7 +230,6 @@ class ConfCall:
         return ":".join([c.getUserName() for c in self.__clients])
 
     def startCall(self):
-        print("debug: ", "starting call", len(self.__active_clients))
         if len(self.__active_clients) > 1:
             for cli in self.__active_clients:
                 cli.sendFlag(Flag.STA)
@@ -254,14 +277,12 @@ class ConfCall:
             c.setAskedCall(self.getId(), Flag.NUL)
 
     def prepareClient(self, client: ClientServer):
-        print("debug: prepareclient: ", client.getUserName())
         if client in self.__clients:
             if client.getAskedCall()[1]:
                 self.__active_clients.append(client)
             client.setAskedCall()
 
     def redirectAudioData(self, audioData: bytes, clientfrom: ClientServer):
-        print("debug: audioInCall", audioData)
         redirected_clients: list[ClientServer] = [
             c for c in self.__active_clients if c != clientfrom
         ]
@@ -270,9 +291,11 @@ class ConfCall:
             ConfCall.SERVER.audio_out_send(audioData, c.getConnectionInfos()[0], 5001)
 
 
-class Server(Connector, Thread):
+class Server(Connector):
     CLIENT_DICT: dict[str, ClientServer] = {}
     CONFCALL_DICT: dict[int, ConfCall] = {}
+
+    LOG: Logger = Logger()
 
     def __init__(self, addr: str = "127.0.0.1", port: int = 5000) -> None:
         self.__addr = addr
@@ -280,7 +303,6 @@ class Server(Connector, Thread):
         self.__active: bool = True
 
         Connector.__init__(self)
-        Thread.__init__(self, name="ThreadPrincipServer")
 
         self.audio_in_bind(self.__addr, self.__port + 1)
         self.audio_out_bind(self.__addr, self.__port + 2)
@@ -289,26 +311,29 @@ class Server(Connector, Thread):
 
         self.__command_interpreter: CommandInterpreter = self.get_commands_worker()
 
+    def setter(self, addr: str, port: int):
+        self.__addr = addr
+        self.__port = port
+
     def start_self(self):
         self.command_prepare_listening(self.__addr, self.__port, timeout=10)
         Thread(target=self.getAudioRedirect, name="audioRedirect").start()
-        while self.__active:
-            try:
-                command_channel, addr = self.command_listen()
-                print(
-                    "debug: ",
-                    addr,
-                    command_channel.getpeername(),
-                    command_channel.getsockname(),
-                )
-                client_server: ClientServer = ClientServer(command_channel, addr)
-                Server.CLIENT_DICT[addr[0]] = client_server
 
-                client_server.start()
-            except timeout:
-                pass
-            except TypeError:
-                pass
+        def start_thread():
+            while self.__active:
+                try:
+                    command_channel, addr = self.command_listen()
+                    Server.LOG.add(f"new Client: {addr}")
+                    client_server: ClientServer = ClientServer(command_channel, addr)
+                    Server.CLIENT_DICT[addr[0]] = client_server
+                    client_server.start()
+                    Server.LOG.add(client_server)
+                except timeout:
+                    pass
+                except TypeError:
+                    pass
+
+        Thread(target=start_thread, name="ThreadPrincipal").start()
 
     def stop_self(self):
         self.__active = False
@@ -318,7 +343,7 @@ class Server(Connector, Thread):
 
     def get_commands_worker(self):
         def start():
-            print("Server started listening")
+            Server.LOG.add("Server started listening")
             th: Thread = Thread(name="ServerListen", target=self.start_self)
             th.start()
 
@@ -330,7 +355,7 @@ class Server(Connector, Thread):
             peers: list[str] = [
                 f"{c.command_peer()}" for c in Server.CLIENT_DICT.values()
             ]
-            print(peers)
+            Server.LOG.add(" | ".join(peers) + "test")
 
         def quit():
             stop()
@@ -351,7 +376,7 @@ class Server(Connector, Thread):
                 Server.CLIENT_DICT.pop(client.getConnectionInfos())
 
         def default():
-            print("Invalid Command")
+            Server.LOG.add("Invalid Command")
 
         interpreter: CommandInterpreter = CommandInterpreter(
             ("start", start),
@@ -364,12 +389,12 @@ class Server(Connector, Thread):
 
         return interpreter
 
-    def run(self):
-        cmd: str = " "
-        while cmd != "quit":
-            cmds = input("£ ").split(" ")
-            cmd = cmds[0]
-            self.__command_interpreter.run_command(cmd, *cmds[1:])
+    def getInterpreter(self):
+        return self.__command_interpreter
+
+    def execute(self, cmd_line):
+        cmds = cmd_line.split(" ")
+        self.__command_interpreter.run_command(cmds[0], *cmds[1:])
 
     def getAudioRedirect(self):
         while self.__active:
@@ -378,7 +403,6 @@ class Server(Connector, Thread):
                 addr: tuple[str, int]
                 audioDataIn, addr = self.audio_in_receive()
                 client: ClientServer = Server.CLIENT_DICT.get(addr[0])
-                print("debug audioServ: ", client, addr)
                 if client is not None:
                     status: str = client.getStatus()
                     if status.startswith("CALLING:"):
@@ -387,9 +411,3 @@ class Server(Connector, Thread):
                         call.redirectAudioData(audioDataIn, client)
             except timeout:
                 pass
-
-
-if __name__ == "__main__":
-    server: Server = Server()
-
-    server.start()

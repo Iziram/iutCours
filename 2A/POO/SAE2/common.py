@@ -132,8 +132,6 @@ class Connector:
         return self.__command_channel.getpeername()
 
     def audio_in_bind(self, addr: str, port: int):
-        print(type(addr), type(port))
-        print(addr, port)
         self.__audio_in_channel.bind((addr, port))
 
     def audio_in_receive(self, buffer: int = 2048) -> tuple[bytes, tuple[str, int]]:
