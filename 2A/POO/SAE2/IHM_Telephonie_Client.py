@@ -319,15 +319,21 @@ class client_connected(Toplevel):
         self.__right_btn_disc.pack()
         self.protocol("WM_DELETE_WINDOW", self.disconnected)
 
+        self.__middle_list.config(selectmode=MULTIPLE)
+
         cmd_i: CommandInterpreter = self.__fp.getClient().getInterpreter()
         cmd_i.set_command(Flag.LSR, self.setClientList)
         cmd_i.set_command(Flag.ASK, self.getAskedCall)
         cmd_i.set_command(Flag.STA, self.startCall)
         cmd_i.set_command(Flag.FIN, self.closeCall)
+        cmd_i.set_command(Flag.INF, self.getInfos)
 
     def closeCall(self):
         self.__fp.getClient().setAudioConnected(False)
         self.__call.destroy()
+
+    def getInfos(self, time, user):
+        self.__call.actualize(time.replace("time:", ""), user.replace("act:", ""))
 
     def getAskedCall(self, name: str):
         client_receive(self.__fp, name)
@@ -403,6 +409,10 @@ class client_call(Toplevel):
     def end_call(self) -> None:
         self.__fp.getClient().sendFlag(Flag.FIN)
         self.destroy()  # detruire la fenetre courante
+
+    def actualize(self, time, user):
+        self.__lbl_usr["text"] = user
+        self.__stgvar_time.set(time)
 
 
 class client_receive(Toplevel):

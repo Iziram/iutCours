@@ -229,9 +229,9 @@ class ConfCall:
                 cli.setStatus(f"CALLING:{self.getId()}")
             self.__start_time = time()
 
-            # Thread(
-            #     target=self.sendPeriodInfos, name=f"periodInfoCall{self.__id}"
-            # ).start()
+            Thread(
+                target=self.sendPeriodInfos, name=f"periodInfoCall{self.__id}"
+            ).start()
 
     def stopCall(self):
         self.__start_time = None
@@ -247,11 +247,14 @@ class ConfCall:
 
     def sendPeriodInfos(self):
         while len(self.__active_clients) > 1:
-            sleep(1)
-            elapsed_time: float = time() - self.__start_time
-            clients: str = self.getName().replace(":", ",")
-            infos: str = f"time:{secondsToClock(elapsed_time)} act:{clients}"
-            self.sendAllActiveClients(Flag.INF, infos)
+            try:
+                sleep(1)
+                elapsed_time: float = time() - self.__start_time
+                clients: str = self.getName().replace(":", ",")
+                infos: str = f"time:{secondsToClock(elapsed_time)} act:{clients}"
+                self.sendAllActiveClients(Flag.INF, infos)
+            except:
+                pass
 
     def sendAllActiveClients(self, flag: Flag, data: str = ""):
         for cli in self.__active_clients:
@@ -281,7 +284,6 @@ class ConfCall:
         ]
 
         for c in redirected_clients:
-            print("redirected")
             ConfCall.SERVER.audio_out_send(audioData, c.getConnectionInfos()[0], 5001)
 
 
