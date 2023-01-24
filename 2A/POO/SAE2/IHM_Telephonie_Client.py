@@ -440,10 +440,12 @@ class client_receive(Toplevel):
 
     def ok(self):
         self.__master.getClient().sendFlag(Flag.RES, "1")
+        self.__is_asking = False
         self.destroy()
 
     def nok(self) -> None:
         self.__master.getClient().sendFlag(Flag.RES, "0")
+        self.__is_asking = False
         self.destroy()  # detruire la fenetre courante
 
 

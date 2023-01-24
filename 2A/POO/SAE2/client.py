@@ -59,8 +59,6 @@ class Client(Connector):
         self.__server_ip: str = server_ip
         self.__server_port: int = server_port
 
-        self.__is_asking: bool = False
-
     def get_commands_worker(self):
         def ent():
             self.disconnect()
@@ -72,17 +70,7 @@ class Client(Connector):
             pass
 
         def ask(callName: str):
-            self.__is_asking = True
-            # TODO: Afficher call name sur IHM
-            def answerTimeOut():
-                time: int = 0
-                while self.__is_asking and time < 10:
-                    sleep(1)
-                if self.__is_asking:
-                    self.sendFlag(Flag.RES, "0")
-
-            th: Thread = Thread(target=answerTimeOut, name="answerTimeOUT")
-            th.start()
+            pass
 
         def sta():
 
@@ -180,16 +168,11 @@ class Client(Connector):
     def sendFlag(self, flag: Flag = None, data: str = "", flag_str: str = None):
         if flag_str is not None:
             self.command_send(flag_str.encode("utf-8"))
-            if flag_str.startswith("res"):
-                self.__is_asking = False
         else:
             msg: str = flag.value
             if data != "":
                 msg += " " + data
             self.command_send(msg.encode("utf-8"))
-
-            if flag == Flag.RES:
-                self.__is_asking = False
 
     def disconnect(self):
         try:
