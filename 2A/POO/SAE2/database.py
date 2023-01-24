@@ -62,7 +62,7 @@ class Database(RequeteBDD):
 
     def isLoginValid(self, username: str, password: str):
 
-        requete: str = f"select * from identifiants where username=? and password=?"
+        requete: str = "select * from identifiants where username=? and password=?"
 
         reponse = self.reponse_unique(requete, username, password)
 
@@ -70,6 +70,21 @@ class Database(RequeteBDD):
             return False
         else:
             return True
+
+    def isUsernameKnown(self, username: str):
+        requete: str = "select * from identifiants where username=?"
+
+        reponse = self.reponse_unique(requete, username)
+
+        if reponse is None:
+            return False
+        else:
+            return True
+
+    def createUser(self, username, password):
+        requete: str = "insert into identifiants (username,password) values (?,?)"
+        self.execute(requete, username, password)
+        self.sauvegarde_BDD()
 
 
 if __name__ == "__main__":

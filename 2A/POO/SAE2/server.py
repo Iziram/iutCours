@@ -1,31 +1,9 @@
-from common import Connector, CommandInterpreter, Flag, secondsToClock
+from common import Connector, CommandInterpreter, Flag, secondsToClock, Logger
 from threading import Thread
 from socket import socket, timeout
 from database import Database
 from time import time, sleep
 from sys import exit as sysExit
-
-
-class function:
-    pass
-
-
-class Logger:
-    def __init__(self) -> None:
-        self.__logs: list[str] = []
-        self.__event: function = None
-
-    def add(self, msg: str):
-        self.__logs.append(msg)
-        self.__event("\n".join(self.__logs))
-
-    def remove(self, msg: str):
-        if msg in self.__logs:
-            self.__logs.remove(msg)
-            self.__event(self.__logs)
-
-    def setEvent(self, func: function):
-        self.__event = func
 
 
 class Server(Connector):
@@ -55,6 +33,9 @@ class ClientServer(Connector, Thread):
 
     def __str__(self) -> str:
         return f"<{self.__username}:{self.__status}>"
+
+    def getInterpreter(self):
+        return self.__interpreter
 
     def getAskedCall(self) -> tuple[int, bool]:
         return self.__asked_call
@@ -140,9 +121,21 @@ class ClientServer(Connector, Thread):
                     self.sendFlag(Flag.AUT)
                 else:
                     self.sendFlag(Flag.REF, "MOT DE PASSE INCORRECT")
+                    self.setStatus("UNKNOWN")
+                    self.setUserName("UNKNOWN")
                 db.fermeture_BDD()
             else:
                 self.sendFlag(Flag.REF, "NON ENREGISTRÉ")
+
+        def cre(username, password):
+            db: Database = Database("bdd.sqlite")
+            db.ouverture_BDD()
+            if not db.isUsernameKnown(username):
+                db.createUser(username, password)
+                Server.LOG.add(f"🖥 Utilisateur créé : {username}")
+                self.sendFlag(Flag.VLD)
+            else:
+                self.sendFlag(Flag.REF, "USERNAME NON UNIQUE")
 
         def ent():
             self.sendFlag(Flag.ENT)
@@ -187,7 +180,7 @@ class ClientServer(Connector, Thread):
                 new_call.prepareConf()
 
                 def launch():
-                    sleep(15)
+                    sleep(11)
                     new_call.startCall()
 
                 Thread(target=launch, name="startpoint").start()
@@ -347,6 +340,9 @@ class Server(Connector):
             th: Thread = Thread(name="ServerListen", target=self.start_self)
             th.start()
 
+            th2: Thread = Thread(name="ServerList", target=self.sendClientsList)
+            th2.start()
+
         def stop():
             print("Server stopped listening")
             self.stop_self()
@@ -414,4 +410,13 @@ class Server(Connector):
                         call: ConfCall = Server.CONFCALL_DICT[call_id]
                         call.redirectAudioData(audioDataIn, client)
             except timeout:
+                pass
+
+    def sendClientsList(self):
+        while self.__active:
+            sleep(1)
+            try:
+                for client in Server.CLIENT_DICT.values():
+                    client.getInterpreter().run_command(Flag.LSD)
+            except:
                 pass

@@ -35,6 +35,7 @@ class Client(Connector):
         self.audio_in_bind(addr, port + 1)
         self.audio_out_bind(addr, port + 2)
         self.__connected: bool = False
+        self.__initial_connected: bool = False
 
         self.__audio_connected: bool = False
 
@@ -63,8 +64,6 @@ class Client(Connector):
     def get_commands_worker(self):
         def ent():
             self.disconnect()
-            print("debug: ", self.__audio_connected, self.__connected)
-            print("debug: disconnected")
 
         def lsr(*data):
             print(data)
@@ -74,7 +73,7 @@ class Client(Connector):
 
         def ask(callName: str):
             self.__is_asking = True
-            # Afficher call name sur IHM
+            # TODO: Afficher call name sur IHM
             def answerTimeOut():
                 time: int = 0
                 while self.__is_asking and time < 10:
@@ -87,20 +86,9 @@ class Client(Connector):
 
         def sta():
 
-            self.__audio_connected = True
-
             Thread(target=self.receive_audio, name="audioClientIn").start()
 
-            def test():
-                while self.__audio_connected:
-                    self.audio_out_send(
-                        self.__username.encode("utf-8"),
-                        self.__server_ip,
-                        self.__server_port + 1,
-                    )
-                    sleep(1)
-
-            Thread(target=test, name="audioClientOut").start()
+            Thread(target=self.send_audio, name="audioClientOut").start()
 
         def fin():
             self.__audio_connected = False
@@ -116,9 +104,17 @@ class Client(Connector):
 
         return interpreter
 
-    def connect(self):
+    def getInterpreter(self):
+        return self.__command_interpreter
+
+    def setAudioConnected(self, b: bool):
+        self.__audio_connected = b
+
+    def connect(self, var):
         try:
-            self.command_connect(self.__server_ip, self.__server_port)
+            if not self.__initial_connected:
+                self.command_connect(self.__server_ip, self.__server_port)
+                self.__initial_connected = True
 
             # Phase de connexion
 
@@ -134,17 +130,20 @@ class Client(Connector):
                     ans, ans_data = self.getFlagData()
                     if ans == Flag.AUT:
                         self.__connected = True
+                        print("connected: ", self.__username)
                         return self.__connected
                     else:
-                        print(ans, ans_data)
+                        var.set(" ".join(ans_data))
                 else:
-                    print(ans, ans_data)
+                    var.set(" ".join(ans_data))
             else:
-                print(ans, ans_data)
+                var.set(" ".join(ans_data))
             self.__connected = False
             return self.__connected
-        except:
+        except Exception as e:
+            print(e)
             self.__connected = False
+            var.set("Une erreur s'est passée")
             return self.__connected
 
     def sendData(self):
@@ -213,6 +212,7 @@ class Client(Connector):
         self.__stream_out.write(data)
 
     def receive_audio(self):
+        self.__audio_connected = True
         while self.__audio_connected:
             try:
                 data: bytes = self.audio_in_receive(Client.CHUNKS * 2)[0]
@@ -225,6 +225,12 @@ class Client(Connector):
         while self.__audio_connected:
             data: bytes = self.save_audio()
             self.audio_out_send(data, self.__server_ip, self.__server_port)
+
+    def setUsername(self, username: str):
+        self.__username = username
+
+    def setPassword(self, password: str):
+        self.__password = password
 
 
 if __name__ == "__main__":
