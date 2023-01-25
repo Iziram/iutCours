@@ -480,7 +480,9 @@ class Annuaire(Toplevel):
         self.__btn_add = Button(
             self, text="Ajouter", borderwidth=3, relief="ridge", command=self.add_name
         )
-        self.__btn_call = Button(self, text="Appeler", borderwidth=3, relief="ridge")
+        self.__btn_call = Button(
+            self, text="Appeler", borderwidth=3, relief="ridge", command=self.call_names
+        )
         self.__menubar = Menu(self)
         self.__menu_json = Menu(self.__menubar, tearoff=0)
         self.__menu_json.add_command(label="Importer", command=self.import_file)
