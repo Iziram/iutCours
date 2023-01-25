@@ -371,7 +371,7 @@ class Server(Connector):
             ("stop", stop),
             ("list", list),
             ("quit", quit),
-            ("calls", quit),
+            ("calls", calls),
         )
         interpreter.set_default_command(default)
 
