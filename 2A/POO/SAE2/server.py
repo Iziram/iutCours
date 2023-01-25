@@ -350,23 +350,18 @@ class Server(Connector):
             else:
                 Server.LOG.add("🖥 Aucun client connecté")
 
+        def calls():
+            confcalls: list[str] = [
+                f"{c.getName()}[{c.getId()}]" for c in Server.CONFCALL_DICT.values()
+            ]
+            if len(confcalls) > 0:
+                Server.LOG.add("🖥 " + " | ".join(confcalls))
+            else:
+                Server.LOG.add("🖥 Aucun ConfCall en cours")
+
         def quit():
             stop()
             sysExit()
-
-        def disconnect(peer: str):
-            if peer == "all":
-                for c in Server.CLIENT_DICT.values():
-                    c.command_close()
-                Server.CLIENT_DICT.clear()
-            else:
-                client: ClientServer = [
-                    c
-                    for c in Server.CLIENT_DICT.values()
-                    if c.command_peer()[1] == int(peer)
-                ]
-                client.command_close()
-                Server.CLIENT_DICT.pop(client.getConnectionInfos())
 
         def default():
             Server.LOG.add("🖥 Commande Inconnue")
@@ -376,7 +371,7 @@ class Server(Connector):
             ("stop", stop),
             ("list", list),
             ("quit", quit),
-            ("disconnect", disconnect),
+            ("calls", quit),
         )
         interpreter.set_default_command(default)
 

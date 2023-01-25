@@ -179,6 +179,16 @@ class hlp_srv(Toplevel):
         self.__lbl_list.pack(padx=10, pady=10)
         self.__txt_command.pack(padx=10, pady=10)
 
+        self.__txt_command.bind("<Key>", "break")
+        self.__txt_command[
+            "text"
+        ] = """start ➡ Ouvre le serveur en mode écoute
+        stop ➡ Ferme toutes les connexions du serveur mais laisse l'instance ouverte
+        quit ➡ Ferme toutes les connexions du serveur et coupe l'instance
+        list ➡ Renvoie la liste des clients
+        calls ➡ Renvoie la liste des ConfCalls
+        """
+
 
 """
 Fin de l'IHM côté serveur.
