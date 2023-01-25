@@ -82,7 +82,8 @@ class ClientServer(Connector, Thread):
             self.command_send(flag_str.encode("utf-8"))
         else:
 
-            Server.LOG.add(f"{self.__username} ➡ {flag} {data}")
+            if flag not in (Flag.LSR, Flag.INF):
+                Server.LOG.add(f"{self.__username} ➡ {flag} {data}")
 
             msg: str = flag.value
             if data != "":

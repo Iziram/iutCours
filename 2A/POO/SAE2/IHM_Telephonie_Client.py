@@ -519,7 +519,7 @@ class Annuaire(Toplevel):
         selection: tuple[int] = self.__list_annuaire.curselection()
         names: list[str] = [self.__list_annuaire.get(i) for i in selection]
         if len(names) > 0:
-            self.__fp.getClient().sendFlag(Flag.CAL, " ".join(names))
+            self.__master.getClient().sendFlag(Flag.CAL, " ".join(names))
 
     def import_file(self):
         file_import = askopenfile(
