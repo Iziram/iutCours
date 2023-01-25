@@ -8,6 +8,39 @@ from time import sleep
 from sys import argv
 from sys import exit as sysExit
 
+from json import dump, load
+
+
+class Book:
+    def __init__(self) -> None:
+        self.__noms: list[str] = []
+        self.__event = None
+
+    def addName(self, name: str):
+        self.__noms.append(name)
+        self.__event(self.__noms)
+
+    def getNames(self):
+        return self.__noms
+
+    def removeName(self, name: str):
+        if name in self.__noms:
+            self.__noms.remove(name)
+            self.__event(self.__noms)
+
+    def exportStr(self, filename):
+        with open(filename, "w", encoding="utf-8") as file:
+            dump({"names": self.__noms}, file)
+
+    def importStr(self, file):
+        json: dict[str, list[str]] = load(file)
+        noms: list[str] = json.get("names")
+
+        self.__noms = noms
+
+    def setEvent(self, evn):
+        self.__event = evn
+
 
 class Client(Connector):
     AUDIO = pyaud.PyAudio()
@@ -58,6 +91,10 @@ class Client(Connector):
 
         self.__server_ip: str = server_ip
         self.__server_port: int = server_port
+        self.__book: Book = Book()
+
+    def getBook(self):
+        return self.__book
 
     def get_commands_worker(self):
         def ent():
@@ -208,23 +245,3 @@ class Client(Connector):
 
     def setPassword(self, password: str):
         self.__password = password
-
-
-if __name__ == "__main__":
-    client_name: str = "bob"
-    password: str = "1234"
-    ip = "2"
-    if len(argv) > 1:
-        client_name = argv[1]
-        password = argv[2]
-        if len(argv) >= 4:
-            ip = argv[3]
-
-    client: Client = Client(client_name, password, addr=f"127.0.0.{ip}")
-    if client.connect():
-        th: Thread = Thread(target=client.receiveData, name="clientReceive")
-        th.start()
-        th: Thread = Thread(target=client.sendData, name="clientSend")
-        th.start()
-    else:
-        print("Connexion refusée")

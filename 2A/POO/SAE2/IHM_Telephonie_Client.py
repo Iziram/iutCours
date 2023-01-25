@@ -6,6 +6,7 @@
   - Créé par Sandra Valentin le 06/01/2023 .
 """
 from tkinter import *
+from tkinter.filedialog import *
 from common import CommandInterpreter, Flag, TextWithVar
 from client import Client
 from threading import Thread
@@ -151,8 +152,8 @@ class client_param(Toplevel):
         self.__lbl_ip_client = Label(
             self.__frame_center, text="ip client", padx=3, pady=3
         )
-        self.__entry_ip_srv = Entry(self.__frame_center, width=10)
-        self.__entry_ip_client = Entry(self.__frame_center, width=10)
+        self.__entry_ip_srv = Entry(self.__frame_center, width=15)
+        self.__entry_ip_client = Entry(self.__frame_center, width=15)
         self.__lbl_port_srv = Label(
             self.__frame_center, text="port serveur", padx=3, pady=3
         )
@@ -253,8 +254,7 @@ class client_connected(Toplevel):
         self.__fp = fp
         self.__middle_frame: Frame
         self.__right_frame: Frame
-        self.__middle_search: Entry
-        self.__middle_btn_search: Button
+        self.__btn_annuaire: Button
         self.__middle_list: Listbox
         self.__middle_btn_call: Button
         self.__right_pp: Label
@@ -270,8 +270,13 @@ class client_connected(Toplevel):
         self.__right_frame = Frame(
             master=self, relief="ridge", padx=5, pady=5, borderwidth=3
         )
-        self.__middle_search = Entry(self.__middle_frame, width=15)
-        self.__middle_btn_search = Button(self.__middle_frame, text="🔍")
+        self.__btn_annuaire = Button(
+            self.__middle_frame,
+            text="Annuaire",
+            borderwidth=3,
+            relief="ridge",
+            command=lambda: Annuaire(self.__fp),
+        )
         self.__middle_list = Listbox(self.__middle_frame, width=17, height=10)
         self.__middle_btn_call = Button(
             self.__middle_frame,
@@ -310,8 +315,7 @@ class client_connected(Toplevel):
         # Ajout des widget
         self.__middle_frame.grid(row=0, column=0)
         self.__right_frame.grid(row=0, column=1)
-        self.__middle_search.grid(row=0, column=0)
-        self.__middle_btn_search.grid(row=0, column=1)
+        self.__btn_annuaire.grid(row=0, column=0)
         self.__middle_list.grid(row=1, column=0)
         self.__middle_btn_call.grid(row=1, column=1)
         self.__right_pp.pack()
@@ -457,6 +461,66 @@ class client_receive(Toplevel):
         self.__master.getClient().sendFlag(Flag.RES, "0")
         self.__is_asking = False
         self.destroy()  # detruire la fenetre courante
+
+
+class Annuaire(Toplevel):
+    def __init__(self, master):
+        # Déclaration des variables
+        self.__master: cote_client = master
+        Toplevel.__init__(self, self.__master)
+        self.__entry_add: Entry
+        self.__btn_add: Button
+        self.__list_annuaire: Listbox
+        self.__btn_call: Button
+        self.__menubar: Menu
+        self.__menu_json: Menu
+
+        # Instanciation dse variables
+        self.__entry_add = Entry(self, width=15)
+        self.__btn_add = Button(
+            self, text="Ajouter", borderwidth=3, relief="ridge", command=self.add_name
+        )
+        self.__btn_call = Button(self, text="Appeler", borderwidth=3, relief="ridge")
+        self.__menubar = Menu(self)
+        self.__menu_json = Menu(self.__menubar, tearoff=0)
+        self.__menu_json.add_command(label="Importer", command=self.import_file)
+        self.__menu_json.add_separator()
+        self.__menu_json.add_command(label="Exporter", command=self.export_file)
+        self.__menubar.add_cascade(label="JSON", menu=self.__menu_json)
+        self.__list_annuaire = Listbox(self, width=20, height=15)
+
+        # Ajout des widgets
+        self.title("Annuaire")
+        self.config(menu=self.__menubar)
+        self.__entry_add.grid(row=0, column=0)
+        self.__btn_add.grid(row=0, column=1)
+        self.__btn_call.grid(row=1, column=1)
+        self.__list_annuaire.grid(row=1, column=0)
+
+        self.__master.getClient().getBook().setEvent(self.actualizeBook)
+
+    def add_name(self):
+        name: str = self.__entry_add.get()
+        self.__master.getClient().getBook().addName(name)
+
+    def import_file(self):
+        file_import = askopenfile(
+            title="Fichier json", filetypes=[("json files", ".json")]
+        )
+        self.__master.getClient().getBook().importStr(file_import)
+
+    def export_file(self):
+        self.__master.getClient().getBook().exportStr("annuaire.json")
+
+    def actualizeBook(self, names: list[str]):
+        try:
+            current_names: list[str] = list(self.__list_annuaire.get(0, END))
+            if set(current_names) != set(names):
+                self.__middle_list.delete(0, END)
+                for i, v in enumerate(names):
+                    self.__middle_list.insert(i, v)
+        except:
+            pass
 
 
 if __name__ == "__main__":

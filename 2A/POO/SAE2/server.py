@@ -300,9 +300,6 @@ class Server(Connector):
 
         Connector.__init__(self)
 
-        self.audio_in_bind(self.__addr, self.__port + 1)
-        self.audio_out_bind(self.__addr, self.__port + 2)
-
         ConfCall.SERVER = self
 
         self.__command_interpreter: CommandInterpreter = self.get_commands_worker()
@@ -313,6 +310,8 @@ class Server(Connector):
 
     def start_self(self):
         self.command_prepare_listening(self.__addr, self.__port, timeout=10)
+        self.audio_in_bind(self.__addr, self.__port + 1)
+        self.audio_out_bind(self.__addr, self.__port + 2)
         Thread(target=self.getAudioRedirect, name="audioRedirect").start()
 
         def start_thread():
