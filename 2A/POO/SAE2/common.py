@@ -228,18 +228,24 @@ class TextWithVar(Text):
         # only change the widget if something actually
         # changed, otherwise we'll get into an endless
         # loop
-        text_current = self.get("1.0", "end-1c")
-        var_current = self._textvariable.get()
-        if text_current != var_current:
-            self.delete("1.0", "end")
-            self.insert("1.0", var_current)
-            self.see(END)
+        try:
+            text_current = self.get("1.0", "end-1c")
+            var_current = self._textvariable.get()
+            if text_current != var_current:
+                self.delete("1.0", "end")
+                self.insert("1.0", var_current)
+                self.see(END)
+        except:
+            pass
 
     def _on_widget_change(self, event=None):
         """Change the variable when the widget changes"""
-        if self._textvariable is not None:
-            self._textvariable.set(self.get("1.0", "end-1c"))
-            self.see(END)
+        try:
+            if self._textvariable is not None:
+                self._textvariable.set(self.get("1.0", "end-1c"))
+                self.see(END)
+        except:
+            pass
 
 
 class Logger:
