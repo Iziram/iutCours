@@ -497,11 +497,27 @@ class Annuaire(Toplevel):
         self.__btn_call.grid(row=1, column=1)
         self.__list_annuaire.grid(row=1, column=0)
 
+        self.__list_annuaire.config(selectmode=MULTIPLE)
+
         self.__master.getClient().getBook().setEvent(self.actualizeBook)
+
+        self.__list_annuaire.bind("<BackSpace>", self.remove_names)
+
+    def remove_names(self, _: Event):
+        selection: tuple[int] = self.__list_annuaire.curselection()
+        names: list[str] = [self.__list_annuaire.get(i) for i in selection]
+        for n in names:
+            self.__master.getClient().getBook().removeName(n)
 
     def add_name(self):
         name: str = self.__entry_add.get()
         self.__master.getClient().getBook().addName(name)
+
+    def call_names(self):
+        selection: tuple[int] = self.__list_annuaire.curselection()
+        names: list[str] = [self.__list_annuaire.get(i) for i in selection]
+        if len(names) > 0:
+            self.__fp.getClient().sendFlag(Flag.CAL, " ".join(names))
 
     def import_file(self):
         file_import = askopenfile(
@@ -516,11 +532,11 @@ class Annuaire(Toplevel):
         try:
             current_names: list[str] = list(self.__list_annuaire.get(0, END))
             if set(current_names) != set(names):
-                self.__middle_list.delete(0, END)
+                self.__list_annuaire.delete(0, END)
                 for i, v in enumerate(names):
-                    self.__middle_list.insert(i, v)
-        except:
-            pass
+                    self.__list_annuaire.insert(i, v)
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":

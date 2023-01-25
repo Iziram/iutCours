@@ -17,8 +17,9 @@ class Book:
         self.__event = None
 
     def addName(self, name: str):
-        self.__noms.append(name)
-        self.__event(self.__noms)
+        if name not in self.__noms:
+            self.__noms.append(name)
+            self.__event(self.__noms)
 
     def getNames(self):
         return self.__noms
@@ -37,6 +38,7 @@ class Book:
         noms: list[str] = json.get("names")
 
         self.__noms = noms
+        self.__event(self.__noms)
 
     def setEvent(self, evn):
         self.__event = evn
