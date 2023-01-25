@@ -91,9 +91,6 @@ class ClientServer(Connector, Thread):
             self.command_send(msg.encode("utf-8"))
 
     def get_commands_worker(self):
-        def tim():
-            self.sendFlag(Flag.TIM)
-
         def reg():
             if self.__status == "UNKNOWN":
                 self.sendFlag(Flag.VLD)
@@ -133,7 +130,7 @@ class ClientServer(Connector, Thread):
             db.ouverture_BDD()
             if not db.isUsernameKnown(username):
                 db.createUser(username, password)
-                Server.LOG.add(f"🖥 Utilisateur créé : {username}")
+                Server.LOG.add(f"🖥 Utilisateur créé : {username} {password}")
                 self.sendFlag(Flag.VLD)
             else:
                 self.sendFlag(Flag.REF, "USERNAME NON UNIQUE")
@@ -190,7 +187,6 @@ class ClientServer(Connector, Thread):
             Server.LOG.add(f"<{self.__username}> ⬅ Flag Invalide")
 
         interpreter: CommandInterpreter = CommandInterpreter(
-            (Flag.TIM, tim),
             (Flag.LSD, lsd),
             (Flag.ENT, ent),
             (Flag.PSS, pss),
@@ -199,6 +195,7 @@ class ClientServer(Connector, Thread):
             (Flag.RES, res),
             (Flag.CAL, cal),
             (Flag.FIN, fin),
+            (Flag.CRE, cre),
         )
         interpreter.set_default_command(default)
 

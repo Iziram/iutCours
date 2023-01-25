@@ -1,4 +1,7 @@
-<!-- markdownlint-disable MD036 MD033 -->
+---
+title: Compte Rendu Projet Telecom4a.pdf
+---
+<!-- markdownlint-disable MD036 MD033 MD041 MD022 MD025-->
 <!-- omit from toc -->
 # Compte Rendu SAE 301
 
@@ -93,26 +96,42 @@ Les valeurs de L et C sont : $C = 226,11 fF \space\And\space L = 10,37\space nH$
 En utilisant les valeurs d'impédance que nous avions trouvés précédemment :
 
 Structure du réseau d'entrée :
+<div style="display:grid; grid-template-columns: repeat(3, 32%); gap:2%;grid-auto-rows(minmax(100px, auto);">
 
-![Chart](images/Smith_Chart_Entree2.png){style="width:66%;"}
-Figure 5: Adaptation de l'impédance en entrée avec l'outil Smith Chart
-![nH](images/Smith_Network_nH_entree2.png){style="width:66%;"}
-Figure 6: Mesure de l'inductance pour une adaptation à la main en entrée
-![fF](images/Smith_Network_fF_entree2.png){style="width:66%;"}
-Figure 7: Mesure de la capacitance pour une adaptation à la main en entrée
+![Chart](images/Smith_Chart_Entree2.png)
 
+Figure 5: Adaptation de l'impédance en entrée avec l'outil Smith Chart{style="grid-row:2;text-align:left;}
+
+![nH](images/Smith_Network_nH_entree2.png)
+
+Figure 6: Mesure de l'inductance pour une adaptation à la main en entrée{style="grid-row:2;text-align:left;}
+
+![fF](images/Smith_Network_fF_entree2.png)
+
+Figure 7: Mesure de la capacitance pour une adaptation à la main en entrée{style="grid-row:2;text-align:left;}
+
+</div>
 On a une structure en T avec un capaciteur (C) et une bobine (L) de valeur $381.10462$ fF et $13.52617$ nH.
 
 <div style="page-break-before: always;"/>
 
 Structure du réseau de sortie :
 
-![Chart](images/Smith_Chart_Sortie2.png){style="width:66%;"}
-Figure 8: Adaptation de l'impédance en sortie avec l'outil Smith Chart
-![nH](images/Smith_Network_nH_sortie2.png){style="width:66%;"}
-Figure 9: Mesure de l'inductance pour une adaptation à la main en sortie
-![fF](images/Smith_Network_fF_sortie2.png){style="width:66%;"}
-Figure 10: Mesure de la capacitance pour une adaptation à la main en sortie
+<div style="display:grid; grid-template-columns: repeat(3, 32%); gap:2%;grid-auto-rows(minmax(100px, auto);">
+
+![Chart](images/Smith_Chart_Sortie2.png)
+
+Figure 8: Adaptation de l'impédance en sortie avec l'outil Smith Chart{style="grid-row:2;text-align:left;}
+
+![nH](images/Smith_Network_nH_sortie2.png)
+
+Figure 9: Mesure de l'inductance pour une adaptation à la main en sortie{style="grid-row:2;text-align:left;}
+
+![fF](images/Smith_Network_fF_sortie2.png)
+
+Figure 10: Mesure de la capacitance pour une adaptation à la main en sortie{style="grid-row:2;text-align:left;}
+
+</div>
 
 On a une structure en T avec un capaciteur (C) et une bobine (L) de valeur $359.29057$ fF et $19.40331$ nH.
 

@@ -95,6 +95,11 @@ class Client(Connector):
         self.__server_port: int = server_port
         self.__book: Book = Book()
 
+        self.__create: bool = False
+
+    def setCreateClient(self, iscreating: bool = False):
+        self.__create = iscreating
+
     def getBook(self):
         return self.__book
 
@@ -145,6 +150,17 @@ class Client(Connector):
 
             # Phase de connexion
 
+            if self.__create:
+                self.sendFlag(Flag.CRE, f"{self.__username} {self.__password}")
+                ans, ans_data = self.getFlagData()
+                if ans == Flag.REF:
+                    var.set(" ".join(ans_data))
+                    self.__connected = False
+                    self.__create = False
+                    return self.__connected
+                else:
+                    self.__create = False
+
             self.sendFlag(Flag.REG)
 
             ans, ans_data = self.getFlagData()
@@ -172,6 +188,9 @@ class Client(Connector):
             self.__connected = False
             var.set("Une erreur s'est passée")
             return self.__connected
+
+    def create_user(self, username: str, password: str):
+        pass
 
     def sendData(self):
         while self.__connected:

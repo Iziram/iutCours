@@ -14,27 +14,21 @@ class Flag(str, Enum):
     LOG = "log"  # Sends the username "log <username>"
     PSS = "pss"  # Sends the password "pss <password>"
     AUT = "aut"  # Client is authenticated
+    CRE = "cre"  # Create a user with "cre <username> <password>"
     # Quality control
     VLD = "vld"  # Valid
     REF = "ref"  # Refused "ref [why]"
     ENT = "ent"  # End TCP connection
-    TIM = "tim"  # Maintain channel connection
     NUL = "nul"  # Null flag
     # Commands
-    LSD = "lsd"  # Demands clients list
     LSR = "lsr"  # Answers with clients list "lsg <username> <username> ..."
 
     CAL = "cal"  # Demands to call client "cal <username> [usernames...]"
     ASK = "ask"  # ask a client if he wants to answer the call "ask <callName>"
     RES = "res"  # response to ASK flag "res <bool:1|0>"
     STA = "sta"  # Start the call
-    JON = "jon"  # Join a call (if call not ended) "jon <confName>"
     INF = "inf"  # general info of call "info time:00h00m00s act:usr1,usr2,usr3,..."
     FIN = "fin"  # Close current call
-
-    # JSON
-    GAN = "gan"  # Get the phone book "get {[...]}"
-    PAN = "pan"  # upload the phone  book "pan {[...]}"
 
     @staticmethod
     def getFlagFromStr(str_flag: str) -> Flag:

@@ -78,7 +78,7 @@ class cote_client(Tk):
         self.__btn_create.grid(row=3, column=1)
         self.__btn_set.grid(row=0, column=1)
 
-    def connexion(self):
+    def connexion(self, create: bool = False):
 
         username: str = self.__entry_usrnm.get()
         password: str = self.__entry_pswd.get()
