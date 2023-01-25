@@ -62,7 +62,7 @@ class cote_client(Tk):
         )
         self.__entry_pswd = Entry(self.__usr_pwd_frame, width=20)
         self.__btn_con = Button(self, text="Connexion", command=self.connexion)
-        self.__btn_create = Button(self, text="➕", command=lambda: create_client(self))
+        self.__btn_create = Button(self, text="➕", command=lambda: self.connexion(True))
         self.__btn_set = Button(self, text="⚙️", command=lambda: client_param(self))
         self.title("Connexion")
 
@@ -101,6 +101,8 @@ class cote_client(Tk):
         else:
             self.__client.setPassword(infos["password"])
             self.__client.setUsername(infos["username"])
+
+        self.__client.setCreateClient(create)
 
         if self.__client.connect(self.__str_var):
             th: Thread = Thread(target=self.__client.receiveData, name="clientReceive")

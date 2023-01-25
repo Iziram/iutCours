@@ -155,12 +155,6 @@ class ClientServer(Connector, Thread):
                 conf_call.removeActiveClient(self)
                 self.sendFlag(Flag.FIN)
 
-        def lsd():
-            self.sendFlag(
-                Flag.LSR,
-                " ".join([c.getUserName() for c in Server.CLIENT_DICT.values()]),
-            )
-
         def cal(*names):
             if not self.getStatus().startswith("CALLING:"):
                 clients: list[ClientServer] = [
@@ -187,7 +181,6 @@ class ClientServer(Connector, Thread):
             Server.LOG.add(f"<{self.__username}> ⬅ Flag Invalide")
 
         interpreter: CommandInterpreter = CommandInterpreter(
-            (Flag.LSD, lsd),
             (Flag.ENT, ent),
             (Flag.PSS, pss),
             (Flag.LOG, log),
