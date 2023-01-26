@@ -81,16 +81,18 @@ class ClientServer(Connector, Thread):
         if flag_str is not None:
             self.command_send(flag_str.encode("utf-8"))
         else:
-
-            if flag not in (Flag.LSR, Flag.INF):
-                Server.LOG.add(f"{self.__username} ➡ {flag} {data}")
-
             msg: str = flag.value
             if data != "":
                 msg += " " + data
             self.command_send(msg.encode("utf-8"))
 
     def get_commands_worker(self):
+        def lsd():
+            self.sendFlag(
+                Flag.LSR,
+                " ".join([c.getUserName() for c in Server.CLIENT_DICT.values()]),
+            )
+
         def reg():
             if self.__status == "UNKNOWN":
                 self.sendFlag(Flag.VLD)
@@ -189,6 +191,7 @@ class ClientServer(Connector, Thread):
             (Flag.CAL, cal),
             (Flag.FIN, fin),
             (Flag.CRE, cre),
+            (Flag.LSD, lsd),
         )
         interpreter.set_default_command(default)
 

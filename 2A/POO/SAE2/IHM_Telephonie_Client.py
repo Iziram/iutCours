@@ -360,6 +360,7 @@ class client_connected(Toplevel):
                     if v != self.__fp.getClientInfos()["username"]:
                         self.__middle_list.insert(i, v)
         except:
+            print("debug")
             pass
 
     def setCall(self):

@@ -21,7 +21,8 @@ class Flag(str, Enum):
     ENT = "ent"  # End TCP connection
     NUL = "nul"  # Null flag
     # Commands
-    LSR = "lsr"  # Answers with clients list "lsg <username> <username> ..."
+    LSR = "lsr"  # Answers with clients list "lsr <username> <username> ..."
+    LSD = "lsd"  # Demands clients list "lsd <username> <username> ..."
 
     CAL = "cal"  # Demands to call client "cal <username> [usernames...]"
     ASK = "ask"  # ask a client if he wants to answer the call "ask <callName>"
