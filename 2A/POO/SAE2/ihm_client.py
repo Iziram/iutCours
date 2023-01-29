@@ -1,26 +1,58 @@
-"""! @brief [description du fichier]
+"""! @brief IHM du client
  @file IHM_Telephonie_Client.py
  @section libs Librairies/Modules
-  - tkinter (lien)
+  - threading
+  - time
+  - tkinter
+  - tkinter.filedialog
+  - client
+  - common
  @section authors Auteur(s)
   - Créé par Sandra Valentin le 06/01/2023 .
+  - Mis à jour par Matthias HARTMANN le 24/01/2023 .
 """
-from tkinter import *
-from tkinter.filedialog import *
-from common import CommandInterpreter, Flag, TextWithVar
-from client import Client
+# pylint: disable=function-redefined,broad-except,too-many-ancestors,too-few-public-methods,too-many-arguments,too-many-instance-attributes,pointless-statement
+
+
 from threading import Thread
 from time import sleep
+from tkinter import (
+    END,
+    INSERT,
+    MULTIPLE,
+    Button,
+    Entry,
+    Event,
+    Frame,
+    Label,
+    Listbox,
+    Menu,
+    StringVar,
+    Tk,
+    Toplevel,
+)
+from tkinter.filedialog import askopenfile
+
+from client import Client
+from common import CommandInterpreter, Flag
 
 
-class cote_client(Tk):
+class CoteClient(Tk):
+    """!
+    @brief Interface principale, option de lancement
+
+    ## Héritage :
+        - Implémente Tk
+
+    """
+
     # Constructeur de la classe
     def __init__(self):
         # Définition des variables
         Tk.__init__(self)
 
         self.__client: Client
-        self.__clientInfos: dict[str, object]
+        self.__client_infos: dict[str, object]
 
         self.__lbl_static: Label
         self.__lbl_error: Label
@@ -37,7 +69,7 @@ class cote_client(Tk):
         # Instanciation des variables
 
         self.__client = None
-        self.__clientInfos = {
+        self.__client_infos = {
             "username": None,
             "password": None,
             "ip_serv": None,
@@ -63,7 +95,7 @@ class cote_client(Tk):
         self.__entry_pswd = Entry(self.__usr_pwd_frame, width=20)
         self.__btn_con = Button(self, text="Connexion", command=self.connexion)
         self.__btn_create = Button(self, text="➕", command=lambda: self.connexion(True))
-        self.__btn_set = Button(self, text="⚙️", command=lambda: client_param(self))
+        self.__btn_set = Button(self, text="⚙️", command=lambda: ClientParam(self))
         self.title("Connexion")
 
         # Ajout des widget
@@ -79,16 +111,24 @@ class cote_client(Tk):
         self.__btn_set.grid(row=0, column=1)
 
     def connexion(self, create: bool = False):
+        """!
+        @brief Connecte le client au serveur
+
+        Paramètres :
+            @param self => le GUI principale du client
+            @param create : bool = False => Met le client en mode Création
+
+        """
 
         username: str = self.__entry_usrnm.get()
         password: str = self.__entry_pswd.get()
 
-        infos: dict[str, object] = self.getClientInfos()
+        infos: dict[str, object] = self.get_client_infos()
 
         infos["username"] = username
         infos["password"] = password
 
-        self.setClientInfos(infos)
+        self.set_client_infos(infos)
 
         if self.__client is None:
             self.__client = Client(
@@ -99,28 +139,67 @@ class cote_client(Tk):
                 server_port=infos["port_serv"],
             )
         else:
-            self.__client.setPassword(infos["password"])
-            self.__client.setUsername(infos["username"])
+            self.__client.set_password(infos["password"])
+            self.__client.set_username(infos["username"])
 
-        self.__client.setCreateClient(create)
+        self.__client.set_create_client(create)
 
         if self.__client.connect(self.__str_var):
-            th: Thread = Thread(target=self.__client.receiveData, name="clientReceive")
-            th.start()
-            client_connected(self)
+            thd: Thread = Thread(
+                target=self.__client.receive_data, name="clientReceive"
+            )
+            thd.start()
+            ClientConnected(self)
 
-    def getClient(self):
+    def get_client(self):
+        """!
+        @brief Retourne la représentation interne du client
+
+        Paramètres :
+            @param self => le GUI principale du client
+
+        """
         return self.__client
 
-    def getClientInfos(self):
-        return self.__clientInfos
+    def get_client_infos(self):
+        """!
+        @brief Retourne les informations de configuration du client
+        (
+            username,
+            password,
+            ip_client,
+            ip_server,
+            port_server
+        )
 
-    def setClientInfos(self, infos: dict[str, object]):
-        self.__clientInfos = infos
+        Paramètres :
+            @param self => le GUI principale du client
+
+        """
+        return self.__client_infos
+
+    def set_client_infos(self, infos: dict[str, object]):
+        """!
+        @brief Définit les informations de configuration du client
+
+        Paramètres :
+            @param self => le GUI principale du client
+            @param infos : dict[str,object] => Un dictionnaire représentant la configuration
+
+        """
+        self.__client_infos = infos
 
 
-class client_param(Toplevel):
-    def __init__(self, fp: cote_client):
+class ClientParam(Toplevel):
+    """!
+    @brief GUI de la configuration réseau
+
+    ## Héritage :
+        - Implémente Toplevel
+
+    """
+
+    def __init__(self, fp: CoteClient):
         # Déclaration des variables
         Toplevel.__init__(self)
         self.__fp = fp
@@ -178,79 +257,40 @@ class client_param(Toplevel):
         self.__entry_ip_srv.insert(INSERT, "127.0.0.1")
         self.__entry_port_srv.insert(INSERT, "5000")
 
-    def valider_param(self) -> None:
+    def valider_param(self):
+        """!
+        @brief Valide la configuration réseau
+
+        Paramètres :
+            @param self => le GUI de la configuration réseau
+
+        """
         ip_server: str = self.__entry_ip_srv.get()
         ip_client: str = self.__entry_ip_client.get()
         port_server: int = int(self.__entry_port_srv.get())
 
-        infos: dict[str, object] = self.__fp.getClientInfos()
+        infos: dict[str, object] = self.__fp.get_client_infos()
 
         infos["ip_client"] = ip_client
         infos["ip_serv"] = ip_server
         infos["port_serv"] = port_server
 
-        self.__fp.setClientInfos(infos)
+        self.__fp.set_client_infos(infos)
 
-        self.__fp.deiconify()  # afficher la fenetre principale
-        self.destroy()  # detruire la fenetre courante
-
-
-class create_client(Toplevel):
-    def __init__(self, fp: cote_client):
-        # Déclaration des variables
-        Toplevel.__init__(self)
-        self.__fp = fp
-        self.__lbl_static: Label
-        self.__lbl_nm_usr: Label
-        self.__entry_nm_usr: Entry
-        self.__lbl_mdp_usr: Label
-        self.__entry_mdp_usr: Entry
-        self.__btn_valid: Button
-        self.__frame_center: Frame
-        self.title("Nouvel utilisateur")
-
-        # Instanciation des variables
-        self.__fp.withdraw()
-        self.__frame_center = Frame(
-            master=self, relief="ridge", padx=5, pady=5, borderwidth=3
-        )
-        self.__lbl_static = Label(
-            self,
-            text="Création nouveau compte",
-            anchor="center",
-            padx=5,
-            pady=5,
-            borderwidth=5,
-            relief="ridge",
-        )
-        self.__lbl_nm_usr = Label(
-            self.__frame_center, text="Nom utilisateur : ", padx=3, pady=3
-        )
-        self.__entry_nm_usr = Entry(self.__frame_center, width=20)
-        self.__lbl_mdp_usr = Label(
-            self.__frame_center, text="mot de passe : ", padx=3, pady=3
-        )
-        self.__entry_mdp_usr = Entry(self.__frame_center, width=20)
-        self.__btn_valid = Button(self, text="Valider", command=self.valider_create)
-
-        # Ajout des widget
-        self.__lbl_static.pack()
-        self.__frame_center.pack()
-        self.__lbl_nm_usr.grid(row=0, column=0)
-        self.__entry_nm_usr.grid(row=0, column=1)
-        self.__lbl_mdp_usr.grid(row=1, column=0)
-        self.__entry_mdp_usr.grid(row=1, column=1)
-        self.__btn_valid.pack()
-        self.protocol("WM_DELETE_WINDOW", self.valider_create)
-
-    def valider_create(self) -> None:
-        # applel du modificateur de la classe mêre
-        self.__fp.deiconify()  # afficher la fenetre principale
-        self.destroy()  # detruire la fenetre courante
+        self.__fp.deiconify()  # afficher la fenêtre principale
+        self.destroy()  # détruire la fenêtre courante
 
 
-class client_connected(Toplevel):
-    def __init__(self, fp: cote_client):
+class ClientConnected(Toplevel):
+    """!
+    @brief GUI Client après connexion
+
+    ## Héritage :
+        - Implémente Toplevel
+
+    """
+
+    def __init__(self, fp: CoteClient):
         # Déclaration des variables
         Toplevel.__init__(self)
         self.__fp = fp
@@ -262,9 +302,9 @@ class client_connected(Toplevel):
         self.__right_pp: Label
         self.__right_lbl_usr: Label
         self.__right_btn_disc: Button
-        self.__call: client_call
+        self.__call: ClientCall
 
-        # Instanciatin des variables
+        # Instanciation des variables
         self.__fp.withdraw()
         self.__middle_frame = Frame(
             master=self, relief="ridge", padx=5, pady=5, borderwidth=3
@@ -286,7 +326,7 @@ class client_connected(Toplevel):
             relief="ridge",
             padx=2,
             pady=2,
-            command=self.setCall,
+            command=self.call,
         )
         self.__right_pp = Label(
             self.__right_frame,
@@ -299,7 +339,7 @@ class client_connected(Toplevel):
         )
         self.__right_lbl_usr = Label(
             self.__right_frame,
-            text=f"{self.__fp.getClientInfos()['username']}",
+            text=f"{self.__fp.get_client_infos()['username']}",
             padx=2,
             pady=2,
             borderwidth=3,
@@ -309,7 +349,7 @@ class client_connected(Toplevel):
             self.__right_frame,
             text="Déconnecter",
             fg="crimson",
-            command=self.disconnected,
+            command=self.disconnect_from_serv,
         )
 
         self.__call = None
@@ -323,81 +363,141 @@ class client_connected(Toplevel):
         self.__right_pp.pack()
         self.__right_lbl_usr.pack()
         self.__right_btn_disc.pack()
-        self.protocol("WM_DELETE_WINDOW", self.disconnected)
+        self.protocol("WM_DELETE_WINDOW", self.disconnect_from_serv)
 
         self.__middle_list.config(selectmode=MULTIPLE)
 
-        cmd_i: CommandInterpreter = self.__fp.getClient().getInterpreter()
-        cmd_i.set_command(Flag.LSR, self.setClientList)
-        cmd_i.set_command(Flag.ASK, self.getAskedCall)
-        cmd_i.set_command(Flag.STA, self.startCall)
-        cmd_i.set_command(Flag.FIN, self.closeCall)
-        cmd_i.set_command(Flag.INF, self.getInfos)
+        cmd_i: CommandInterpreter = self.__fp.get_client().get_interpreter()
+        cmd_i.set_command(Flag.LSR, self.set_client_list)
+        cmd_i.set_command(Flag.ASK, self.get_asked_call)
+        cmd_i.set_command(Flag.STA, self.start_call)
+        cmd_i.set_command(Flag.FIN, self.close_call)
+        cmd_i.set_command(Flag.INF, self.show_call_infos)
 
-    def closeCall(self):
-        self.__fp.getClient().setAudioConnected(False)
+    def close_call(self):
+        """!
+        @brief Ferme l'appel courant
+
+        Paramètres :
+            @param self => le GUI client après connexion
+
+        """
+        self.__fp.get_client().set_audio_connected(False)
         self.__call.destroy()
 
-    def getInfos(self, time, user):
+    def show_call_infos(self, time: int, user: str):
+        """!
+        @brief Affiche les informations de l'appel courant
+
+        Paramètres :
+            @param self => le GUI client après connexion
+            @param time : int => la durée de l'appel en secondes
+            @param user : str => les clients participant à l'appel
+
+        """
         self.__call.actualize(time.replace("time:", ""), user.replace("act:", ""))
 
-    def getAskedCall(self, name: str):
-        client_receive(self.__fp, name)
+    def get_asked_call(self, name: str):
+        """!
+        @brief Affiche la notification d'appel
 
-    def startCall(self):
-        client = self.__fp.getClient()
-        Thread(target=client.receive_audio, name="audioClientIn").start()
-        Thread(target=client.send_audio, name="audioClientOut").start()
-        self.__call: client_call = client_call(self.__fp)
+        Paramètres :
+            @param self => le GUI client après connexion
+            @param name : str => Nom de l'appel
 
-    def setClientList(self, *names):
+        """
+        ClientReceive(self.__fp, name)
+
+    def start_call(self):
+        """!
+        @brief Lance un appel
+
+        Paramètres :
+            @param self => le GUI client après connexion
+
+        """
+        cli = self.__fp.get_client()
+        Thread(target=cli.receive_audio, name="audioClientIn").start()
+        Thread(target=cli.send_audio, name="audioClientOut").start()
+        self.__call: ClientCall = ClientCall(self.__fp)
+
+    def set_client_list(self, *names):
+        """!
+        @brief Met à jour la liste des clients connectés
+
+        Paramètres :
+            @param self => le GUI client après connexion
+            @param *names => Liste des clients connectés
+
+        """
         try:
             current_names: list[str] = list(self.__middle_list.get(0, END))
-            current_names.append(self.__fp.getClientInfos()["username"])
+            current_names.append(self.__fp.get_client_infos()["username"])
             if set(current_names) != set(names):
                 self.__middle_list.delete(0, END)
-                for i, v in enumerate(names):
-                    if v != self.__fp.getClientInfos()["username"]:
-                        self.__middle_list.insert(i, v)
-        except:
-            print("debug")
+                for i, val in enumerate(names):
+                    if val != self.__fp.get_client_infos()["username"]:
+                        self.__middle_list.insert(i, val)
+        except Exception:
             pass
 
-    def setCall(self):
+    def call(self):
+        """!
+        @brief Appel les clients sélectionnés
+
+        Paramètres :
+            @param self => le GUI client après connexion
+
+        """
         selected: tuple[int] = self.__middle_list.curselection()
         names: list[str] = [self.__middle_list.get(i) for i in selected]
 
         if len(names) > 0:
-            self.__fp.getClient().sendFlag(Flag.CAL, " ".join(names))
+            self.__fp.get_client().send_flag(Flag.CAL, " ".join(names))
 
-    def disconnected(self) -> None:
+    def disconnect_from_serv(self):
+        """!
+        @brief Déconnecte le client
 
-        self.__fp.getClient().sendFlag(Flag.ENT)
+        Paramètres :
+            @param self => le GUI client après connection
 
-        self.__fp.deiconify()  # afficher la fenetre principale
-        self.destroy()  # detruire la fenetre courante
+        """
+
+        self.__fp.get_client().send_flag(Flag.ENT)
+
+        self.__fp.deiconify()  # afficher la fenêtre principale
+        self.destroy()  # detruire la fenêtre courante
 
 
-class client_call(Toplevel):
-    def __init__(self, fp: cote_client):
+class ClientCall(Toplevel):
+    """!
+    @brief GUI de l'appel courant
+
+    ## Héritage :
+        - Implémente Toplevel
+
+    """
+
+    def __init__(self, fp: CoteClient):
         # Déclaration des variables
         Toplevel.__init__(self)
         self.__fp = fp
         self.__lbl_usr: Label
         self.__lbl_time: Label
-        self.__stgvar_time: StringVar
+        self.__strvar_time: StringVar
         self.__lbl_time_var: Label
         self.__btn_end: Button
 
-        # Instanciatin des variables
+        # Instanciation des variables
         self.__lbl_usr = Label(
             self, text="USER", padx=2, pady=2, borderwidth=3, relief="ridge"
         )
         self.__lbl_time = Label(self, text="Temps Appel :", padx=2, pady=2)
-        self.__stgvar_time = StringVar(value="HH:MM:SS")
+        self.__strvar_time = StringVar(value="HH:MM:SS")
         self.__lbl_time_var = Label(
             self,
-            textvariable=self.__stgvar_time,
+            textvariable=self.__strvar_time,
             padx=2,
             pady=2,
             borderwidth=3,
@@ -413,30 +513,54 @@ class client_call(Toplevel):
         self.__lbl_time_var.pack()
         self.__btn_end.pack()
 
-    def end_call(self) -> None:
-        self.__fp.getClient().sendFlag(Flag.FIN)
-        self.destroy()  # detruire la fenetre courante
+    def end_call(self):
+        """!
+        @brief Termine l'appel courant
 
-    def actualize(self, time, user):
+        Paramètres :
+            @param self => le GUI de l'appel courant
+
+        """
+        self.__fp.get_client().send_flag(Flag.FIN)
+        self.destroy()  # détruire la fenêtre courante
+
+    def actualize(self, time: str, user: str):
+        """!
+        @brief Actualise l'affichage du temps d'appel et des clients connectés
+
+        Paramètres :
+            @param self => le GUI de l'appel courant
+            @param time : str => Temps de l'appel
+            @param user : str => Clients connectés à l'appel
+
+        """
         self.__lbl_usr["text"] = user
-        self.__stgvar_time.set(time)
+        self.__strvar_time.set(time)
 
 
-class client_receive(Toplevel):
+class ClientReceive(Toplevel):
+    """!
+    @brief GUI de la notification d'appel
+
+    ## Héritage :
+        - Implémente Toplevel
+
+    """
+
     def __init__(self, master, name: str):
         # Déclaration des variables
-        self.__master: cote_client = master
+        self.__master: CoteClient = master
         Toplevel.__init__(self, self.__master)
         self.__lbl_call: Label
         self.__btn_ok: Button
         self.__btn_nok: Button
 
-        # Instanciatin des variables
+        # Instanciation des variables
         self.__lbl_call = Label(
             self, text=f"{name}", padx=2, pady=2, borderwidth=3, relief="ridge"
         )
-        self.__btn_ok = Button(self, text="Accepter", command=self.ok)
-        self.__btn_nok = Button(self, text="Rejeter", command=self.nok)
+        self.__btn_ok = Button(self, text="Accepter", command=self.ok_call)
+        self.__btn_nok = Button(self, text="Rejeter", command=self.not_ok_call)
 
         # Ajout des widget
         self.__lbl_call.grid(row=0, column=1)
@@ -445,31 +569,53 @@ class client_receive(Toplevel):
 
         self.__is_asking = True
 
-        def answerTimeOut():
+        def answer_time_out():
             time: int = 0
             while self.__is_asking and time < 10:
                 sleep(1)
             if self.__is_asking:
-                self.nok
+                self.not_ok_call
 
-        th: Thread = Thread(target=answerTimeOut, name="answerTimeOUT")
-        th.start()
+        thd: Thread = Thread(target=answer_time_out, name="answerTimeOUT")
+        thd.start()
 
-    def ok(self):
-        self.__master.getClient().sendFlag(Flag.RES, "1")
+    def ok_call(self):
+        """!
+        @brief Accepte l'appel
+
+        Paramètres :
+            @param self => GUI de la notification d'appel
+
+        """
+        self.__master.get_client().send_flag(Flag.RES, "1")
         self.__is_asking = False
         self.destroy()
 
-    def nok(self) -> None:
-        self.__master.getClient().sendFlag(Flag.RES, "0")
+    def not_ok_call(self):
+        """!
+        @brief Refuse l'appel
+
+        Paramètres :
+            @param self => GUI de la notification d'appel
+
+        """
+        self.__master.get_client().send_flag(Flag.RES, "0")
         self.__is_asking = False
-        self.destroy()  # detruire la fenetre courante
+        self.destroy()
 
 
 class Annuaire(Toplevel):
+    """!
+    @brief GUI de l'annuaire
+
+    ## Héritage :
+        - Implémente Toplevel
+
+    """
+
     def __init__(self, master):
         # Déclaration des variables
-        self.__master: cote_client = master
+        self.__master: CoteClient = master
         Toplevel.__init__(self, self.__master)
         self.__entry_add: Entry
         self.__btn_add: Button
@@ -504,46 +650,91 @@ class Annuaire(Toplevel):
 
         self.__list_annuaire.config(selectmode=MULTIPLE)
 
-        self.__master.getClient().getBook().setEvent(self.actualizeBook)
+        self.__master.get_client().get_book().set_event(self.actualize_book)
 
         self.__list_annuaire.bind("<BackSpace>", self.remove_names)
 
     def remove_names(self, _: Event):
+        """!
+        @brief Retire les noms sélectionnés de l'annuaire
+
+        Paramètres :
+            @param self => GUI de l'annuaire
+            @param _ : Event => Event Tkinter inutile ici
+
+        """
         selection: tuple[int] = self.__list_annuaire.curselection()
         names: list[str] = [self.__list_annuaire.get(i) for i in selection]
-        for n in names:
-            self.__master.getClient().getBook().removeName(n)
+        for name in names:
+            self.__master.get_client().get_book().remove_name(name)
 
     def add_name(self):
+        """!
+        @brief Ajoute un nom dans l'annuaire
+
+        Paramètres :
+            @param self => GUI de l'annuaire
+
+        """
         name: str = self.__entry_add.get()
-        self.__master.getClient().getBook().addName(name)
+        self.__master.get_client().get_book().add_name(name)
 
     def call_names(self):
+        """!
+        @brief Appelle les noms sélectionnés dans l'annuaire
+
+        Paramètres :
+            @param self => GUI de l'annuaire
+
+        """
         selection: tuple[int] = self.__list_annuaire.curselection()
         names: list[str] = [self.__list_annuaire.get(i) for i in selection]
         if len(names) > 0:
-            self.__master.getClient().sendFlag(Flag.CAL, " ".join(names))
+            self.__master.get_client().send_flag(Flag.CAL, " ".join(names))
 
     def import_file(self):
+        """!
+        @brief Importe un annuaire depuis un fichier json
+
+        Paramètres :
+            @param self => GUI de l'annuaire
+
+        """
+
         file_import = askopenfile(
             title="Fichier json", filetypes=[("json files", ".json")]
         )
-        self.__master.getClient().getBook().importStr(file_import)
+        self.__master.get_client().get_book().import_file(file_import)
 
     def export_file(self):
-        self.__master.getClient().getBook().exportStr("annuaire.json")
+        """!
+        @brief Exporte l'annuaire dans un fichier "annuaire.json"
 
-    def actualizeBook(self, names: list[str]):
+        Paramètres :
+            @param self => GUI de l'annuaire
+
+        """
+        self.__master.get_client().get_book().export_file("annuaire.json")
+
+    def actualize_book(self, names: list[str]):
+        """!
+        @brief Met à jour l'affichage de l'annuaire
+
+        Paramètres :
+            @param self => GUI de l'annuaire
+            @param names : list[str] => Les noms présents dans l'annuaire
+
+        """
         try:
             current_names: list[str] = list(self.__list_annuaire.get(0, END))
             if set(current_names) != set(names):
                 self.__list_annuaire.delete(0, END)
-                for i, v in enumerate(names):
-                    self.__list_annuaire.insert(i, v)
-        except Exception as e:
-            print(e)
+                for i, val in enumerate(names):
+                    self.__list_annuaire.insert(i, val)
+        except Exception as err:
+            print(err)
 
 
 if __name__ == "__main__":
-    client: cote_client = cote_client()
+    client: CoteClient = CoteClient()
     client.mainloop()

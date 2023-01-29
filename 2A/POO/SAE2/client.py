@@ -1,50 +1,118 @@
-from common import Connector, CommandInterpreter, Flag
-from threading import Thread
-import pyaudio as pyaud
-from socket import timeout
-
-from time import sleep
-
-from sys import argv
-from sys import exit as sysExit
-
+"""! @brief Fonctionnement interne du client
+ @file client.py
+ @section libs Librairies/Modules
+  - json
+  - socket
+  - sys
+  - threading
+  - pyaudio
+  - common
+ @section authors Auteur(s)
+  - Créé par Matthias HARTMANN le 06/12/2022 .
+"""
+# pylint: disable=function-redefined,broad-except,too-many-ancestors,too-few-public-methods,too-many-arguments,too-many-instance-attributes
 from json import dump, load
+from socket import timeout
+from sys import exit as sysExit
+from threading import Thread
+
+import pyaudio as pyaud
+
+from common import CommandInterpreter, Connector, Flag, Function
 
 
 class Book:
+    """!
+    @brief Représente un Annuaire
+    """
+
     def __init__(self) -> None:
-        self.__noms: list[str] = []
+        self.__names: list[str] = []
         self.__event = None
 
-    def addName(self, name: str):
-        if name not in self.__noms:
-            self.__noms.append(name)
-            self.__event(self.__noms)
+    def add_name(self, name: str):
+        """!
+        @brief Permet d'ajouter un nom dans l'annuaire
 
-    def getNames(self):
-        return self.__noms
+        Paramètres :
+            @param self => l'annuaire
+            @param name : str => un nom
 
-    def removeName(self, name: str):
-        if name in self.__noms:
-            self.__noms.remove(name)
-            self.__event(self.__noms)
+        """
+        if name not in self.__names:
+            self.__names.append(name)
+            self.__event(self.__names)
 
-    def exportStr(self, filename):
+    def get_names(self):
+        """!
+        @brief Permet d'obtenir la liste des noms
+
+        Paramètres :
+            @param self => l'annuaire
+
+        """
+        return self.__names
+
+    def remove_name(self, name: str):
+        """!
+        @brief Permet de retirer un nom de l'annuaire
+
+        Paramètres :
+            @param self => l'annuaire
+            @param name : str => le nom à retirer
+
+        """
+        if name in self.__names:
+            self.__names.remove(name)
+            self.__event(self.__names)
+
+    def export_file(self, filename):
+        """!
+        @brief Permet d'exporter l'annuaire dans un fichier python
+
+        Paramètres :
+            @param self => l'annuaire
+            @param filename => le nom du fichier exporté
+
+        """
         with open(filename, "w", encoding="utf-8") as file:
-            dump({"names": self.__noms}, file)
+            dump({"names": self.__names}, file)
 
-    def importStr(self, file):
+    def import_file(self, file):
+        """!
+        @brief Permet d'importer un annuaire depuis un fichier json
+
+        Paramètres :
+            @param self => l'annuaire
+            @param file => un fichier json
+
+        """
         json: dict[str, list[str]] = load(file)
-        noms: list[str] = json.get("names")
+        names: list[str] = json.get("names")
 
-        self.__noms = noms
-        self.__event(self.__noms)
+        self.__names = names
+        self.__event(self.__names)
 
-    def setEvent(self, evn):
+    def set_event(self, evn: Function):
+        """!
+        @brief Définit la fonction qui sera exécutée à chaque actualisation
+
+        Paramètres :
+            @param self => l'annuaire
+            @param evn : Function => la fonction exécutée
+        """
         self.__event = evn
 
 
 class Client(Connector):
+    """!
+    @brief Représentation interne du client
+
+    ## Héritage :
+        - Implémente Connector
+
+    """
+
     AUDIO = pyaud.PyAudio()
     FORMAT = pyaud.paInt16
     CHANNELS = 1
@@ -74,7 +142,7 @@ class Client(Connector):
 
         self.__audio_connected: bool = False
 
-        self.__command_interpreter: CommandInterpreter = self.get_commands_worker()
+        self.__command_interpreter: CommandInterpreter = self.create_commands_worker()
 
         self.__stream_out = Client.AUDIO.open(
             format=Client.FORMAT,
@@ -97,13 +165,36 @@ class Client(Connector):
 
         self.__create: bool = False
 
-    def setCreateClient(self, iscreating: bool = False):
-        self.__create = iscreating
+    def set_create_client(self, is_creating: bool = False):
+        """!
+        @brief Définit l'état du client en mode Création (ou non)
 
-    def getBook(self):
+        Paramètres :
+            @param self => le client
+            @param is_creating : bool = False => En mode création (par défaut : non)
+
+        """
+        self.__create = is_creating
+
+    def get_book(self):
+        """!
+        @brief Récupère l'annuaire du client
+
+        Paramètres :
+            @param self => le client
+
+        """
         return self.__book
 
-    def get_commands_worker(self):
+    def create_commands_worker(self):
+        """!
+        @brief Créer un interpréteur de commande pour le client
+
+        Paramètres :
+            @param self => le client
+
+        """
+
         def ent():
             self.disconnect()
 
@@ -113,7 +204,7 @@ class Client(Connector):
         def default():
             pass
 
-        def ask(callName: str):
+        def ask(_: str):
             pass
 
         def sta():
@@ -136,98 +227,109 @@ class Client(Connector):
 
         return interpreter
 
-    def getInterpreter(self):
+    def get_interpreter(self) -> CommandInterpreter:
+        """!
+        @brief Récupère l'interpréteur de commande du client
+
+        Paramètres :
+            @param self => le client
+        Retour de la fonction :
+            @return CommandInterpreter => l'interpréteur de commande
+
+        """
         return self.__command_interpreter
 
-    def setAudioConnected(self, b: bool):
-        self.__audio_connected = b
+    def set_audio_connected(self, is_audio_connected: bool):
+        """!
+        @brief Définit si les canaux audio sont utilisable ou non
+
+        Paramètres :
+            @param self => le client
+            @param is_audio_connected : bool => Un booléen Vrai si utilisable
+
+        """
+        self.__audio_connected = is_audio_connected
 
     def connect(self, var):
+        """!
+        @brief Établie la connexion au serveur (et la création du client si Mode création actif)
+
+        Paramètres :
+            @param self => le client
+            @param var => Variable d'affichage sur l'IHM Client
+
+        """
         try:
             if not self.__initial_connected:
                 self.command_connect(self.__server_ip, self.__server_port)
                 self.__initial_connected = True
 
-            # Phase de connexion
+            # Phase de Création
 
             if self.__create:
-                self.sendFlag(Flag.CRE, f"{self.__username} {self.__password}")
-                ans, ans_data = self.getFlagData()
+                self.send_flag(Flag.CRE, f"{self.__username} {self.__password}")
+                ans, ans_data = self.get_flag_data()
                 if ans == Flag.REF:
                     var.set(" ".join(ans_data))
                     self.__connected = False
                     self.__create = False
                     return self.__connected
-                else:
-                    self.__create = False
 
-            self.sendFlag(Flag.REG)
+                self.__create = False
 
-            ans, ans_data = self.getFlagData()
+            # Phase de connexion
+
+            self.send_flag(Flag.REG)
+
+            ans, ans_data = self.get_flag_data()
 
             if ans == Flag.VLD:
-                self.sendFlag(Flag.LOG, self.__username)
-                ans, ans_data = self.getFlagData()
+                self.send_flag(Flag.LOG, self.__username)
+                ans, ans_data = self.get_flag_data()
                 if ans == Flag.VLD:
-                    self.sendFlag(Flag.PSS, self.__password)
-                    ans, ans_data = self.getFlagData()
+                    self.send_flag(Flag.PSS, self.__password)
+                    ans, ans_data = self.get_flag_data()
                     if ans == Flag.AUT:
                         self.__connected = True
                         print("connected: ", self.__username)
                         return self.__connected
-                    else:
-                        var.set(" ".join(ans_data))
+                    var.set(" ".join(ans_data))
                 else:
                     var.set(" ".join(ans_data))
             else:
                 var.set(" ".join(ans_data))
             self.__connected = False
             return self.__connected
-        except Exception as e:
-            print(e)
+
+        except Exception as err:
+            print(err)
             self.__connected = False
             var.set("Une erreur s'est passée")
             return self.__connected
 
-    def create_user(self, username: str, password: str):
-        pass
+    def receive_data(self):
+        """!
+        @brief Boucle de réception des commandes / exécutions des commandes
 
-    def sendData(self):
-        while self.__connected:
-            flag: Flag = Flag.getFlagFromStr(input("Flag: "))
-            data: str = input("Data: ")
-            if self.__connected:
+        Paramètres :
+            @param self => le client
 
-                self.sendFlag(flag, data)
-
-    def receiveData(self):
+        """
         while self.__connected:
             flag: Flag
             data: list[str]
 
-            flag, data = self.getFlagData()
+            flag, data = self.get_flag_data()
             self.__command_interpreter.run_command(flag, *data)
 
-    def getFlagData(self) -> tuple[Flag, list[str]]:
-        try:
-            msg = self.command_receive().decode("utf-8").split(" ")
-            flag: Flag = Flag.getFlagFromStr(msg[0])
-            data: list[str] = msg[1:]
-            return (flag, data)
-        except:
-            self.__connected = False
-            return None
-
-    def sendFlag(self, flag: Flag = None, data: str = "", flag_str: str = None):
-        if flag_str is not None:
-            self.command_send(flag_str.encode("utf-8"))
-        else:
-            msg: str = flag.value
-            if data != "":
-                msg += " " + data
-            self.command_send(msg.encode("utf-8"))
-
     def disconnect(self):
+        """!
+        @brief Ferme tous les canaux du client et quitte le programme
+
+        Paramètres :
+            @param self => le client
+
+        """
         try:
             self.command_close()
             self.__stream_in.close()
@@ -237,17 +339,41 @@ class Client(Connector):
             self.__connected = False
             self.__audio_connected = False
 
-        except:
+        except Exception:
             self.__connected = False
         sysExit()
 
     def save_audio(self) -> bytes:
+        """!
+        @brief Enregistre la voix du client
+
+        Paramètres :
+            @param self => le client
+        Retour de la fonction :
+            @return bytes => les octets de voix
+
+        """
         return self.__stream_in.read(Client.CHUNKS)
 
     def listen_audio(self, data: bytes):
+        """!
+        @brief Écoute des octets audio
+
+        Paramètres :
+            @param self => le client
+            @param data : bytes => des octets audio
+
+        """
         self.__stream_out.write(data)
 
     def receive_audio(self):
+        """!
+        @brief Boucle de réception et d'écoute des octets audio
+
+        Paramètres :
+            @param self => le client
+
+        """
         self.__audio_connected = True
         while self.__audio_connected:
             try:
@@ -257,12 +383,35 @@ class Client(Connector):
                 pass
 
     def send_audio(self):
+        """!
+        @brief Boucle d'enregistrement et d'envoi de la voix cliente
+
+        Paramètres :
+            @param self => le client
+
+        """
         while self.__audio_connected:
             data: bytes = self.save_audio()
             self.audio_out_send(data, self.__server_ip, self.__server_port + 1)
 
-    def setUsername(self, username: str):
+    def set_username(self, username: str):
+        """!
+        @brief Définit le nom d'utilisateur
+
+        Paramètres :
+            @param self => le client
+            @param username : str => le login du client
+
+        """
         self.__username = username
 
-    def setPassword(self, password: str):
+    def set_password(self, password: str):
+        """!
+        @brief Définit le mot de passe du client
+
+        Paramètres :
+            @param self => le client
+            @param password : str => le mot de passe du client
+
+        """
         self.__password = password

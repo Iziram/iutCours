@@ -1,19 +1,46 @@
-from common import Connector, CommandInterpreter, Flag, secondsToClock, Logger
-from threading import Thread
+"""! @brief Représentation interne du serveur
+ @file server.py
+ @section libs Librairies/Modules
+  - socket
+  - sys
+  - threading
+  - time
+  - common
+  - database
+ @section authors Auteur(s)
+  - Créé par Matthias HARTMANN le 06/12/2022 .
+"""
+# pylint: disable=function-redefined,broad-except,too-many-ancestors
+#  pylint: disable=too-few-public-methods,too-many-arguments,too-many-instance-attributes,too-many-statements
+
 from socket import socket, timeout
-from database import Database
-from time import time, sleep
 from sys import exit as sysExit
+from threading import Thread
+from time import sleep, time
+
+from common import CommandInterpreter, Connector, Flag, Logger, seconds_to_clock
+from database import Database
 
 
 class Server(Connector):
-    pass
+    """!
+    @brief Représentation interne du serveur
+
+    ## Héritage :
+        - Implémente Connector
+
+    """
 
 
 class ClientServer(Connector, Thread):
-    """
-    Représentation d'un client coté serveur,
+    """!
+    @brief Représentation d'un client coté serveur,
     Utilise uniquement le coté TCP
+
+    ## Héritage :
+        - Implémente Connector
+        - Implémente Thread
+
     """
 
     def __init__(
@@ -25,7 +52,7 @@ class ClientServer(Connector, Thread):
         self.__status: str = "UNKNOWN"
 
         self.__username: str = "UNKNOWN"
-        self.__interpreter: CommandInterpreter = self.get_commands_worker()
+        self.__interpreter: CommandInterpreter = self.create_commands_worker()
         self.__active: bool = True
         self.__connection_infos: tuple[str, int] = connection_infos
 
@@ -34,148 +61,211 @@ class ClientServer(Connector, Thread):
     def __str__(self) -> str:
         return f"<{self.__username}:{self.__status}>"
 
-    def getInterpreter(self):
+    def get_command_interpreter(self):
+        """!
+        @brief Retourne l'interpréteur de commande
+
+        Paramètres :
+            @param self => la représentation du client coté serveur
+
+        """
         return self.__interpreter
 
-    def getAskedCall(self) -> tuple[int, bool]:
+    def get_asked_call(self) -> tuple[int, bool]:
+        """!
+        @brief Retourne la notification d'appel (n°appel, réponse)
+
+        Paramètres :
+            @param self => la représentation du client coté serveur
+        Retour de la fonction :
+            @return tuple[int, bool] => la notification d'appel (n°appel, réponse)
+
+        """
         return self.__asked_call
 
-    def setAskedCall(self, asked_call: int = None, res: bool = False):
+    def set_asked_call(self, asked_call: int = None, res: bool = False):
+        """!
+        @brief Définit la notification d'appel
+
+        Paramètres :
+            @param self => la représentation du client coté serveur
+            @param asked_call : int = None => le numéro d'appel
+            @param res : bool = False => la réponse du client
+
+        """
         self.__asked_call = (asked_call, res)
 
-    def getStatus(self) -> str:
+    def get_status(self) -> str:
+        """!
+        @brief Retourne le statut du client
+
+        Paramètres :
+            @param self => la représentation du client coté serveur
+        Retour de la fonction :
+            @return str => Le statut du client
+
+        """
         return self.__status
 
-    def setStatus(self, status: str):
+    def set_status(self, status: str):
+        """!
+        @brief Définit le statut du client
+
+        Paramètres :
+            @param self => la représentation du client coté serveur
+            @param status : str => Le statut
+
+        """
         self.__status = status
 
-    def getConnectionInfos(self) -> tuple[str, int]:
+    def get_connection_infos(self) -> tuple[str, int]:
+        """!
+        @brief Retourne les informations du client distant
+
+        Paramètres :
+            @param self => la représentation du client coté serveur
+        Retour de la fonction :
+            @return tuple[str, int] => les informations du client distant (@ip,port)
+
+        """
         return self.__connection_infos
 
     def run(self):
         while self.__active:
             try:
-                flag, data = self.getFlagData()
+                flag, data = self.get_flag_data()
                 Server.LOG.add(f"{self} ⬅ {flag} {data}")
                 self.__interpreter.run_command(flag, *data)
-            except:
+            except Exception:
                 pass
 
     def close(self):
+        """!
+        @brief Termine la connexion avec le client
+
+        Paramètres :
+            @param self => la représentation du client coté serveur
+
+        """
         self.command_close()
         self.__active = False
 
-    def getUserName(self):
+    def get_username(self):
+        """!
+        @brief Retourne le nom d'utilisateur du client
+
+        Paramètres :
+            @param self => la représentation du client coté serveur
+
+        """
         return self.__username
 
-    def setUserName(self, username):
+    def set_username(self, username):
+        """!
+        @brief Définit le nom d'utilisateur du client
+
+        Paramètres :
+            @param self => la représentation du client coté serveur
+            @param username => le login du client
+
+        """
         self.__username = username
 
-    def getFlagData(self) -> tuple[Flag, list[str]]:
-        msg = self.command_receive().decode("utf-8").split(" ")
-        flag: Flag = Flag.getFlagFromStr(msg[0])
-        data: list[str] = msg[1:]
-        return (flag, data)
+    def create_commands_worker(self):
+        """!
+        @brief Créer un interpréteur de commande
 
-    def sendFlag(self, flag: Flag = None, data: str = "", flag_str: str = None):
-        if flag_str is not None:
-            self.command_send(flag_str.encode("utf-8"))
-        else:
-            msg: str = flag.value
-            if data != "":
-                msg += " " + data
-            self.command_send(msg.encode("utf-8"))
+        Paramètres :
+            @param self => la représentation du client coté serveur
 
-    def get_commands_worker(self):
+        """
+
         def lsd():
-            self.sendFlag(
+            self.send_flag(
                 Flag.LSR,
-                " ".join([c.getUserName() for c in Server.CLIENT_DICT.values()]),
+                " ".join([c.get_username() for c in Server.CLIENT_DICT.values()]),
             )
 
         def reg():
             if self.__status == "UNKNOWN":
-                self.sendFlag(Flag.VLD)
+                self.send_flag(Flag.VLD)
                 self.__status = "REGISTERING"
             else:
-                self.sendFlag(Flag.REF, "DÉJA ENREGISTRÉ")
+                self.send_flag(Flag.REF, "DÉJÀ ENREGISTRÉ")
 
         def log(username):
             if self.__status == "REGISTERING":
                 if username not in [
-                    c.getUserName() for c in Server.CLIENT_DICT.values()
+                    c.get_username() for c in Server.CLIENT_DICT.values()
                 ]:
-                    self.setUserName(username)
-                    self.sendFlag(Flag.VLD)
+                    self.set_username(username)
+                    self.send_flag(Flag.VLD)
                 else:
-                    self.sendFlag(Flag.REF, "LE PSEUDO EST DÉJÀ UTILISÉ")
+                    self.send_flag(Flag.REF, "LE PSEUDO EST DÉJÀ UTILISÉ")
             else:
-                self.sendFlag(Flag.REF, "NON ENREGISTRÉ")
+                self.send_flag(Flag.REF, "NON ENREGISTRÉ")
 
         def pss(password):
             if self.__status == "REGISTERING":
-                db: Database = Database("bdd.sqlite")
-                db.ouverture_BDD()
-                if db.isLoginValid(self.__username, password):
+                bdd: Database = Database("bdd.sqlite")
+                bdd.ouverture_bdd()
+                if bdd.is_login_valid(self.__username, password):
                     self.__status = "AUTHENTICATED"
-                    self.sendFlag(Flag.AUT)
+                    self.send_flag(Flag.AUT)
                 else:
-                    self.sendFlag(Flag.REF, "MOT DE PASSE INCORRECT")
-                    self.setStatus("UNKNOWN")
-                    self.setUserName("UNKNOWN")
-                db.fermeture_BDD()
+                    self.send_flag(Flag.REF, "MOT DE PASSE INCORRECT")
+                    self.set_status("UNKNOWN")
+                    self.set_username("UNKNOWN")
+                bdd.fermeture_bdd()
             else:
-                self.sendFlag(Flag.REF, "NON ENREGISTRÉ")
+                self.send_flag(Flag.REF, "NON ENREGISTRÉ")
 
         def cre(username, password):
-            db: Database = Database("bdd.sqlite")
-            db.ouverture_BDD()
-            if not db.isUsernameKnown(username):
-                db.createUser(username, password)
+            bdd: Database = Database("bdd.sqlite")
+            bdd.ouverture_bdd()
+            if not bdd.is_username_known(username):
+                bdd.create_user(username, password)
                 Server.LOG.add(f"🖥 Utilisateur créé : {username} {password}")
-                self.sendFlag(Flag.VLD)
+                self.send_flag(Flag.VLD)
             else:
-                self.sendFlag(Flag.REF, "USERNAME NON UNIQUE")
+                self.send_flag(Flag.REF, "USERNAME NON UNIQUE")
 
         def ent():
-            self.sendFlag(Flag.ENT)
+            self.send_flag(Flag.ENT)
             self.command_close()
             self.__active = False
 
-            Server.CLIENT_DICT.pop(self.getConnectionInfos()[0])
+            Server.CLIENT_DICT.pop(self.get_connection_infos()[0])
 
-        def res(b: str):
-            b: bool = bool(int(b))
-            conf_call: ConfCall = Server.CONFCALL_DICT.get(self.getAskedCall()[0])
-            self.setAskedCall(conf_call.getId(), b)
-            conf_call.prepareClient(self)
+        def res(resp: str):
+            resp: bool = bool(int(resp))
+            conf_call: ConfCall = Server.CONFCALL_DICT.get(self.get_asked_call()[0])
+            self.set_asked_call(conf_call.get_id(), resp)
+            conf_call.prepare_client(self)
 
         def fin():
-            if self.getStatus().startswith("CALLING:"):
-                call_id: int = int(self.getStatus().replace("CALLING:", ""))
+            if self.get_status().startswith("CALLING:"):
+                call_id: int = int(self.get_status().replace("CALLING:", ""))
                 conf_call: ConfCall = Server.CONFCALL_DICT.get(call_id)
-                conf_call.removeActiveClient(self)
-                self.sendFlag(Flag.FIN)
+                conf_call.remove_active_client(self)
+                self.send_flag(Flag.FIN)
 
         def cal(*names):
-            if not self.getStatus().startswith("CALLING:"):
+            if not self.get_status().startswith("CALLING:"):
                 clients: list[ClientServer] = [
                     c
                     for c in list(Server.CLIENT_DICT.values())
-                    if c.getUserName() in names
+                    if c.get_username() in names
                 ]
                 clients.append(self)
                 new_call: ConfCall = ConfCall(*clients)
-                Server.CONFCALL_DICT[new_call.getId()] = new_call
+                Server.CONFCALL_DICT[new_call.get_id()] = new_call
 
-                # self.setAskedCall(new_call.getId(), True)
-                # new_call.prepareClient(self)
-
-                new_call.prepareConf()
+                new_call.prepare_conf()
 
                 def launch():
                     sleep(11)
-                    new_call.startCall()
+                    new_call.start_call()
 
                 Thread(target=launch, name="startpoint").start()
 
@@ -199,6 +289,10 @@ class ClientServer(Connector, Thread):
 
 
 class ConfCall:
+    """!
+    @brief Représentation interne d'un appel
+    """
+
     NB_CALL = 0
     SERVER: Server = None
 
@@ -210,78 +304,163 @@ class ConfCall:
 
         self.__start_time: float = None
 
-    def getId(self) -> int:
+    def get_id(self) -> int:
+        """!
+        @brief Retourne le numéro de l'appel
+
+        Paramètres :
+            @param self => la représentation interne d'un appel
+        Retour de la fonction :
+            @return int => le numéro de l'appel
+
+        """
         return self.__id
 
-    def getName(self) -> str:
-        return ":".join([c.getUserName() for c in self.__clients])
+    def get_name(self) -> str:
+        """!
+        @brief Retourne le nom de l'appel
 
-    def startCall(self):
+        Paramètres :
+            @param self => la représentation interne d'un appel
+        Retour de la fonction :
+            @return str => Le nom de l'appel
+
+        """
+        return ":".join([c.get_username() for c in self.__clients])
+
+    def start_call(self):
+        """!
+        @brief Lance l'appel
+
+        Paramètres :
+            @param self => la représentation interne d'un appel
+
+        """
         if len(self.__active_clients) > 1:
             for cli in self.__active_clients:
-                cli.sendFlag(Flag.STA)
-                cli.setStatus(f"CALLING:{self.getId()}")
+                cli.send_flag(Flag.STA)
+                cli.set_status(f"CALLING:{self.get_id()}")
             self.__start_time = time()
 
             Thread(
-                target=self.sendPeriodInfos, name=f"periodInfoCall{self.__id}"
+                target=self.send_period_infos, name=f"periodInfoCall{self.__id}"
             ).start()
 
-    def stopCall(self):
+    def stop_call(self):
+        """!
+        @brief Termine l'appel
+
+        Paramètres :
+            @param self => la représentation interne d'un appel
+
+        """
         self.__start_time = None
-        self.sendAllActiveClients(Flag.FIN)
-        for c in self.__active_clients:
-            self.removeActiveClient(c)
-        Server.CONFCALL_DICT.pop(self.getId())
+        self.send_all_active_clients(Flag.FIN)
+        for cli in self.__active_clients:
+            self.remove_active_client(cli)
+        Server.CONFCALL_DICT.pop(self.get_id())
 
-    def joinCall(self, client: ClientServer):
-        if client in self.__clients:
-            client.sendFlag(Flag.STA)
-            client.setStatus(f"CALLING:{self.getId()}")
+    def send_period_infos(self):
+        """!
+        @brief Envoi périodiquement les informations de l'appel
 
-    def sendPeriodInfos(self):
+        Paramètres :
+            @param self => la représentation interne d'un appel
+
+        """
         while len(self.__active_clients) > 1:
             try:
                 sleep(1)
                 elapsed_time: float = time() - self.__start_time
-                clients: str = self.getName().replace(":", ",")
-                infos: str = f"time:{secondsToClock(elapsed_time)} act:{clients}"
-                self.sendAllActiveClients(Flag.INF, infos)
-            except:
+                clients: str = self.get_name().replace(":", ",")
+                infos: str = f"time:{seconds_to_clock(elapsed_time)} act:{clients}"
+                self.send_all_active_clients(Flag.INF, infos)
+            except Exception:
                 pass
 
-    def sendAllActiveClients(self, flag: Flag, data: str = ""):
-        for cli in self.__active_clients:
-            cli.sendFlag(flag, data)
+    def send_all_active_clients(self, flag: Flag, data: str = ""):
+        """!
+        @brief Envoi un flag à tous les clients connectés à l'appel
 
-    def removeActiveClient(self, client: ClientServer):
+        Paramètres :
+            @param self => la représentation interne d'un appel
+            @param flag : Flag => Le Flag
+            @param data : str = "" => Les données du flag
+
+        """
+        for cli in self.__active_clients:
+            cli.send_flag(flag, data)
+
+    def remove_active_client(self, client: ClientServer):
+        """!
+        @brief Retire un client actif de l'appel
+
+        Paramètres :
+            @param self => la représentation interne d'un appel
+            @param client : ClientServer => La représentation du client actif
+
+        """
         if client in self.__active_clients:
             self.__active_clients.remove(client)
-            client.setStatus("AUTHENTICATED")
+            client.set_status("AUTHENTICATED")
             if len(self.__active_clients) < 2 and self.__start_time is not None:
-                self.stopCall()
+                self.stop_call()
 
-    def prepareConf(self):
-        for c in self.__clients:
-            c.sendFlag(Flag.ASK, self.getName())
-            c.setAskedCall(self.getId(), Flag.NUL)
+    def prepare_conf(self):
+        """!
+        @brief Envoie une notification d'appel à tous les clients de l'appel
 
-    def prepareClient(self, client: ClientServer):
+        Paramètres :
+            @param self => la représentation interne d'un appel
+
+        """
+        for cli in self.__clients:
+            cli.send_flag(Flag.ASK, self.get_name())
+            cli.set_asked_call(self.get_id(), Flag.NUL)
+
+    def prepare_client(self, client: ClientServer):
+        """!
+        @brief Met à jour la liste des clients actifs en fonction de la réponse du client
+
+        Paramètres :
+            @param self => la représentation interne d'un appel
+            @param client : ClientServer => La représentation du client
+
+        """
         if client in self.__clients:
-            if client.getAskedCall()[1]:
+            if client.get_asked_call()[1]:
                 self.__active_clients.append(client)
-            client.setAskedCall()
+            client.set_asked_call()
 
-    def redirectAudioData(self, audioData: bytes, clientfrom: ClientServer):
+    def redirect_audio_data(self, audio_data: bytes, client_from: ClientServer):
+        """!
+        @brief Redirige le flux audio en fonction du client source
+
+        Paramètres :
+            @param self => la représentation interne d'un appel
+            @param audio_data : bytes => flux audio
+            @param client_from : ClientServer => client source
+
+        """
         redirected_clients: list[ClientServer] = [
-            c for c in self.__active_clients if c != clientfrom
+            cli for cli in self.__active_clients if cli != client_from
         ]
 
-        for c in redirected_clients:
-            ConfCall.SERVER.audio_out_send(audioData, c.getConnectionInfos()[0], 5001)
+        for cli in redirected_clients:
+            ConfCall.SERVER.audio_out_send(
+                audio_data, cli.get_connection_infos()[0], 5001
+            )
 
 
 class Server(Connector):
+    """!
+    @brief Représentation interne du serveur
+
+    ## Héritage :
+        - Implémente Connector
+
+    """
+
     CLIENT_DICT: dict[str, ClientServer] = {}
     CONFCALL_DICT: dict[int, ConfCall] = {}
 
@@ -296,17 +475,33 @@ class Server(Connector):
 
         ConfCall.SERVER = self
 
-        self.__command_interpreter: CommandInterpreter = self.get_commands_worker()
+        self.__command_interpreter: CommandInterpreter = self.set_command_worker()
 
-    def setter(self, addr: str, port: int):
+    def set_connection_infos(self, addr: str, port: int):
+        """!
+        @brief Définit l'adresse ip et le port du serveur
+
+        Paramètres :
+            @param self => la représentation interne du serveur
+            @param addr : str => une adresse ip
+            @param port : int => un port
+
+        """
         self.__addr = addr
         self.__port = port
 
-    def start_self(self):
+    def start_server(self):
+        """!
+        @brief Lance le serveur en mode écoute
+
+        Paramètres :
+            @param self => la représentation interne du serveur
+
+        """
         self.command_prepare_listening(self.__addr, self.__port, timeout=10)
         self.audio_in_bind(self.__addr, self.__port + 1)
         self.audio_out_bind(self.__addr, self.__port + 2)
-        Thread(target=self.getAudioRedirect, name="audioRedirect").start()
+        Thread(target=self.redirect_audio, name="audioRedirect").start()
 
         def start_thread():
             while self.__active:
@@ -325,28 +520,43 @@ class Server(Connector):
         Thread(target=start_thread, name="ThreadPrincipal").start()
 
     def stop_self(self):
+        """!
+        @brief Stop toutes les connexions clients et ferme l'écoute
+
+        Paramètres :
+            @param self => la représentation interne du serveur
+
+        """
         self.__active = False
-        for c in Server.CLIENT_DICT.values():
-            c.close()
+        for cli in Server.CLIENT_DICT.values():
+            cli.close()
         self.command_close()
 
-    def get_commands_worker(self):
+    def set_command_worker(self):
+        """!
+        @brief définit l'interpréteur de commande
+
+        Paramètres :
+            @param self => la représentation interne du serveur
+
+        """
+
         def start():
             Server.LOG.add("🖥 Le serveur est en écoute")
-            th: Thread = Thread(name="ServerListen", target=self.start_self)
-            th.start()
+            thd: Thread = Thread(name="ServerListen", target=self.start_server)
+            thd.start()
 
-            th2: Thread = Thread(name="ServerList", target=self.sendClientsList)
-            th2.start()
+            thd2: Thread = Thread(name="ServerList", target=self.send_clients_list)
+            thd2.start()
 
         def stop():
             print("Server stopped listening")
             self.stop_self()
 
-        def list():
+        def lists():
             peers: list[str] = [
-                f"{c.command_peer()[0]}/{c.getUserName()}"
-                for c in Server.CLIENT_DICT.values()
+                f"{cli.command_peer()[0]}/{cli.get_username()}"
+                for cli in Server.CLIENT_DICT.values()
             ]
             if len(peers) > 0:
                 Server.LOG.add("🖥 " + " | ".join(peers))
@@ -355,14 +565,15 @@ class Server(Connector):
 
         def calls():
             confcalls: list[str] = [
-                f"{c.getName()}[{c.getId()}]" for c in Server.CONFCALL_DICT.values()
+                f"{cli.get_name()}[{cli.get_id()}]"
+                for cli in Server.CONFCALL_DICT.values()
             ]
             if len(confcalls) > 0:
                 Server.LOG.add("🖥 " + " | ".join(confcalls))
             else:
                 Server.LOG.add("🖥 Aucun ConfCall en cours")
 
-        def quit():
+        def quitting():
             stop()
             sysExit()
 
@@ -372,43 +583,72 @@ class Server(Connector):
         interpreter: CommandInterpreter = CommandInterpreter(
             ("start", start),
             ("stop", stop),
-            ("list", list),
-            ("quit", quit),
+            ("list", lists),
+            ("quit", quitting),
             ("calls", calls),
         )
         interpreter.set_default_command(default)
 
         return interpreter
 
-    def getInterpreter(self):
+    def get_interpreter(self):
+        """!
+        @brief Retourne l'interpréteur de commande
+
+        Paramètres :
+            @param self => la représentation interne du serveur
+
+        """
         return self.__command_interpreter
 
     def execute(self, cmd_line):
+        """!
+        @brief Exécute une ligne de commande (cmd + [...args])
+
+        Paramètres :
+            @param self => la représentation interne du serveur
+            @param cmd_line => la ligne de commande
+
+        """
         cmds = cmd_line.split(" ")
         self.__command_interpreter.run_command(cmds[0], *cmds[1:])
 
-    def getAudioRedirect(self):
+    def redirect_audio(self):
+        """!
+        @brief Redirige l'audio envoyé par les clients dans les bons calls
+
+        Paramètres :
+            @param self => la représentation interne du serveur
+
+        """
         while self.__active:
             try:
-                audioDataIn: bytes
+                audio_data_in: bytes
                 addr: tuple[str, int]
-                audioDataIn, addr = self.audio_in_receive()
+                audio_data_in, addr = self.audio_in_receive()
                 client: ClientServer = Server.CLIENT_DICT.get(addr[0])
                 if client is not None:
-                    status: str = client.getStatus()
+                    status: str = client.get_status()
                     if status.startswith("CALLING:"):
                         call_id: int = int(status.removeprefix("CALLING:"))
                         call: ConfCall = Server.CONFCALL_DICT[call_id]
-                        call.redirectAudioData(audioDataIn, client)
+                        call.redirect_audio_data(audio_data_in, client)
             except timeout:
                 pass
 
-    def sendClientsList(self):
+    def send_clients_list(self):
+        """!
+        @brief Envoie périodiquement la liste des clients aux différents clients
+
+        Paramètres :
+            @param self => la représentation interne du serveur
+
+        """
         while self.__active:
             sleep(1)
             try:
                 for client in Server.CLIENT_DICT.values():
-                    if client.getStatus() not in ("UNKNOWN", "REGISTERING"):
-                        client.getInterpreter().run_command(Flag.LSD)
-            except:
+                    if client.get_status() not in ("UNKNOWN", "REGISTERING"):
+                        client.get_command_interpreter().run_command(Flag.LSD)
+            except Exception:
                 pass

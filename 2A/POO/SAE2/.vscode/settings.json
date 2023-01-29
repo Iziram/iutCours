@@ -7,5 +7,71 @@
       "name": "softphone"
     }
   ],
-  "sqltools.useNodeRuntime": true
+  "sqltools.useNodeRuntime": true,
+  "python.linting.enabled": false,
+  "python.linting.pylintEnabled": true,
+  "cSpell.words": [
+    "borderwidth",
+    "cmds",
+    "CONFCALL",
+    "confcalls",
+    "demarrer",
+    "dessuss",
+    "DGRAM",
+    "FREQUENCE",
+    "padx",
+    "pady",
+    "pswd",
+    "pyaud",
+    "pyaudio",
+    "reponse",
+    "requete",
+    "Requete",
+    "selectmode",
+    "serv",
+    "startpoint",
+    "strvar",
+    "tearoff",
+    "Telephonie",
+    "textvariable",
+    "usrnm"
+  ],
+  "autodoxygen.memoire.memoire": [
+    {
+      "name": "self",
+      "description": "GUI de l'annuaire"
+    },
+    {
+      "name": "addr",
+      "description": "une adresse ip"
+    },
+    {
+      "name": "port",
+      "description": "un port"
+    },
+    {
+      "name": "requete",
+      "description": "la requête à exécuter"
+    },
+    {
+      "name": "*args",
+      "description": "les données à compléter dans la requête"
+    },
+    {
+      "name": "username",
+      "description": "le login du client"
+    },
+    {
+      "name": "password",
+      "description": "le mot de passe du client"
+    },
+    {
+      "name": "client",
+      "description": "La représentation du client"
+    },
+    {
+      "name": "_",
+      "description": "Event Tkinter inutile ici"
+    }
+  ]
 }
