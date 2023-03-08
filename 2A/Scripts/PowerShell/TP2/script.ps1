@@ -1,11 +1,15 @@
-# Initialisation de la variable $nombre
-$nombre = -1
+function Moyenne {
+    param (
+        [Parameter(Mandatory = $true)]
+        [double]$nb1,
 
-# Boucle do...while pour demander à l'utilisateur de saisir un nombre entre 0 et 10
-do {
-    # Demande à l'utilisateur de saisir un nombre
-    $nombre = Read-Host "Entrez un nombre entre 0 et 10 : "
-} while (($nombre -lt 0 )-or ($nombre -gt 10) )
+        [Parameter(Mandatory = $true)]
+        [double]$nb2
+    )
 
-# Affichage du nombre saisi par l'utilisateur
-Write-Output "Vous avez saisi le nombre : $nombre"
+    $moyenne = ($nb1 + $nb2) / 2
+    Write-Host "La moyenne de $nb1 et $nb2 est de $moyenne"
+}
+
+Moyenne -nb1 15 -nb2 20
+Moyenne -nb2 15 -nb1 17
