@@ -12,4 +12,4 @@ function Moyenne {
 }
 
 Moyenne -nb1 15 -nb2 20
-Moyenne -nb2 15 -nb1 17
+Moyenne 15 17

@@ -537,13 +537,13 @@ des fichiers contenus dans un répertoire donné. Attention, on ne veut pas de d
     }
 
     Moyenne -nb1 15 -nb2 20
-    Moyenne -nb2 15 -nb1 17
+    Moyenne 15 17
     ```
 
     **Résultat:**
 
     ```txt
-    PS F:\iutCours\2A> . 'F:\iutCours\2A\Scripts\PowerShell\TP2\script.ps1' Moyenne 15 20
+    PS F:\iutCours\2A> . 'F:\iutCours\2A\Scripts\PowerShell\TP2\script.ps1'
     La moyenne de 15 et 20 est de 17.5
     La moyenne de 17 et 15 est de 16  
     ```
