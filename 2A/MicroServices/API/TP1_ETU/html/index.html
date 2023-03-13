@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1. TP1 Utilisation et création d’API (4H) &mdash; Documentation BUT2-DevCloud-TP1-Microservices </title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> BUT2-DevCloud-TP1-Microservices
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">1. TP1 Utilisation et création d’API (4H)</a><ul>
+<li><a class="reference internal" href="#presentation">1.1 Présentation</a></li>
+<li><a class="reference internal" href="#travail-a-rendre">1.2 Travail à rendre</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#qcm">2. QCM</a></li>
+<li><a class="reference internal" href="#configuration-du-proxy">3. Configuration du Proxy</a></li>
+<li><a class="reference internal" href="#ex1-utilisation-de-curl-pour-acceder-a-une-api">4. EX1-Utilisation de CURL pour accèder à une API</a></li>
+<li><a class="reference internal" href="#ex2-utilisation-des-classes-python-dacces-http">5. EX2-Utilisation des classes Python d’accès HTTP</a><ul>
+<li><a class="reference internal" href="#introduction">5.1 Introduction</a></li>
+<li><a class="reference internal" href="#creation-d-un-environnement-python-virtuel">5.2 Création d’un environnement Python virtuel</a></li>
+<li><a class="reference internal" href="#travail-a-realiser">5.3 Travail à réaliser</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ex3-creation-d-une-api-avec-fastapi">6. EX3-Création d’une API avec FastAPI</a><ul>
+<li><a class="reference internal" href="#preparer-l-environnement">6.1 <strong>Préparer l’environnement</strong></a></li>
+<li><a class="reference internal" href="#version-n1-utilisant-des-requetes-sql">6.2 Version N°1 utilisant des requêtes SQL</a></li>
+<li><a class="reference internal" href="#version-n2-utilisant-l-orm-sqlmodel">6.3 Version N°2 utilisant l’ORM SQLModel</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">BUT2-DevCloud-TP1-Microservices</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>1. TP1 Utilisation et création d’API (4H)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.md.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tp1-utilisation-et-creation-d-api-4h">
+<h1>1. TP1 Utilisation et création d’API (4H)<a class="headerlink" href="#tp1-utilisation-et-creation-d-api-4h" title="Lien permanent vers cette rubrique"></a></h1>
+<section id="presentation">
+<h2>1.1 Présentation<a class="headerlink" href="#presentation" title="Lien permanent vers cette rubrique"></a></h2>
+<p>Ce TP a pour objectif de vous faire découvrir l’utilisation d’API REST avec Curl et Python puis la création d’API avec FastAPI.</p>
+</section>
+<section id="travail-a-rendre">
+<h2>1.2 Travail à rendre<a class="headerlink" href="#travail-a-rendre" title="Lien permanent vers cette rubrique"></a></h2>
+<p><strong>Faire un compte rendu par binôme de toutes les actions réalisées (commandes/captures) en suivant les recommandations suivantes</strong></p>
+<p>Vous devez utiliser le fichier au format Markdown (.md) de ce sujet (dossier /CR) et l’éditer avec VSCode afin d’y mettre vos réponses.</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span>Pour le compte rendu sous VSCode :
+-- Changez le thème de VSCode : File -&gt; Preferences -&gt; Color Theme --&gt; Light+
+-- Renommez le dossier CR en CR_ETU1_ETU2 qui contient le fichier .md et le dossier images
+-- Renommez le fichier index.md en CR_ETU1_ETU2
+-- Mettez vos réponses en <span class="gs">**gras**</span> après un &gt; suivi d&#39;un espace :     
+<span class="k">&gt; </span><span class="ge">**Ma réponse**</span>
+<span class="k">&gt;</span>
+<span class="ge">&gt; **Suite de ma réponse**</span>
+<span class="k">&gt;</span>
+<span class="ge">-- Insérez les captures écran ainsi  ![capture1](images/capture1.png)</span>
+-- Prévisualisez le résultat : se positioner dans fenêtre du fichier .md  puis CTRL+SHIFT+V  
+   ou bien pour avoir le texte et la prévisualisation côte à côte  : CTRL+SHIFT+P  et sélectioner Markdown : Open preview to the side
+</pre></div>
+</div>
+<blockquote>
+<div><p><strong>Ma réponse</strong></p>
+<p><strong>Suite de ma réponse</strong></p>
+</div></blockquote>
+<p><img alt="MaCapture" src="_images/88x31.png" /></p>
+<p><strong>Capture 0 : voici comment insérer une capture écran</strong></p>
+</section>
+</section>
+<section id="qcm">
+<h1>2. QCM<a class="headerlink" href="#qcm" title="Lien permanent vers cette rubrique"></a></h1>
+<p>Commencez par faire <strong>individuellement</strong> le QCM sous Moodle en utilisant les PC <code class="docutils literal notranslate"><span class="pre">Gn</span></code> et <code class="docutils literal notranslate"><span class="pre">Dn</span></code> sous Windows.</p>
+<ul class="simple">
+<li><p>avec un adressage IP par DHCP</p></li>
+<li><p>en configurant sous Firefox le proxy 10.254.0.254:3128 pour tous les protocoles</p></li>
+</ul>
+<div style="page-break-after: always; visibility: hidden"> \pagebreak </div>
+</section>
+<section id="configuration-du-proxy">
+<h1>3. Configuration du Proxy<a class="headerlink" href="#configuration-du-proxy" title="Lien permanent vers cette rubrique"></a></h1>
+<ul class="simple">
+<li><p>Démarrez <code class="docutils literal notranslate"><span class="pre">Sn</span></code> sous Windows avec</p>
+<ul>
+<li><p>avec un adressage IP par DHCP (vous devez obtenir une &#64;IP dans le réseau <code class="docutils literal notranslate"><span class="pre">10.254.200.YYY/16</span></code>)</p></li>
+<li><p>en configurant sous Firefox le proxy <code class="docutils literal notranslate"><span class="pre">10.254.0.254:3128</span></code> pour tous les protocoles</p></li>
+</ul>
+</li>
+<li><p>Récupérez ce sujet sur l’ENT</p></li>
+<li><p>Depuis <code class="docutils literal notranslate"><span class="pre">Sn</span></code>, récupérez la VM fournie avec la commande suivante:</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pscp -r root@10.254.XXX.YYY:/VMAPI/* D:\Vm</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>Dans le dossier D:\Vm, lancez à la VM à partir du fichier <code class="docutils literal notranslate"><span class="pre">.vmx</span></code></p>
+</div></blockquote>
+<ul class="simple">
+<li><p>Vérfiez que la VM dispose bien d’une adresse IP dans le réseau <code class="docutils literal notranslate"><span class="pre">10.254.200.YYY/16</span></code></p></li>
+<li><p>Créez ou utilisez le script <code class="docutils literal notranslate"><span class="pre">script_proxy.sh</span></code> pour accéder à Internet depuis un terminal en passant proxy</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#author : P. Durand 2022</span>
+<span class="c1"># script_proxy_docker.sh à lancer avec source et pas en ./</span>
+<span class="c1"># 10.254.0.254 en salle B10-002 ...</span>
+<span class="c1"># 172.16.0.1 en salle I014</span>
+<span class="c1"># Au lieu de saisir votre mot de passe dans le fichier, utilisez la commande read</span>
+
+<span class="nv">login</span><span class="o">=</span><span class="s1">&#39;testeuras1r&#39;</span>
+<span class="c1">#Demandez le mot de passe de la semaine</span>
+<span class="nv">mdp</span><span class="o">=</span><span class="s1">&#39;aaaaaaa&#39;</span>
+
+<span class="c1">#vous pouvez échapper un caractère spécial de votre mot de passe avec \</span>
+
+<span class="nb">export</span> <span class="nv">HTTP_PROXY</span><span class="o">=</span><span class="s2">&quot;http://</span><span class="nv">$login</span><span class="s2">:</span><span class="nv">$mdp</span><span class="s2">@10.254.0.254:3128&quot;</span>
+<span class="nb">export</span> <span class="nv">HTTPS_PROXY</span><span class="o">=</span><span class="s2">&quot;http://</span><span class="nv">$login</span><span class="s2">:</span><span class="nv">$mdp</span><span class="s2">@10.254.0.254:3128&quot;</span>
+<span class="nb">export</span> <span class="nv">http_proxy</span><span class="o">=</span><span class="s2">&quot;http://</span><span class="nv">$login</span><span class="s2">:</span><span class="nv">$mdp</span><span class="s2">@10.254.0.254:3128&quot;</span>
+<span class="nb">export</span> <span class="nv">https_proxy</span><span class="o">=</span><span class="s2">&quot;http://</span><span class="nv">$login</span><span class="s2">:</span><span class="nv">$mdp</span><span class="s2">@10.254.0.254:3128&quot;</span>
+</pre></div>
+</div>
+<p>Ce script sera à lancer dans chaque nouveau terminal qui doit se connecter à Internet</p>
+<p><strong>Testez l’accès à l’extérieur du réseau depuis un terminal</strong></p>
+<ul class="simple">
+<li><p>Lancez le script afin que les variables d’environnement soient accessibles depuis le terminal où il est lancé <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">script_proxy.sh</span></code></p></li>
+<li><p>Vérifiez la modification des variables d’environnement avec <code class="docutils literal notranslate"><span class="pre">export</span></code></p></li>
+<li><p>Testez l’accès Internet (HTTP) avec une commande de votre choix <code class="docutils literal notranslate"><span class="pre">wget</span></code> ou <code class="docutils literal notranslate"><span class="pre">curl</span></code>!</p></li>
+</ul>
+<p><strong>VISA 0  Faites valider l’accès HTTP depuis un terminal par votre enseignant</strong></p>
+<div style="page-break-after: always; visibility: hidden"> \pagebreak </div>
+</section>
+<section id="ex1-utilisation-de-curl-pour-acceder-a-une-api">
+<h1>4. EX1-Utilisation de CURL pour accèder à une API<a class="headerlink" href="#ex1-utilisation-de-curl-pour-acceder-a-une-api" title="Lien permanent vers cette rubrique"></a></h1>
+<p>On va utiliser ici l’API REST factice <a class="reference external" href="https://fakestoreapi.com/">https://fakestoreapi.com/</a> qui propose plusieurs méthodes:</p>
+<ul class="simple">
+<li><p>GET/products</p></li>
+<li><p>GET/products/1</p></li>
+<li><p>GET/products/categories</p></li>
+<li><p>GET/products/category/jewelery</p></li>
+<li><p>GET/carts?userId=1</p></li>
+<li><p>GET/products?limit=5</p></li>
+<li><p>POST/products</p></li>
+<li><p>PUT/products/1</p></li>
+<li><p>PATCH/products/1</p></li>
+<li><p>DELETE/products/1</p></li>
+</ul>
+<p><strong>Donnez et testez les commandes CURL acceptant une réponse au format json qui permettent de:</strong></p>
+<ol class="arabic simple">
+<li><p>lister tous les produits,</p></li>
+<li><p>lister le produit N°5,</p></li>
+<li><p>lister les catégories,</p></li>
+<li><p>créer un produit de votre choix dans la catégorie electronic,</p></li>
+<li><p>modifier un produit de votre choix.</p></li>
+</ol>
+<p><strong>Consignez les résultats</strong></p>
+<ul class="simple">
+<li><p><strong>Refaites le même travail avec le plugin <code class="docutils literal notranslate"><span class="pre">RESTED</span></code> de Firefox</strong></p></li>
+</ul>
+<blockquote>
+<div><p>Variante possible avec les API suivantes en cas de problème d’accès</p>
+</div></blockquote>
+<ul class="simple">
+<li><p>https://jsonplaceholder.typicode.com/</p></li>
+<li><p>https://dummyjson.com/</p></li>
+<li><p>https://fakeapi.platzi.com/</p></li>
+</ul>
+<p><strong>VISA 1  Faites valider par votre enseignant</strong></p>
+<div style="page-break-after: always; visibility: hidden"> \pagebreak </div>
+</section>
+<section id="ex2-utilisation-des-classes-python-dacces-http">
+<h1>5. EX2-Utilisation des classes Python d’accès HTTP<a class="headerlink" href="#ex2-utilisation-des-classes-python-dacces-http" title="Lien permanent vers cette rubrique"></a></h1>
+<section id="introduction">
+<h2>5.1 Introduction<a class="headerlink" href="#introduction" title="Lien permanent vers cette rubrique"></a></h2>
+<p>La bibliothèque Python  <code class="docutils literal notranslate"><span class="pre">requests</span></code> permet d’interagir avec les services Web.</p>
+</section>
+<section id="creation-d-un-environnement-python-virtuel">
+<h2>5.2 Création d’un environnement Python virtuel<a class="headerlink" href="#creation-d-un-environnement-python-virtuel" title="Lien permanent vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Créez un dossier <code class="docutils literal notranslate"><span class="pre">/home/etudiant/Nom1_Nom2</span></code></p></li>
+<li><p>Dans ce dossier, créez un environnement virtuel nommé <code class="docutils literal notranslate"><span class="pre">vNOM</span></code></p></li>
+<li><p>Dans ce dossier, créez un dossier <code class="docutils literal notranslate"><span class="pre">TP1</span></code></p></li>
+<li><p>Activez l’environnement virtuel</p></li>
+<li><p>Mettez à jour la base dépot Python</p></li>
+<li><p>Installez la bibliothèque <code class="docutils literal notranslate"><span class="pre">requests</span></code> en utilisant la commande pip comme ceci : <code class="docutils literal notranslate"><span class="pre">pip3.9</span> <span class="pre">install</span> <span class="pre">requests</span></code></p></li>
+</ul>
+</section>
+<section id="travail-a-realiser">
+<h2>5.3 Travail à réaliser<a class="headerlink" href="#travail-a-realiser" title="Lien permanent vers cette rubrique"></a></h2>
+<ol class="arabic simple">
+<li><p>Créez dans le dossier TP1 le fichier <code class="docutils literal notranslate"><span class="pre">EX2.py</span></code> et testez le programme Python avec <code class="docutils literal notranslate"><span class="pre">python</span></code> suivant qui interroge l’API REST suivante:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">BASE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://fakestoreapi.com&#39;</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BASE_URL</span><span class="si">}</span><span class="s2">/products&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>listez le produit N°10</p></li>
+<li><p>Testez la limitation à l’affichage pour 5 produits avec des paramètres passés à la requête</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">query_params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">5</span>
+<span class="p">}</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BASE_URL</span><span class="si">}</span><span class="s2">/products&quot;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">query_params</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Compléter le programme afin de n’afficher que la <code class="docutils literal notranslate"><span class="pre">description</span></code> des produits et la valeur <code class="docutils literal notranslate"><span class="pre">count</span></code> des 5 produits précédents</p></li>
+<li><p>Créez un produit de votre choix dans la catégorie electronic, le produit crée doit être déclaré avant au format <code class="docutils literal notranslate"><span class="pre">JSON</span></code></p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">BASE_URL</span><span class="si">}</span><span class="s2">/products&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">new_product</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>Vérifiez l’insertion du produit en interrogeant à nouveau l’API pour ce produit en particulier (<a class="reference external" href="https://fakestoreapi.com/">https://fakestoreapi.com/</a>)</p></li>
+<li><p>Modifiez un produit de votre choix</p></li>
+</ol>
+<p><strong>VISA 2  Faites valider par votre enseignant</strong></p>
+<div style="page-break-after: always; visibility: hidden"> \pagebreak </div>
+</section>
+</section>
+<section id="ex3-creation-d-une-api-avec-fastapi">
+<h1>6. EX3-Création d’une API avec FastAPI<a class="headerlink" href="#ex3-creation-d-une-api-avec-fastapi" title="Lien permanent vers cette rubrique"></a></h1>
+<section id="preparer-l-environnement">
+<h2>6.1 <strong>Préparer l’environnement</strong><a class="headerlink" href="#preparer-l-environnement" title="Lien permanent vers cette rubrique"></a></h2>
+<p>Pour <a class="reference external" href="https://fastapi.tiangolo.com/#installation">installer</a> FastAPI, exécutez la commande suivante dans l’environnement virtuel Python :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install fastapi
+pip install <span class="s2">&quot;uvicorn[standard]&quot;</span>
+
+<span class="c1">#nous aurons besoin ensuite des modules suivants</span>
+
+pip install sqlite3worker
+pip install PyJWT
+pip install requests
+</pre></div>
+</div>
+</section>
+<section id="version-n1-utilisant-des-requetes-sql">
+<h2>6.2 Version N°1 utilisant des requêtes SQL<a class="headerlink" href="#version-n1-utilisant-des-requetes-sql" title="Lien permanent vers cette rubrique"></a></h2>
+<p>Cette API va manipuler les données de la base de données fournies <code class="docutils literal notranslate"><span class="pre">IUT.sqlite</span></code> (déjà utilisée en première année).</p>
+<p>Cette API devra proposer un CRUD sur la table <code class="docutils literal notranslate"><span class="pre">etudiants</span></code></p>
+<p>Voici un rappel du schéma relationnel:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="o">`</span><span class="n">etudiants</span><span class="o">`</span> <span class="p">(</span>
+    <span class="o">`</span><span class="n">mail</span><span class="o">`</span>	<span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="p">(</span><span class="k">null</span><span class="p">),</span>
+    <span class="o">`</span><span class="n">mdp</span><span class="o">`</span>	<span class="nb">VARCHAR</span> <span class="k">DEFAULT</span> <span class="p">(</span><span class="k">null</span><span class="p">),</span>
+    <span class="o">`</span><span class="n">adresse</span><span class="o">`</span>	<span class="nb">VARCHAR</span> <span class="k">DEFAULT</span> <span class="p">(</span><span class="k">null</span><span class="p">),</span>
+    <span class="o">`</span><span class="n">insee</span><span class="o">`</span>	<span class="nb">INTEGER</span> <span class="k">DEFAULT</span> <span class="p">(</span><span class="k">null</span><span class="p">),</span>
+    <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">(</span><span class="o">`</span><span class="n">mail</span><span class="o">`</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="o">`</span><span class="n">villes</span><span class="o">`</span> <span class="p">(</span>
+    <span class="o">`</span><span class="n">commune</span><span class="o">`</span>	<span class="nb">varchar</span> <span class="p">(</span> <span class="mi">30</span> <span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
+    <span class="o">`</span><span class="n">cp</span><span class="o">`</span>	<span class="nb">varchar</span> <span class="p">(</span> <span class="mi">5</span> <span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
+    <span class="o">`</span><span class="n">dept</span><span class="o">`</span>	<span class="nb">varchar</span> <span class="p">(</span> <span class="mi">30</span> <span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
+    <span class="o">`</span><span class="n">insee</span><span class="o">`</span>	<span class="nb">varchar</span> <span class="p">(</span> <span class="mi">5</span> <span class="p">)</span> <span class="k">DEFAULT</span> <span class="p">(</span><span class="k">null</span><span class="p">),</span>
+    <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">(</span><span class="o">`</span><span class="n">insee</span><span class="o">`</span><span class="p">)</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<div style="page-break-after: always; visibility: hidden"> \pagebreak </div>
+<ul class="simple">
+<li><p>Créez un dossier EX3-Api-V1 et mettez en place l’arborescence suivante</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">├── EX3-Api-V1</span>
+<span class="go">    ├── main.py</span>
+<span class="go">    └── bdd</span>
+<span class="go">        └──IUT.sqlite</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Complétez le code source suivant pour créez l’API en suivant les commentaires</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+
+<span class="c1">#Créez un objet FastAPI</span>
+
+<span class="c1"># Créez une classe Etudiant qui hérite de BaseModel</span>
+
+<span class="c1"># Créez une classe Ville qui hérite de BaseModel </span>
+
+<span class="c1"># Créez une fonction qui permet la connection à la BDD</span>
+
+<span class="c1">#Route (endpoint) avec la méthode GET pour obtenir tous les etudiants en faisant une jointure</span>
+
+<span class="c1">#Route (endpoint) avec la méthode POST pour ajouter un étudiant</span>
+
+<span class="c1">#Route (endpoint) avec la méthode DELETE pour supprimer un etudiant</span>
+
+<span class="c1">#Route (endpoint) avec la méthode PUT pour modifier un etudiant</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Lancez votre API avec <code class="docutils literal notranslate"><span class="pre">uvicorn</span></code></p></li>
+<li><p>Testez progressivement votre API avec l’outil FastAPI intégré avec l’URL <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/docs</span></code></p></li>
+<li><p>Capturez et consignez tous les résultats.</p></li>
+</ul>
+<p><strong>VISA 3  Faites valider par votre enseignant</strong></p>
+<div style="page-break-after: always; visibility: hidden"> \pagebreak </div>
+</section>
+<section id="version-n2-utilisant-l-orm-sqlmodel">
+<h2>6.3 Version N°2 utilisant l’ORM SQLModel<a class="headerlink" href="#version-n2-utilisant-l-orm-sqlmodel" title="Lien permanent vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Créez un dossier EX3-Api-V2 et mettez en place l’arborescence suivante:</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">├── EX3-Api-V2</span>
+<span class="go">    ├── main.py</span>
+<span class="go">    └── bdd</span>
+<span class="go">        └──IUT.sqlite</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Modifiez l’API précédente afin d’utiliser l’ORM SQLModel pour créer le CRUD de la table <code class="docutils literal notranslate"><span class="pre">Etudiants</span></code></p></li>
+<li><p>Lancez votre API avec <code class="docutils literal notranslate"><span class="pre">uvicorn</span></code></p></li>
+<li><p>Testez progressivement votre API avec l’outil FastAPI intégré avec l’URL <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/docs</span></code></p></li>
+<li><p>Capturez et consignez tous les résultats.</p></li>
+</ul>
+<p><strong>VISA 4  Faites valider par votre enseignant</strong></p>
+<div style="page-break-after: always; visibility: hidden"> \pagebreak </div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Philippe Durand.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
