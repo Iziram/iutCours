@@ -1,0 +1,46 @@
+root@G27:~# ping 10.27.1.1 -c 1 
+PING 10.27.1.1 (10.27.1.1) 56(84) bytes of data.
+64 bytes from 10.27.1.1: icmp_seq=1 ttl=63 time=0.321 ms
+
+--- 10.27.1.1 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.321/0.321/0.321/0.000 ms
+root@G27:~# ping 10.254.27.1 -c 1 
+PING 10.254.27.1 (10.254.27.1) 56(84) bytes of data.
+64 bytes from 10.254.27.1: icmp_seq=1 ttl=255 time=0.230 ms
+
+--- 10.254.27.1 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.230/0.230/0.230/0.000 ms
+root@G27:~# ping 10.254.0.254 -c 1 
+PING 10.254.0.254 (10.254.0.254) 56(84) bytes of data.
+64 bytes from 10.254.0.254: icmp_seq=1 ttl=63 time=0.519 ms
+
+--- 10.254.0.254 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.519/0.519/0.519/0.000 ms
+root@G27:~# 
+
+root@G27:~# ping 10.254.24.1 -c 1 
+PING 10.254.24.1 (10.254.24.1) 56(84) bytes of data.
+64 bytes from 10.254.24.1: icmp_seq=1 ttl=253 time=0.509 ms
+
+--- 10.254.24.1 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.509/0.509/0.509/0.000 ms
+root@G27:~# ping 10.24.1.1 -c 1 
+PING 10.24.1.1 (10.24.1.1) 56(84) bytes of data.
+64 bytes from 10.24.1.1: icmp_seq=1 ttl=61 time=0.671 ms
+
+--- 10.24.1.1 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.671/0.671/0.671/0.000 ms
+root@G27:~# ping 10.24.2.1 -c 1 
+PING 10.24.2.1 (10.24.2.1) 56(84) bytes of data.
+64 bytes from 10.24.2.1: icmp_seq=1 ttl=61 time=0.644 ms
+
+--- 10.24.2.1 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.644/0.644/0.644/0.000 ms
+root@G27:~# 
+

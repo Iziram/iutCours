@@ -1,0 +1,24 @@
+apache2.service - The Apache HTTP Server
+     Loaded: loaded (/lib/systemd/system/apache2.service; disabled; vendor pres>
+     Active: active (running) since Mon 2023-03-13 13:50:10 CET; 21min ago
+       Docs: https://httpd.apache.org/docs/2.4/
+    Process: 2325 ExecStart=/usr/sbin/apachectl start (code=exited, status=0/SU>
+   Main PID: 2465 (/usr/sbin/apach)
+      Tasks: 10 (limit: 9337)
+     Memory: 37.0M
+        CPU: 143ms
+     CGroup: /system.slice/apache2.service
+             ├─2465 /usr/sbin/apache2 -k start
+             ├─2468 /usr/sbin/apache2 -k start
+             ├─2491 /usr/sbin/apache2 -k start
+             ├─2492 /usr/sbin/apache2 -k start
+             ├─2493 /usr/sbin/apache2 -k start
+             ├─2494 /usr/sbin/apache2 -k start
+             ├─2495 /usr/sbin/apache2 -k start
+             ├─4805 /usr/sbin/apache2 -k start
+             ├─4919 /usr/sbin/apache2 -k start
+             └─4920 /usr/sbin/apache2 -k start
+
+mars 13 13:50:09 G27 systemd[1]: Starting The Apache HTTP Server...
+mars 13 13:50:10 G27 apachectl[2347]: AH00558: apache2: Could not reliably dete>
+root@G27:~# 
