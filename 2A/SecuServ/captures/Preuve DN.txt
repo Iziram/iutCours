@@ -1,0 +1,57 @@
+oot@D24:~# systemctl status apache2
+● apache2.service - The Apache HTTP Server
+     Loaded: loaded (/lib/systemd/system/apache2.service; disabled; vendor preset>
+     Active: active (running) since Tue 2023-03-14 13:46:19 CET; 3min 20s ago
+
+
+
+
+
+
+Certificate Request:
+    Data:
+        Version: 1 (0x0)
+        Subject: C = FR, ST = Bretagne, L = Lannion, O = IUT Lannion, CN = www.monsite.fr, emailAddress = admin@monsite.fr
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: (4096 bit):2e:c9:84:4f:
+                    6b:a5:0a:77:87:56:d7:08:3f:1d:b3:3a:2f:8f:23:
+                    b7:9b:6d
+                Exponent: 65537 (0x10001)
+        Attributes:
+            challengePassword        :lannion
+    Signature Algorithm: sha256WithRSAEncryption
+         20:65:cd:48:ff:df:36:7f:92:e4:08:8f:7f:ca:74:e1:31:55:
+         7a:d7:3d:64:99:33:f5:8c:dd:c5:a1:9c:39:0b:4c:6a:fb:fa:
+         8b:f4:63:b4:d9:2f:d1:18:41:f8:8c:03:7c:42:bc:71:f7:01:
+         4b:d6:cd:f4:6d:cd:f5:79:9a:d3:06:7f:f1:36:b1:71:c3:fd:
+         39:ca:91:fa:b9:5a:a2:fc:d8:2e:d1:8e:05:0a:9f:93:4f:e0:
+         5e:9d:bf:b4:f0:9c:7f:75:99:ba:3e:e8:ab:5e:ca:57:41:87:
+         63:01:c8:b4:77:ab:26:d2:25:cf:3f:21:7a:82:aa:ef:ef:0e:
+         fa:9b:44:33:c3:b4:75:da:14:ca:59:5b:20:9e:28:69:cf:b7:
+         e3:37:a7:77:f0:0a:76:65:f9:83:34:4e:f1:fe:07:2b:b9:10:
+         e6:26:04:bc:36:df:fd:e5:6c:70:81:7b:7a:21:0f:f9:a7:6b:
+         ac:02:18:5d:aa:20:cf:f4:34:9c:ba:95:c9:28:a4:55:f9:46:
+         94:83:1a:71:a4:3c:65:b9:60:4f:f6:2f:e4:55:1e:09:c3:5b:
+         0c:68:bc:ef:e2:56:c9:48:9f:3b:8f:8b:3c:ad:ca:f4:e1:2a:
+         1f:77:27:99:80:b9:f8:9d:e1:66:5f:e1:2d:df:40:f1:45:cc:
+         54:ab:7e:f9:d5:12:2e:f6:fa:83:96:32:97:a3:6f:9d:17:8a:
+         d0:2a:3d:20:70:41:9b:93:f7:06:2f:19:6c:93:2e:d9:57:82:
+         05:ec:a1:13:01:03:b9:13:38:53:d6:c8:00:64:60:38:51:d2:
+         a8:19:60:51:50:47:dc:79:4d:49:af:1a:cd:9b:56:31:04:9a:
+         16:d5:14:fe:d1:ff:17:c3:6e:ae:e0:9c:12:ea:a2:25:63:1f:
+         93:18:b5:c6:e9:1e:7e:89:7c:01:12:81:3e:af:93:52:0c:04:
+         44:9d:b0:e5:34:51:80:e1:4c:2b:d7:0c:f0:a9:a8:f7:26:64:
+         f7:26:38:c0:f2:6b:7e:41:b7:46:20:2a:32:43:52:30:f1:e3:
+         8b:fc:0c:f5:02:8d:af:7c:7e:aa:66:42:fe:87:f6:8e:cc:ae:
+         12:5b:35:12:94:f1:92:c0:6c:e2:f9:70:7a:8d:22:4b:a5:3f:
+         5c:c7:a4:71:44:e3:a6:e9:60:fd:e4:12:3d:9c:a8:4f:52:23:
+         d2:23:84:c6:75:b4:48:44:cb:8c:04:3e:9a:b8:6d:a6:81:7a:
+         ac:fc:04:09:2e:99:9b:99:57:e6:d4:61:0e:0a:b6:8e:3a:7f:
+         8d:12:43:3e:5f:b7:af:d1:15:bb:57:86:44:2d:51:a3:a4:ad:
+         40:b5:26:50:d7:6b:83:2b
+
+
+
+II 3
+
